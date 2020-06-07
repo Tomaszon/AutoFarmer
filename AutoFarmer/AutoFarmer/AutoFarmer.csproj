@@ -69,7 +69,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SerializableRectangle.cs" />
+    <Compile Include="SearchRectangle.cs" />
+    <Compile Include="SerializablePoint.cs" />
     <Compile Include="Template.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@ namespace image_search_test
 			var testSourceOutput = (Bitmap)testSource.Clone();
 
 			var testTemplate = imf.Templates["AssignmentDetails"];
-			Point p = imf.FindClickPointForTemplate(testSource, testTemplate.Bitmap, testTemplate.SearchRectangles["CurrentMap"]);
+			Point p = imf.FindClickPointForTemplate(testSource, testTemplate.Bitmap, testTemplate.SearchRectangles["BeginAssignment"]);
 
 			HighlightFind(testSourceOutput, p);
 

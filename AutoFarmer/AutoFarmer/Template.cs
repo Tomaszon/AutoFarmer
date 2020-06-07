@@ -7,7 +7,7 @@ namespace image_search_test
 	{
 		public Bitmap Bitmap { get; private set; }
 
-		public Dictionary<string, SerializableRectangle> SearchRectangles { get; set; }
+		public Dictionary<string, SearchRectangle> SearchRectangles { get; set; }
 
 		public void LoadBitmap(string fileName)
 		{

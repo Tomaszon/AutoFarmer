@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 
 namespace image_search_test
 {
 	public class ImageMatchFinder
 	{
-		public string TemplatesRootDirectory { get;
-			set; }
+		public string TemplatesRootDirectory { get; set; }
 
 		public string TemplateFileExtension { get; set; }
 
-		public double Scale { get;
-			set; }
+		public double Scale { get; set; }
 
 		public float SimiliarityThreshold { get; set; }
 
@@ -40,7 +37,7 @@ namespace image_search_test
 			}
 		}
 
-		public Point FindClickPointForTemplate(Bitmap sourceImage, Bitmap template, Rectangle searchRectangle)
+		public Point FindClickPointForTemplate(Bitmap sourceImage, Bitmap template, SearchRectangle searchRectangle)
 		{
 			Bitmap sourceImageConverted = ConvertAndScaleBitmapTo24bpp(sourceImage);
 			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template);
@@ -58,7 +55,7 @@ namespace image_search_test
 				throw result.Length > 1 ? (Exception)new ImageMatchAmbiguousException(result.Length) : new ImageMatchNotFoundException();
 			}
 
-			return CalculateClickPoint(result[0].Rectangle);
+			return CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
@@ -75,10 +72,10 @@ namespace image_search_test
 			return clone;
 		}
 
-		private Rectangle ScaleSearchRectangle(Rectangle rectangle)
+		private Rectangle ScaleSearchRectangle(SearchRectangle rectangle)
 		{
 			return new Rectangle((int)(rectangle.X * Scale), (int)(rectangle.Y * Scale),
-				(int)(rectangle.Width * Scale), (int)(rectangle.Height * Scale));
+				(int)(rectangle.W * Scale), (int)(rectangle.H * Scale));
 		}
 
 		private Bitmap CropTemplateImage(Bitmap bitmap, Rectangle rectangle)
@@ -95,15 +92,12 @@ namespace image_search_test
 			return searchImage;
 		}
 
-		private Point CalculateClickPoint(Rectangle rectangle)
+		private Point CalculateClickPoint(Rectangle rectangle, Size relativeClickPoint)
 		{
 			var backScaledRectangle = new Rectangle((int)(rectangle.X / Scale), (int)(rectangle.Y / Scale),
 				(int)(rectangle.Width / Scale), (int)(rectangle.Height / Scale));
 
-			Point center = new Point(backScaledRectangle.X + backScaledRectangle.Width / 2,
-				backScaledRectangle.Y + backScaledRectangle.Height / 2);
-
-			return center;
+			return backScaledRectangle.Location + relativeClickPoint;
 		}
 	}
 }

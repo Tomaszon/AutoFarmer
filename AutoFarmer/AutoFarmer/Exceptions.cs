@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace image_search_test
+namespace AutoFarmer
 {
 	public class ImageMatchNotFoundException : Exception
 	{
@@ -14,5 +10,12 @@ namespace image_search_test
 	public class ImageMatchAmbiguousException : Exception
 	{
 		public ImageMatchAmbiguousException(int matches) : base($"Template match is ambiguous! Matches: {matches}") { }
+	}
+
+	public class AutoFarmerException : Exception
+	{
+		public AutoFarmerException(string message) : base(message) { }
+
+		public AutoFarmerException(string message, Exception innerException) : base(message, innerException) { }
 	}
 }

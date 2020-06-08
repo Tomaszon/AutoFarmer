@@ -1,11 +1,12 @@
 ﻿using AForge.Imaging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace image_search_test
+namespace AutoFarmer
 {
 	public class ImageMatchFinder
 	{
@@ -35,6 +36,11 @@ namespace image_search_test
 					template.Value.LoadBitmap(fileName);
 				}
 			}
+		}
+
+		public static ImageMatchFinder FromJsonFile(string path)
+		{
+			return JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(path));
 		}
 
 		public Point FindClickPointForTemplate(Bitmap sourceImage, Bitmap template, SearchRectangle searchRectangle)
@@ -97,7 +103,21 @@ namespace image_search_test
 			var backScaledRectangle = new Rectangle((int)(rectangle.X / Scale), (int)(rectangle.Y / Scale),
 				(int)(rectangle.Width / Scale), (int)(rectangle.Height / Scale));
 
-			return backScaledRectangle.Location + relativeClickPoint;
+			Point clickPoint = backScaledRectangle.Location + relativeClickPoint;
+
+			Logger.Log($"Click point calculated: {clickPoint} for rectangle: {backScaledRectangle}");
+
+			return clickPoint;
 		}
+
+		#region test
+		private static void HighlightFind(Bitmap bitmap, Rectangle rectangle)
+		{
+			using (Graphics g = Graphics.FromImage(bitmap))
+			{
+				g.DrawRectangle(Pens.Red, rectangle);
+			}
+		}
+		#endregion test
 	}
 }

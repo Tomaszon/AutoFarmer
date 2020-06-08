@@ -1,43 +1,91 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Drawing;
 using System.IO;
+using System.Threading;
 
-namespace image_search_test
+namespace AutoFarmer
 {
 	internal class Program
 	{
-		#region test
 		private static void Main(string[] args)
 		{
-			string content = File.ReadAllText(@".\configs\ImageMatchFinderConfig.Json");
-			ImageMatchFinder imf = JsonConvert.DeserializeObject<ImageMatchFinder>(content);
+			WorkMethod();
 
-			var testSource = (Bitmap)Image.FromFile(@"C:\users\toti9\downloads\testsource.png");
+			//var testSource = (Bitmap)Image.FromFile(@"C:\users\toti9\downloads\testsource.png");
 
-			var testSourceOutput = (Bitmap)testSource.Clone();
+			//var testSourceOutput = (Bitmap)testSource.Clone();
 
-			var testTemplate = imf.Templates["AssignmentDetails"];
-			Point p = imf.FindClickPointForTemplate(testSource, testTemplate.Bitmap, testTemplate.SearchRectangles["BeginAssignment"]);
+			//var testTemplate = imf.Templates["AssignmentDetails"];
+			//Point p = imf.FindClickPointForTemplate(testSource, testTemplate.Bitmap, testTemplate.SearchRectangles["BeginAssignment"]);
 
-			HighlightFind(testSourceOutput, p);
+			//HighlightFind(testSourceOutput, p);
 
-			testSourceOutput.Save(@"C:\Users\toti9\Downloads\testSourceOutput.png");
+			//testSourceOutput.Save(@"C:\Users\toti9\Downloads\testSourceOutput.png");
 
-			Console.WriteLine(p);
-			Console.WriteLine("Done");
+			//Console.WriteLine(p);
+
+			//var content = JsonConvert.SerializeObject(scenario, Formatting.Indented);
+
+			//File.WriteAllText(@"C:\Users\toti9\Downloads\out.json", content);
+
+			//Console.WriteLine("Done");
+			//Console.ReadKey();
+		}
+
+		private static void WorkMethod()
+		{
+			DateTime startTime = DateTime.Now;
+
+			try
+			{
+				Config config = Config.FromJsonFile(@".\configs\config.json");
+
+				Scenario scenario = Scenario.FromJsonFile(Path.Combine(config.ScenarioConfigsRootDirectory, "mainScenario.json"));
+				scenario.Init(Scenario.LoadScenarios(config.GroupScenariosDirectory), AtomicScenario.LoadScenarios(config.AtomicScenariosDirectory));
+
+				scenario.ImageMatchFinder = ImageMatchFinder.FromJsonFile(@".\configs\ImageMatchFinderConfig.Json");
+				scenario.MouseSafetyMeasures = config.MouseSafetyMeasures;
+
+				Logger.Log($"Processing of {scenario.Name} scenario starts in {config.ProcessCountdown / 1000.0} seconds");
+
+				Countdown(config.ProcessCountdown);
+
+				startTime = DateTime.Now;
+
+				scenario.Process();
+
+				Logger.Log($"Scenario finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+				
+			}
+			catch (Exception ex)
+			{
+				Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
+			}
+
+			Logger.Log("Press any key to exit");
+
 			Console.ReadKey();
 		}
 
-		private static void HighlightFind(Bitmap bitmap, Point point)
+		private static void Countdown(int milliseconds)
 		{
-			using (Graphics g = Graphics.FromImage(bitmap))
+			int p = 3;
+			int seconds = milliseconds / 1000;
+			int fraction = milliseconds % 1000;
+
+			Thread.Sleep(fraction);
+
+			for (int i = seconds; i > 0; i--)
 			{
-				g.DrawRectangle(Pens.Red, new Rectangle(point.X - 1, point.Y - 1, 3, 3));
+				Console.Write(i.ToString());
+				for (int j = 0; j < p; j++)
+				{
+					Console.Write(".");
+					Thread.Sleep(1000 / p);
+				}
 			}
+
+			Logger.Log("Processing");
 		}
-		#endregion test
-
-
 	}
 }

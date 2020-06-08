@@ -1,0 +1,13 @@
+{
+	"TemplateName": "DilithiumExchange",
+	"SearchRectangleName": "SubmitOfferToBuy",
+	"Actions": {
+		"Success": [
+			{
+				"MouseActions": [ "LeftClick" ]
+			}
+		],
+		"Fail": null //name of another scenario
+	},
+	"AdditionalDelay": 0
+}

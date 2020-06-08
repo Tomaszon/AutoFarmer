@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace image_search_test
+namespace AutoFarmer
 {
 	public class SerializablePoint
 	{
@@ -14,9 +14,19 @@ namespace image_search_test
 			Y = y;
 		}
 
-		//public static implicit operator Point(SerializablePoint point)
-		//{
-		//	return new Point(point.X, point.Y);
-		//}
+		public static Size operator -(SerializablePoint point, SerializablePoint other)
+		{
+			return new Size(point.X - other.X, point.Y - other.Y);
+		}
+
+		public static implicit operator Point(SerializablePoint point)
+		{
+			return new Point(point.X, point.Y);
+		}
+
+		public static implicit operator SerializablePoint(Point point)
+		{
+			return new SerializablePoint(point.X, point.Y);
+		}
 	}
 }

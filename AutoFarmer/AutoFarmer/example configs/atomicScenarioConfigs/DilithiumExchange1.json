@@ -1,0 +1,16 @@
+{
+	"TemplateName": "DilithiumExchange",
+	"SearchRectangleName": "DilithiumPerZen",
+	"Actions": {
+		"Success": [
+			{
+				"MouseActions": [ "LeftClick" ]
+			},
+			{
+				"KeyboardActions": [ "VK_2", "VK_5" ]
+			}
+		],
+		"Fail": null //name of another scenario
+	},
+	"AdditionalDelay": 0
+}

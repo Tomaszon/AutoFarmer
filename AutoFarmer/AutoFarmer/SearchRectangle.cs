@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace image_search_test
+namespace AutoFarmer
 {
 	public class SearchRectangle
 	{

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4AE01425-3EB6-4697-BFE1-41F2B23268F0}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>image_search_test</RootNamespace>
+    <RootNamespace>AutoFarmer</RootNamespace>
     <AssemblyName>image search test</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,8 +59,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Fail.cs" />
+    <Compile Include="Fallback.cs" />
     <Compile Include="InputSimulator.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="MouseSafetyMeasures.cs" />
+    <Compile Include="NotificationPlayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImageMatchFinder.cs" />
@@ -69,16 +77,32 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="AtomicScenario.cs" />
+    <Compile Include="Retry.cs" />
+    <Compile Include="Scenario.cs" />
+    <Compile Include="ScreenshotMaker.cs" />
     <Compile Include="SearchRectangle.cs" />
     <Compile Include="SerializablePoint.cs" />
+    <Compile Include="Success.cs" />
+    <Compile Include="SuccessActions.cs" />
     <Compile Include="Template.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="configs\scenarioConfigs\atomicScenarioConfigs\LoginContraband02.json" />
+    <None Include="example configs\atomicScenarioConfigs\DilithiumExchange1.json" />
+    <None Include="example configs\atomicScenarioConfigs\DilithiumExchange2.json" />
+    <None Include="example configs\atomicScenarioConfigs\LoginContraband01.json" />
+    <None Include="example configs\groupScenarioConfigs\Group1.json" />
+    <None Include="example configs\groupScenarioConfigs\Group2.json" />
+    <None Include="example configs\ImageMatchFinderConfig.json" />
+    <None Include="example configs\MainScenario.json" />
+    <None Include="example configs\SpeakToSecurityOfficer.json" />
+    <None Include="configs\Config.json" />
+    <None Include="configs\scenarioConfigs\atomicScenarioConfigs\LoginContraband01.json" />
+    <None Include="configs\scenarioConfigs\MainScenario.json" />
     <None Include="packages.config" />
-    <None Include="configs\ImageMatchFinderConfig.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="configs\ImageMatchFinderConfig.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -87,9 +111,33 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\assignmentDetails.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Resources\assignmentDetails.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="configs\scenarioConfigs\groupScenarioConfigs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\characterSelector1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\securityOfficer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\soundnavigate.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sounderror.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\soundexclamation.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources\" /s /y
+xcopy "$(ProjectDir)configs" "$(TargetDir)configs\" /s /y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

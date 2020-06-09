@@ -10,33 +10,11 @@ namespace AutoFarmer
 {
 	public class ImageMatchFinder
 	{
-		public string TemplatesRootDirectory { get; set; }
-
-		public string TemplateFileExtension { get; set; }
-
 		public double Scale { get; set; }
 
 		public float SimiliarityThreshold { get; set; }
 
-		private Dictionary<string, Template> _templates;
-		public Dictionary<string, Template> Templates
-		{
-			get
-			{
-				return _templates;
-			}
-			set
-			{
-				_templates = value;
-
-				foreach (var template in _templates)
-				{
-					string fileName = Path.Combine(TemplatesRootDirectory, $"{template.Key}.{TemplateFileExtension}");
-
-					template.Value.LoadBitmap(fileName);
-				}
-			}
-		}
+		public List<ImageMatchTemplate> Templates { get; set; }
 
 		public static ImageMatchFinder FromJsonFile(string path)
 		{

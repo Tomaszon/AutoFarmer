@@ -2,8 +2,10 @@
 {
 	public class Actions
 	{
-		public Success Success { get; set; }
+		public string[] InputActionNames { get; set; }
 
-		public Fail Fail { get; set; }
+		public int AdditionalDelayBetweenActions { get; set; }
+
+		public int AdditionalDelayAfterLastAction { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -40,22 +41,43 @@ namespace AutoFarmer
 			{
 				Config config = Config.FromJsonFile(@".\configs\config.json");
 
-				Scenario scenario = Scenario.FromJsonFile(Path.Combine(config.ScenarioConfigsRootDirectory, "mainScenario.json"));
-				scenario.Init(Scenario.LoadScenarios(config.GroupScenariosDirectory), AtomicScenario.LoadScenarios(config.AtomicScenariosDirectory));
+				List<ActionNode> actionNodes = new List<ActionNode>();
+				List<ConditionEdge> conditionEdges = new List<ConditionEdge>();
+				List<ImageMatchTemplate> templates = new List<ImageMatchTemplate>();
+				foreach (var file in Directory.GetFiles(config.ActionNodesDirectory))
+				{
+					actionNodes.Add(ActionNode.FromJsonFile(file));
+				}
+				foreach (var file in Directory.GetFiles(config.ConditionEdgesDirectory))
+				{
+					conditionEdges.Add(ConditionEdge.FromJsonFile(file));
+				}
+				foreach (var template in Directory.GetFiles(config.ImageMatchTemplatesDirectory))
+				{
+					templates.Add(ImageMatchTemplate.FromJsonFile(config.ImageMatchTemplatesDirectory, config.ImageMatchTemplateResourcesDirectory));
+				}
 
-				scenario.ImageMatchFinder = ImageMatchFinder.FromJsonFile(@".\configs\ImageMatchFinderConfig.Json");
-				scenario.MouseSafetyMeasures = config.MouseSafetyMeasures;
+				//Scenario scenario = Scenario.FromJsonFile(Path.Combine(config.ScenarioConfigsRootDirectory, "mainScenario.json"));
 
-				Logger.Log($"Processing of {scenario.Name} scenario starts in {config.ProcessCountdown / 1000.0} seconds");
+				var imf = ImageMatchFinder.FromJsonFile(config.ImageMatchFinderConfigPath);
+				imf.Templates = templates;
+
+				GrafMachine machine = new GrafMachine()
+				{
+					ImageMatchFinder = imf,
+					MouseSafetyMeasures = config.MouseSafetyMeasures
+				};
+
+				//Logger.Log($"Processing of {scenario.Name} scenario starts in {config.ProcessCountdown / 1000.0} seconds");
 
 				Countdown(config.ProcessCountdown);
 
 				startTime = DateTime.Now;
 
-				scenario.Process();
+				//scenario.Process();
 
 				Logger.Log($"Scenario finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
-				
+
 			}
 			catch (Exception ex)
 			{

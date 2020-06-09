@@ -1,18 +1,4 @@
 {
-	"TemplatesRootDirectory": ".\\Resources",
-	"TemplateFileExtension": "png",
 	"Scale": 0.5,
-	"SimiliarityThreshold": 0.98,
-	"Templates": {
-		"characterSelector1": {
-			"SearchRectangles": {
-				"loginContraband01": {
-					"X": 148,
-					"Y": 283,
-					"W": 120,
-					"H": 17
-				}
-			}
-		}
-	}
+	"SimiliarityThreshold": 0.98
 }

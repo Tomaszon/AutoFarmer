@@ -1,133 +1,93 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Threading;
+﻿//using Newtonsoft.Json;
+//using System.Collections.Generic;
+//using System.Drawing;
+//using System.IO;
+//using System.Linq;
+//using System.Threading;
 
-namespace AutoFarmer
-{
-	public class Scenario
-	{
-		public string Name { get; set; }
+//namespace AutoFarmer
+//{
+//	public class Scenario
+//	{
+//		public string Name { get; set; }
 
-		public string[] ScenarioNames { get; set; }
+//		public string[] ScenarioNames { get; set; }
 
-		public MouseSafetyMeasures MouseSafetyMeasures { get; set; }
+//		public static Scenario FromJsonFile(string path)
+//		{
+//			var scenario = JsonConvert.DeserializeObject<Scenario>(File.ReadAllText(path));
+//			scenario.Name = Path.GetFileNameWithoutExtension(path);
 
-		public ImageMatchFinder ImageMatchFinder { get; set; }
+//			return scenario;
+//		}
 
-		public InputSimulator InputSimulator { get; set; }
+//		public void Process()
+//		{
+//			InputSimulator.MoveMouse(MouseSafetyMeasures.MouseSafePosition);
 
-		public List<AtomicScenario> Scenarios { get; } = new List<AtomicScenario>();
+//			foreach (var atomicScenario in Scenarios)
+//			{
+//				var screen = ScreenshotMaker.CreateScreenshot();
 
-		public static Scenario FromJsonFile(string path)
-		{
-			var scenario = JsonConvert.DeserializeObject<Scenario>(File.ReadAllText(path));
-			scenario.Name = Path.GetFileNameWithoutExtension(path);
+//				ProcessAtomicScenario(atomicScenario, screen);
+//			}
+//		}
 
-			scenario.InputSimulator = new InputSimulator();
+//		private void ProcessAtomicScenario(ActionNode atomicScenario, Bitmap screen, int retryTimes = 0)
+//		{
+//			try
+//			{
+//				ProcessSuccessAction(atomicScenario, screen, retryTimes);	
+//			}
+//			catch (ImageMatchNotFoundException ex)
+//			{
+//				ProcessFailAction(atomicScenario, ex, screen, retryTimes);
+//			}
+//			catch (ImageMatchAmbiguousException ex)
+//			{
+//				throw new AutoFarmerException("Automatic emergency stop!", ex);
+//			}
+//		}
 
-			return scenario;
-		}
+//		private void ProcessSuccessAction(ActionNode atomicScenario, Bitmap screen, int retryTimes)
+//		{
+//			var template = ImageMatchFinder.Templates[atomicScenario.TemplateName];
 
-		public static List<Scenario> LoadScenarios(string directory)
-		{
-			List<Scenario> result = new List<Scenario>();
+//			Logger.Log($"Processing {atomicScenario.SearchRectangleName} search rectangle of {atomicScenario.TemplateName} template for {atomicScenario.Name} atomic scenario on {retryTimes + 1}. attempt");
 
-			if (Directory.Exists(directory))
-			{
-				foreach (string fileName in Directory.GetFiles(directory))
-				{
-					result.Add(FromJsonFile(fileName));
-				}
-			}
-			return result;
-		}
+//			Point p = ImageMatchFinder.FindClickPointForTemplate(screen, template.Bitmap, template.SearchRectangles[atomicScenario.SearchRectangleName]);
 
-		public void Init(List<Scenario> mainGroupScenarios, List<AtomicScenario> mainAtomicScenarios, List<AtomicScenario> mainScenarios = null)
-		{
-			foreach (var name in ScenarioNames)
-			{
-				var group = mainGroupScenarios.FirstOrDefault(s => s.Name == name);
-				if (group != null)
-				{
-					group.Init(mainGroupScenarios, mainAtomicScenarios, mainScenarios ?? Scenarios);
-				}
-				else
-				{
-					(mainScenarios ?? Scenarios).Add(mainAtomicScenarios.First(s => s.Name == name));
-				}
-			}
-		}
+//			if (!MouseSafetyMeasures.IsMouseInSafePosition())
+//			{
+//				throw new AutoFarmerException("Intentional emergency stop!");
+//			}
 
-		public void Process()
-		{
-			InputSimulator.MoveMouse(MouseSafetyMeasures.MouseSafePosition);
+//			InputSimulator.MoveMouse(p, atomicScenario.Actions.Success.AdditionalDelayBetweenActions);
 
-			foreach (var atomicScenario in Scenarios)
-			{
-				var screen = ScreenshotMaker.CreateScreenshot();
+//			InputSimulator.Simulate(atomicScenario.Actions.Success.Actions);
 
-				ProcessAtomicScenario(atomicScenario, screen);
-			}
-		}
+//			Thread.Sleep(atomicScenario.Actions.Success.AdditionalDelayAfterLastAction);
 
-		private void ProcessAtomicScenario(AtomicScenario atomicScenario, Bitmap screen, int retryTimes = 0)
-		{
-			try
-			{
-				ProcessSuccessAction(atomicScenario, screen, retryTimes);	
-			}
-			catch (ImageMatchNotFoundException ex)
-			{
-				ProcessFailAction(atomicScenario, ex, screen, retryTimes);
-			}
-			catch (ImageMatchAmbiguousException ex)
-			{
-				throw new AutoFarmerException("Automatic emergency stop!", ex);
-			}
-		}
+//			InputSimulator.MoveMouse(MouseSafetyMeasures.MouseSafePosition);
+//		}
 
-		private void ProcessSuccessAction(AtomicScenario atomicScenario, Bitmap screen, int retryTimes)
-		{
-			var template = ImageMatchFinder.Templates[atomicScenario.TemplateName];
+//		private void ProcessFailAction(ActionNode atomicScenario, ImageMatchNotFoundException ex, Bitmap screen, int retryTimes)
+//		{
+//			if (atomicScenario.Actions.Fail == null || retryTimes >= atomicScenario.Actions.Fail.Retry?.RetryTimes)
+//			{
+//				throw new AutoFarmerException("Automatic emergency stop!", ex);
+//			}
 
-			Logger.Log($"Processing {atomicScenario.SearchRectangleName} search rectangle of {atomicScenario.TemplateName} template for {atomicScenario.Name} atomic scenario on {retryTimes + 1}. attempt");
+//			if (atomicScenario.Actions.Fail.Retry != null)
+//			{
+//				Thread.Sleep(atomicScenario.Actions.Fail.Retry.DelayBeforeRetry);
 
-			Point p = ImageMatchFinder.FindClickPointForTemplate(screen, template.Bitmap, template.SearchRectangles[atomicScenario.SearchRectangleName]);
-
-			if (!MouseSafetyMeasures.IsMouseInSafePosition())
-			{
-				throw new AutoFarmerException("Intentional emergency stop!");
-			}
-
-			InputSimulator.MoveMouse(p, atomicScenario.Actions.Success.AdditionalDelayBetweenActions);
-
-			InputSimulator.Simulate(atomicScenario.Actions.Success.Actions);
-
-			Thread.Sleep(atomicScenario.Actions.Success.AdditionalDelayAfterLastAction);
-
-			InputSimulator.MoveMouse(MouseSafetyMeasures.MouseSafePosition);
-		}
-
-		private void ProcessFailAction(AtomicScenario atomicScenario, ImageMatchNotFoundException ex, Bitmap screen, int retryTimes)
-		{
-			if (atomicScenario.Actions.Fail == null || retryTimes >= atomicScenario.Actions.Fail.Retry?.RetryTimes)
-			{
-				throw new AutoFarmerException("Automatic emergency stop!", ex);
-			}
-
-			if (atomicScenario.Actions.Fail.Retry != null)
-			{
-				Thread.Sleep(atomicScenario.Actions.Fail.Retry.DelayBeforeRetry);
-
-				ProcessAtomicScenario(atomicScenario, screen, ++retryTimes);
-			}
-			else
-			{
-				ProcessAtomicScenario(atomicScenario.Actions.Fail.Fallback.Scenario, screen);
-			}
-		}
-	}
-}
+//				ProcessAtomicScenario(atomicScenario, screen, ++retryTimes);
+//			}
+//			else
+//			{
+//				ProcessAtomicScenario(atomicScenario.Actions.Fail.Fallback.Scenario, screen);
+//			}
+//		}
+//	}
+//}

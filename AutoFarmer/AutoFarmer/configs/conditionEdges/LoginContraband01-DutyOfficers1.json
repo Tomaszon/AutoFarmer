@@ -1,0 +1,8 @@
+{
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "genericTemplate",
+			"SearchRectangleName": "loginContraband01"
+		}
+	}
+}

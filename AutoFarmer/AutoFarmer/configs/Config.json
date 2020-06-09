@@ -7,6 +7,7 @@
 		"SafeAreaRadius": 50
 	},
 	"ActionSounds": true,
-	"ScenarioConfigsRootDirectory": ".\\configs\\scenarioConfigs",
-	"ProcessCountdown": 5000
+	"ProcessCountdown": 5000,
+	"TemplatesRootDirectory": ".\\Resources",
+	"TemplateFileExtension": "png"
 }

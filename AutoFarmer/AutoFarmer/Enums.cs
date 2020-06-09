@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoFarmer
+﻿namespace AutoFarmer
 {
 	public enum NotificationType
 	{
@@ -17,6 +11,7 @@ namespace AutoFarmer
 	public enum MouseAction
 	{
 		LeftClick,
-		LeftDoubleClick
+		LeftDoubleClick,
+		ScanScreenForFadedUI
 	}
 }

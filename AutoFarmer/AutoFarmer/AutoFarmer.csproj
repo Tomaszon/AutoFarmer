@@ -60,47 +60,45 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions.cs" />
+    <Compile Include="Condition.cs" />
+    <Compile Include="ConditionEdge.cs" />
+    <Compile Include="Conditions.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Fail.cs" />
-    <Compile Include="Fallback.cs" />
-    <Compile Include="InputSimulator.cs" />
+    <Compile Include="InputHandling\InputSimulator.cs" />
+    <Compile Include="InputHandling\MouseSafetyMeasures.cs" />
+    <Compile Include="InputHandling\NotificationPlayer.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="MouseSafetyMeasures.cs" />
-    <Compile Include="NotificationPlayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ImageMatchFinder.cs" />
+    <Compile Include="ImageMatching\ImageMatchFinder.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="AtomicScenario.cs" />
-    <Compile Include="Retry.cs" />
+    <Compile Include="ActionNode.cs" />
     <Compile Include="Scenario.cs" />
-    <Compile Include="ScreenshotMaker.cs" />
-    <Compile Include="SearchRectangle.cs" />
+    <Compile Include="GrafMachine.cs" />
+    <Compile Include="ImageMatching\ScreenshotMaker.cs" />
+    <Compile Include="ImageMatching\SearchRectangle.cs" />
     <Compile Include="SerializablePoint.cs" />
-    <Compile Include="Success.cs" />
-    <Compile Include="SuccessActions.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="ImageMatching\ImageMatchTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
-    <None Include="configs\scenarioConfigs\atomicScenarioConfigs\LoginContraband02.json" />
-    <None Include="example configs\atomicScenarioConfigs\DilithiumExchange1.json" />
-    <None Include="example configs\atomicScenarioConfigs\DilithiumExchange2.json" />
-    <None Include="example configs\atomicScenarioConfigs\LoginContraband01.json" />
-    <None Include="example configs\groupScenarioConfigs\Group1.json" />
-    <None Include="example configs\groupScenarioConfigs\Group2.json" />
-    <None Include="example configs\ImageMatchFinderConfig.json" />
-    <None Include="example configs\MainScenario.json" />
-    <None Include="example configs\SpeakToSecurityOfficer.json" />
+    <None Include="configs\actionNodes\StartContraband01.json" />
+    <None Include="configs\conditionEdges\StartContraband01-LoginContraband01.json" />
+    <None Include="configs\conditionEdges\LoginContraband01-DutyOfficers1.json" />
     <None Include="configs\Config.json" />
-    <None Include="configs\scenarioConfigs\atomicScenarioConfigs\LoginContraband01.json" />
-    <None Include="configs\scenarioConfigs\MainScenario.json" />
+    <None Include="configs\actionNodes\LoginContraband01.json" />
+    <None Include="configs\imageMatchTemplates\characterSelector1.json" />
+    <None Include="configs\startNodeNames.json" />
+    <None Include="example configs\exampleNode.json" />
     <None Include="packages.config" />
     <None Include="configs\ImageMatchFinderConfig.json" />
   </ItemGroup>
@@ -113,9 +111,7 @@
   <ItemGroup>
     <None Include="Resources\assignmentDetails.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="configs\scenarioConfigs\groupScenarioConfigs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\characterSelector1.png" />
   </ItemGroup>

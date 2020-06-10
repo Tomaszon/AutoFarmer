@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace AutoFarmer
 {
@@ -22,7 +23,10 @@ namespace AutoFarmer
 		{
 			var template = JsonConvert.DeserializeObject<ImageMatchTemplate>(File.ReadAllText(path));
 			template.Name = Path.GetFileNameWithoutExtension(path);
-			template.LoadBitmap(Path.Combine(resourcesDirectory, Path.GetFileName(path)));
+
+			var resourceName = Directory.GetFiles(resourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == template.Name);
+
+			template.LoadBitmap(resourceName);
 
 			return template;
 		}

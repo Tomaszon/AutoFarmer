@@ -7,7 +7,7 @@ namespace AutoFarmer
 	{
 		public string Name { get; set; }
 
-		public Actions Actions { get; set; }
+		public NodeActions Actions { get; set; }
 
 		public static ActionNode FromJsonFile(string path)
 		{

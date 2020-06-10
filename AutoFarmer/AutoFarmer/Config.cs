@@ -45,9 +45,15 @@ namespace AutoFarmer
 			}
 		}
 
-		public string ImageMatchTemplateResourcesDirectory { get; set; }
+		public string GraphConfigPath
+		{
+			get
+			{
+				return Path.Combine(ConfigDirectory, "graphConfig.json");
+			}
+		}
 
-		public string TemplateFileExtension { get; set; }
+		public string ImageMatchTemplateResourcesDirectory { get; set; }
 
 		public static Config FromJsonFile(string path)
 		{

@@ -21,7 +21,6 @@ namespace AutoFarmer
 			_simulator = new WindowsInput.InputSimulator();
 		}
 
-
 		public void Simulate(string[] inputActionNames, int additionalDelay = 0)
 		{
 			foreach (var action in inputActionNames)

@@ -59,13 +59,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions.cs" />
-    <Compile Include="Condition.cs" />
+    <Compile Include="NodeActions.cs" />
+    <Compile Include="ImageFindCondition.cs" />
     <Compile Include="ConditionEdge.cs" />
     <Compile Include="Conditions.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="InputHandling\InputSimulator.cs" />
     <Compile Include="InputHandling\MouseSafetyMeasures.cs" />
     <Compile Include="InputHandling\NotificationPlayer.cs" />
@@ -80,7 +81,7 @@
     </Compile>
     <Compile Include="ActionNode.cs" />
     <Compile Include="Scenario.cs" />
-    <Compile Include="GrafMachine.cs" />
+    <Compile Include="GraphMachine.cs" />
     <Compile Include="ImageMatching\ScreenshotMaker.cs" />
     <Compile Include="ImageMatching\SearchRectangle.cs" />
     <Compile Include="SerializablePoint.cs" />
@@ -97,7 +98,7 @@
     <None Include="configs\Config.json" />
     <None Include="configs\actionNodes\LoginContraband01.json" />
     <None Include="configs\imageMatchTemplates\characterSelector1.json" />
-    <None Include="configs\startNodeNames.json" />
+    <None Include="configs\graphConfig.json" />
     <None Include="example configs\exampleNode.json" />
     <None Include="packages.config" />
     <None Include="configs\ImageMatchFinderConfig.json" />

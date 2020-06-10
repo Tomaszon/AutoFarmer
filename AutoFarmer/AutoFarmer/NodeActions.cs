@@ -1,6 +1,6 @@
 ﻿namespace AutoFarmer
 {
-	public class Actions
+	public class NodeActions
 	{
 		public string[] InputActionNames { get; set; }
 

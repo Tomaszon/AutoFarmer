@@ -1,6 +1,6 @@
 ﻿namespace AutoFarmer
 {
-	public class Condition
+	public class ImageFindCondition
 	{
 		public string TemplateName { get; set; }
 
@@ -10,7 +10,7 @@
 		{
 			if (obj is null) return false;
 
-			if (obj is Condition c)
+			if (obj is ImageFindCondition c)
 			{
 				return TemplateName == c.TemplateName && SearchRectangleName == c.SearchRectangleName;
 			}

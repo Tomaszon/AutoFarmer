@@ -14,11 +14,18 @@ namespace AutoFarmer
 
 		public float SimiliarityThreshold { get; set; }
 
-		public List<ImageMatchTemplate> Templates { get; set; }
+		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
-		public static ImageMatchFinder FromJsonFile(string path)
+		public static ImageMatchFinder FromConfig(Config config)
 		{
-			return JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(path));
+			var imf = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(config.ImageMatchFinderConfigPath));
+
+			foreach (var template in Directory.GetFiles(config.ImageMatchTemplatesDirectory))
+			{
+				imf.Templates.Add(ImageMatchTemplate.FromJsonFile(template, config.ImageMatchTemplateResourcesDirectory));
+			}
+
+			return imf;
 		}
 
 		public Point FindClickPointForTemplate(Bitmap sourceImage, Bitmap template, SearchRectangle searchRectangle)

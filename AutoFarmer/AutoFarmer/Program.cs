@@ -11,26 +11,6 @@ namespace AutoFarmer
 		private static void Main(string[] args)
 		{
 			WorkMethod();
-
-			//var testSource = (Bitmap)Image.FromFile(@"C:\users\toti9\downloads\testsource.png");
-
-			//var testSourceOutput = (Bitmap)testSource.Clone();
-
-			//var testTemplate = imf.Templates["AssignmentDetails"];
-			//Point p = imf.FindClickPointForTemplate(testSource, testTemplate.Bitmap, testTemplate.SearchRectangles["BeginAssignment"]);
-
-			//HighlightFind(testSourceOutput, p);
-
-			//testSourceOutput.Save(@"C:\Users\toti9\Downloads\testSourceOutput.png");
-
-			//Console.WriteLine(p);
-
-			//var content = JsonConvert.SerializeObject(scenario, Formatting.Indented);
-
-			//File.WriteAllText(@"C:\Users\toti9\Downloads\out.json", content);
-
-			//Console.WriteLine("Done");
-			//Console.ReadKey();
 		}
 
 		private static void WorkMethod()
@@ -41,43 +21,19 @@ namespace AutoFarmer
 			{
 				Config config = Config.FromJsonFile(@".\configs\config.json");
 
-				List<ActionNode> actionNodes = new List<ActionNode>();
-				List<ConditionEdge> conditionEdges = new List<ConditionEdge>();
-				List<ImageMatchTemplate> templates = new List<ImageMatchTemplate>();
-				foreach (var file in Directory.GetFiles(config.ActionNodesDirectory))
-				{
-					actionNodes.Add(ActionNode.FromJsonFile(file));
-				}
-				foreach (var file in Directory.GetFiles(config.ConditionEdgesDirectory))
-				{
-					conditionEdges.Add(ConditionEdge.FromJsonFile(file));
-				}
-				foreach (var template in Directory.GetFiles(config.ImageMatchTemplatesDirectory))
-				{
-					templates.Add(ImageMatchTemplate.FromJsonFile(config.ImageMatchTemplatesDirectory, config.ImageMatchTemplateResourcesDirectory));
-				}
+				Graph graph = Graph.FromConfig(config);
 
-				//Scenario scenario = Scenario.FromJsonFile(Path.Combine(config.ScenarioConfigsRootDirectory, "mainScenario.json"));
+				GraphMachine machine = new GraphMachine(config, graph);
 
-				var imf = ImageMatchFinder.FromJsonFile(config.ImageMatchFinderConfigPath);
-				imf.Templates = templates;
-
-				GrafMachine machine = new GrafMachine()
-				{
-					ImageMatchFinder = imf,
-					MouseSafetyMeasures = config.MouseSafetyMeasures
-				};
-
-				//Logger.Log($"Processing of {scenario.Name} scenario starts in {config.ProcessCountdown / 1000.0} seconds");
+				Logger.Log($"Processing starts in {config.ProcessCountdown / 1000.0} seconds");
 
 				Countdown(config.ProcessCountdown);
 
 				startTime = DateTime.Now;
 
-				//scenario.Process();
+				machine.Process();
 
-				Logger.Log($"Scenario finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
-
+				Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 			}
 			catch (Exception ex)
 			{

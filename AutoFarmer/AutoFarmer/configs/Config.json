@@ -8,6 +8,5 @@
 	},
 	"ActionSounds": true,
 	"ProcessCountdown": 5000,
-	"TemplatesRootDirectory": ".\\Resources",
-	"TemplateFileExtension": "png"
+	"ImageMatchTemplateResourcesDirectory": ".\\Resources"
 }

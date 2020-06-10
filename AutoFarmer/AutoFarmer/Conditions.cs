@@ -2,10 +2,10 @@
 {
 	public class Conditions
 	{
-		public Condition PreCondition { get; set; }
+		public ImageFindCondition PreCondition { get; set; }
 
-		public Condition PostCondition { get; set; }
+		public ImageFindCondition PostCondition { get; set; }
 
-		public Condition Condition { set { PreCondition = PostCondition = value; } }
+		public ImageFindCondition Condition { set { PreCondition = PostCondition = value; } }
 	}
 }

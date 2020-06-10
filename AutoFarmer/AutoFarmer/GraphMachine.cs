@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace AutoFarmer
@@ -9,19 +14,13 @@ namespace AutoFarmer
 	{
 		public Graph Graph { get; set; }
 
-		public MouseSafetyMeasures MouseSafetyMeasures { get; set; }
-
 		public ImageMatchFinder ImageMatchFinder { get; set; }
 
 		public InputSimulator InputSimulator { get; set; } = new InputSimulator();
 
-		private int _currentStartNodeIndex = 0;
-
-		public GraphMachine(Config config, Graph graph)
+		public GraphMachine(Graph graph)
 		{
-			MouseSafetyMeasures = config.MouseSafetyMeasures;
-
-			ImageMatchFinder = ImageMatchFinder.FromConfig(config);
+			ImageMatchFinder = ImageMatchFinder.FromConfig();
 
 			Graph = graph;
 		}
@@ -30,70 +29,125 @@ namespace AutoFarmer
 		{
 			while (GetNextStartNode(out var currentNode))
 			{
-				InputSimulator.MouseEvent(MouseSafetyMeasures.MouseSafePosition);
-
-				bool processedAnOutgoingEdge = false;
-				ConditionEdge currentEdge;
-
 				do
 				{
-					ProcessNode(currentNode);
+					ProcessNode(currentNode, MouseSafetyMeasures.Instance.GetCursorCurrentPosition());
+
+					InputSimulator.MouseEvent(MouseSafetyMeasures.Instance.MouseSafePosition);
+
+					ConditionEdge currentEdge;
 
 					while (GetNextOutgoingEdge(currentNode, out currentEdge))
 					{
 						if (ProcessEdge(currentEdge))
 						{
 							currentNode = Graph.GetNextNode(currentEdge);
-							processedAnOutgoingEdge = true;
+
 							break;
+						}
+						else
+						{
+							currentEdge.Disable();
 						}
 					}
 
-					if (!processedAnOutgoingEdge) throw new AutoFarmerException("Can not move to the next node!");
+					if (!currentNode.IsEndNode && currentEdge is null) throw new AutoFarmerException("Can not move to the next node!");
 				}
-				while (currentEdge != null);
+				while (!currentNode.IsEndNode);
+
+				Graph.ResetStates();
 			}
 		}
 
 		private bool GetNextOutgoingEdge(ActionNode currentNode, out ConditionEdge edge)
 		{
+			edge = Graph.GetNextEdge(currentNode);
 
+			return edge != null;
 		}
 
 		private bool GetNextStartNode(out ActionNode node)
 		{
-			string name = Graph.StartNodeNames.Length > _currentStartNodeIndex ? Graph.StartNodeNames[_currentStartNodeIndex] : null;
-
-			node = name != null ? Graph.ActionNodes[name] : null;
-
-			_currentStartNodeIndex++;
+			node = Graph.StartNodes.FirstOrDefault(n => !n.IsVisited);
 
 			return node != null;
 		}
 
-		private void ProcessNode(ActionNode node)
+		private void ProcessNode(ActionNode node, Point actionPosition)
 		{
 			if (node.Actions is null) return;
 
-			InputSimulator.Simulate(node.Actions.InputActionNames, node.Actions.AdditionalDelayBetweenActions);
+			InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
 
 			Thread.Sleep(node.Actions.AdditionalDelayAfterLastAction);
 		}
 
 		private bool ProcessEdge(ConditionEdge edge)
 		{
-			try
-			{
+			var preRes = ProcessConditon(edge.Conditions.PreCondition);
 
-			}
-			catch (ImageMatchNotFoundException ex)
+			if (edge.Conditions.PreCondition.Equals(edge.Conditions.PostCondition))
 			{
+				if (preRes) edge.CurrentCrossing++;
 
+				return preRes;
 			}
-			catch (ImageMatchAmbiguousException ex)
+			else
 			{
-				throw new AutoFarmerException("Automatic emergency stop!", ex);
+				if (preRes is false) return false;
+
+				var postRes = ProcessConditon(edge.Conditions.PostCondition);
+
+				if (postRes)
+				{
+					edge.CurrentCrossing++;
+
+					return true;
+				}
+				else
+				{
+					throw new AutoFarmerException($"Stuck in {edge.Name} condition edge!");
+				}
 			}
+		}
+
+		private bool ProcessConditon(ImageFindCondition condition)
+		{
+			int retry = 0;
+
+			while (retry <= condition.MaxRetry)
+			{
+				try
+				{
+					var template = ImageMatchFinder.Templates.First(t => t.Name == condition.TemplateName);
+
+					var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
+
+					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
+
+					var sourceImage = ScreenshotMaker.CreateScreenshot();
+
+					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, template.Bitmap, searchRectangle);
+
+					Logger.GraphicalLog(sourceImage, clickPoint, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
+
+					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
+
+					InputSimulator.MouseEvent(clickPoint);
+
+					break;
+				}
+				catch (ImageMatchNotFoundException)
+				{
+					Thread.Sleep(condition.RetryDelay);
+				}
+				catch (ImageMatchAmbiguousException ex)
+				{
+					throw new AutoFarmerException("Automatic emergency stop!", ex);
+				}
+			}
+
+			return retry <= condition.MaxRetry;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -7,23 +8,31 @@ namespace AutoFarmer
 {
 	public class Graph
 	{
-		public string[] StartNodeNames { get; set; }
-
-		public Dictionary<string, ActionNode> ActionNodes { get; set; } = new Dictionary<string, ActionNode>();
-
-		public Dictionary<string, ConditionEdge> ConditionEdges { get; set; } = new Dictionary<string, ConditionEdge>();
-
-		public static Graph FromConfig(Config config)
+		public List<ActionNode> StartNodes
 		{
-			var graph = JsonConvert.DeserializeObject<Graph>(File.ReadAllText(config.GraphConfigPath));
+			get { return ActionNodes.Where(a => a.IsStartNode).ToList(); }
+		}
 
-			foreach (var file in Directory.GetFiles(config.ActionNodesDirectory))
+		public List<ActionNode> EndNodes
+		{
+			get { return ActionNodes.Where(a => a.IsEndNode).ToList(); }
+		}
+
+		public List<ActionNode> ActionNodes { get; set; } = new List<ActionNode>();
+
+		public List<ConditionEdge> ConditionEdges { get; set; } = new List<ConditionEdge>();
+
+		public static Graph FromConfig()
+		{
+			var graph = new Graph();
+
+			foreach (var file in Directory.GetFiles(Config.Instance.ActionNodesDirectory))
 			{
-				graph.ActionNodes.Add(Path.GetFileNameWithoutExtension(file), ActionNode.FromJsonFile(file));
+				graph.ActionNodes.Add(ActionNode.FromJsonFile(file));
 			}
-			foreach (var file in Directory.GetFiles(config.ConditionEdgesDirectory))
+			foreach (var file in Directory.GetFiles(Config.Instance.ConditionEdgesDirectory))
 			{
-				graph.ConditionEdges.Add(Path.GetFileNameWithoutExtension(file), ConditionEdge.FromJsonFile(file));
+				graph.ConditionEdges.Add(ConditionEdge.FromJsonFile(file));
 			}
 
 			return graph;
@@ -31,14 +40,27 @@ namespace AutoFarmer
 
 		public ActionNode GetNextNode(ConditionEdge conditionEdge)
 		{
-			return ActionNodes[conditionEdge.EndNodeName];
+			return ActionNodes.First(n => conditionEdge.EndNodeName == n.Name);
 		}
 
-		public ConditionEdge[] GetNextConditionEdges(ActionNode actionNode)
+		public ConditionEdge GetNextEdge(ActionNode actionNode)
 		{
-			var res = ConditionEdges.Select(c => c.Value).Where(c => c.StartNodeName == actionNode.Name);
+			return ConditionEdges.Where(e =>
+				e.StartNodeName == actionNode.Name && e.IsEnabled).OrderBy(e =>
+					e.Order).FirstOrDefault();
+		}
 
-			return res.Count() == 0 ? null : res.ToArray();
+		public void ResetStates()
+		{
+			foreach (var edge in ConditionEdges)
+			{
+				edge.ResetState();
+			}
+
+			foreach (var node in ActionNodes)
+			{
+				node.ResetState();
+			}
 		}
 	}
 }

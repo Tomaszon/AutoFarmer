@@ -16,13 +16,13 @@ namespace AutoFarmer
 
 		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
-		public static ImageMatchFinder FromConfig(Config config)
+		public static ImageMatchFinder FromConfig()
 		{
-			var imf = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(config.ImageMatchFinderConfigPath));
+			var imf = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
-			foreach (var template in Directory.GetFiles(config.ImageMatchTemplatesDirectory))
+			foreach (var template in Directory.GetFiles(Config.Instance.ImageMatchTemplatesDirectory))
 			{
-				imf.Templates.Add(ImageMatchTemplate.FromJsonFile(template, config.ImageMatchTemplateResourcesDirectory));
+				imf.Templates.Add(ImageMatchTemplate.FromJsonFile(template, Config.Instance.ImageMatchTemplateResourcesDirectory));
 			}
 
 			return imf;
@@ -46,7 +46,7 @@ namespace AutoFarmer
 				throw result.Length > 1 ? (Exception)new ImageMatchAmbiguousException(result.Length) : new ImageMatchNotFoundException();
 			}
 
-			return CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
+			return  CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
@@ -94,15 +94,5 @@ namespace AutoFarmer
 
 			return clickPoint;
 		}
-
-		#region test
-		private static void HighlightFind(Bitmap bitmap, Rectangle rectangle)
-		{
-			using (Graphics g = Graphics.FromImage(bitmap))
-			{
-				g.DrawRectangle(Pens.Red, rectangle);
-			}
-		}
-		#endregion test
 	}
 }

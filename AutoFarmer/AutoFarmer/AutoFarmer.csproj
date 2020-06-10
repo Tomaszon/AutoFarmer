@@ -98,7 +98,7 @@
     <None Include="configs\Config.json" />
     <None Include="configs\actionNodes\LoginContraband01.json" />
     <None Include="configs\imageMatchTemplates\characterSelector1.json" />
-    <None Include="configs\graphConfig.json" />
+    <None Include="configs\mouseSafetyMeasuresConfig.json" />
     <None Include="example configs\exampleNode.json" />
     <None Include="packages.config" />
     <None Include="configs\ImageMatchFinderConfig.json" />

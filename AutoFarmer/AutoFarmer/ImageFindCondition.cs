@@ -6,6 +6,10 @@
 
 		public string SearchRectangleName { get; set; }
 
+		public int MaxRetry { get; set; } = 1;
+
+		public int RetryDelay { get; set; } = 1000;
+
 		public override bool Equals(object obj)
 		{
 			if (obj is null) return false;

@@ -21,10 +21,12 @@ namespace AutoFarmer
 			_simulator = new WindowsInput.InputSimulator();
 		}
 
-		public void Simulate(string[] inputActionNames, int additionalDelay = 0)
+		public void Simulate(string[] inputActionNames, Point actionPosition, int additionalDelay = 0)
 		{
 			foreach (var action in inputActionNames)
 			{
+				MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop(actionPosition);
+
 				if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
 				{
 					MouseEvent(mouseAction, additionalDelay);

@@ -7,8 +7,6 @@ namespace AutoFarmer
 {
 	public class Config
 	{
-		public MouseSafetyMeasures MouseSafetyMeasures { get; set; }
-
 		public bool ActionSounds { get; set; }
 
 		public string ConfigDirectory { get; set; }
@@ -45,24 +43,37 @@ namespace AutoFarmer
 			}
 		}
 
-		public string GraphConfigPath
+		public string MouseSafetyMeasuresConfigPath
 		{
 			get
 			{
-				return Path.Combine(ConfigDirectory, "graphConfig.json");
+				return Path.Combine(ConfigDirectory, "mouseSafetyMeasuresConfig.json");
 			}
 		}
 
 		public string ImageMatchTemplateResourcesDirectory { get; set; }
 
-		public static Config FromJsonFile(string path)
-		{
-			var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
-			config.ConfigDirectory = Path.GetDirectoryName(path);
+		public int ProcessCountdown { get; set; }
 
-			return config;
+		public string LogDirectory
+		{
+			get
+			{
+				return Path.Combine(Directory.GetParent(ConfigDirectory).FullName, "Logs");
+			}
+
 		}
 
-		public int ProcessCountdown { get; set; }
+		public bool FileLogging { get; set; }
+
+		public bool GraphicalLogging { get; set; }
+
+		public static Config Instance { get; set; }
+
+		public static void FromJsonFile(string path)
+		{
+			Instance = JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
+			Instance.ConfigDirectory = Path.GetDirectoryName(path);
+		}
 	}
 }

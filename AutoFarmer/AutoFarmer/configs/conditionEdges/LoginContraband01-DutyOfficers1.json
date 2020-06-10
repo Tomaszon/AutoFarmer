@@ -2,7 +2,9 @@
 	"Conditions": {
 		"Condition": {
 			"TemplateName": "genericTemplate",
-			"SearchRectangleName": "loginContraband01"
+			"SearchRectangleName": "loginContraband01",
+			"MaxRetry": 3,
+			"RetryDelay": 5000
 		}
 	}
 }

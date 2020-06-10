@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace AutoFarmer
@@ -13,15 +15,45 @@ namespace AutoFarmer
 
 		public int SafeAreaRadius { get; set; }
 
-		public bool IsMouseInSafePosition()
+		public static MouseSafetyMeasures Instance { get; private set; }
+
+		public static void FromConfig()
+		{
+			Instance = JsonConvert.DeserializeObject<MouseSafetyMeasures>(File.ReadAllText(Config.Instance.MouseSafetyMeasuresConfigPath));
+		}
+
+		public Point GetCursorCurrentPosition()
 		{
 			GetCursorPos(out Point currentPosition);
+
+			return currentPosition;
+		}
+
+		public bool IsMouseInSafePosition()
+		{
+			var currentPosition = GetCursorCurrentPosition();
 
 			Size difference = MouseSafePosition - currentPosition;
 
 			double distance = Math.Sqrt(Math.Pow(difference.Width, 2) + Math.Pow(difference.Height, 2));
 
 			return distance <= SafeAreaRadius;
+		}
+
+		public void CheckForIntentionalEmergencyStop()
+		{
+			if (!IsMouseInSafePosition())
+			{
+				throw new AutoFarmerException("Intentional emergency stop!");
+			}
+		}
+
+		public void CheckForIntentionalEmergencyStop(Point actionPosition)
+		{
+			if (GetCursorCurrentPosition() != actionPosition)
+			{
+				throw new AutoFarmerException("Intentional emergency stop!");
+			}
 		}
 	}
 }

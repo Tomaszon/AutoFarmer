@@ -15,21 +15,21 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
-			DateTime startTime = DateTime.Now;
-
 			try
 			{
-				Config config = Config.FromJsonFile(@".\configs\config.json");
+				Config.FromJsonFile(@".\configs\config.json");
 
-				Graph graph = Graph.FromConfig(config);
+				MouseSafetyMeasures.FromConfig();
 
-				GraphMachine machine = new GraphMachine(config, graph);
+				Graph graph = Graph.FromConfig();
 
-				Logger.Log($"Processing starts in {config.ProcessCountdown / 1000.0} seconds");
+				GraphMachine machine = new GraphMachine(graph);
 
-				Countdown(config.ProcessCountdown);
+				Logger.Log($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds");
 
-				startTime = DateTime.Now;
+				Countdown(Config.Instance.ProcessCountdown);
+
+				DateTime startTime = DateTime.Now;
 
 				machine.Process();
 

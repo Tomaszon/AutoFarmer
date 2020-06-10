@@ -1,12 +1,7 @@
 {
-	"MouseSafetyMeasures": {
-		"MouseSafePosition": {
-			"X": 50,
-			"Y": 50
-		},
-		"SafeAreaRadius": 50
-	},
 	"ActionSounds": true,
 	"ProcessCountdown": 5000,
-	"ImageMatchTemplateResourcesDirectory": ".\\Resources"
+	"ImageMatchTemplateResourcesDirectory": ".\\Resources",
+	"GraphicalLogging": true,
+	"FileLogging": true
 }

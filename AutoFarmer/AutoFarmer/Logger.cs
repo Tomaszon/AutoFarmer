@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoFarmer
 {
@@ -43,7 +39,7 @@ namespace AutoFarmer
 		{
 			using (Graphics g = Graphics.FromImage(bitmap))
 			{
-				g.DrawRectangle(Pens.Red, rectangle);
+				g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), rectangle);
 
 				g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 3, 3));
 			}

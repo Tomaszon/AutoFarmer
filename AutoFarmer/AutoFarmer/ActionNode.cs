@@ -11,13 +11,16 @@ namespace AutoFarmer
 
 		public bool IsStartNode { get; set; }
 
-		public bool IsEndNode { get; internal set; }
+		public bool IsEndNode { get; set; }
 
 		public bool IsVisited { get; set; }
 
 		public void ResetState()
 		{
-			IsVisited = false;
+			if (!IsStartNode)
+			{
+				IsVisited = false;
+			}
 		}
 
 		public static ActionNode FromJsonFile(string path)

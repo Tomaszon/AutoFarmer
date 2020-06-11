@@ -11,6 +11,8 @@ namespace AutoFarmer
 		[DllImport("user32.dll")]
 		private static extern bool GetCursorPos(out Point lpPoint);
 
+		public bool IsEnabled { get; set; } = true;
+
 		public SerializablePoint MouseSafePosition { get; set; }
 
 		public int SafeAreaRadius { get; set; }
@@ -42,7 +44,7 @@ namespace AutoFarmer
 
 		public void CheckForIntentionalEmergencyStop()
 		{
-			if (!IsMouseInSafePosition())
+			if (IsEnabled && !IsMouseInSafePosition())
 			{
 				throw new AutoFarmerException("Intentional emergency stop!");
 			}
@@ -50,7 +52,7 @@ namespace AutoFarmer
 
 		public void CheckForIntentionalEmergencyStop(Point actionPosition)
 		{
-			if (GetCursorCurrentPosition() != actionPosition)
+			if (IsEnabled && GetCursorCurrentPosition() != actionPosition)
 			{
 				throw new AutoFarmerException("Intentional emergency stop!");
 			}

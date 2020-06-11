@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace AutoFarmer
@@ -43,6 +37,8 @@ namespace AutoFarmer
 						{
 							currentNode = Graph.GetNextNode(currentEdge);
 
+							Logger.Log($"Next node selected: {currentNode.Name}");
+
 							break;
 						}
 						else
@@ -55,6 +51,8 @@ namespace AutoFarmer
 				}
 				while (!currentNode.IsEndNode);
 
+				ProcessNode(currentNode, MouseSafetyMeasures.Instance.GetCursorCurrentPosition());
+
 				Graph.ResetStates();
 			}
 		}
@@ -63,6 +61,8 @@ namespace AutoFarmer
 		{
 			edge = Graph.GetNextEdge(currentNode);
 
+			Logger.Log($"Next edge selected: {edge.Name}");
+
 			return edge != null;
 		}
 
@@ -70,11 +70,15 @@ namespace AutoFarmer
 		{
 			node = Graph.StartNodes.FirstOrDefault(n => !n.IsVisited);
 
+			Logger.Log($"Start node selected: {(node is null ? "none" : node.Name)}");
+
 			return node != null;
 		}
 
 		private void ProcessNode(ActionNode node, Point actionPosition)
 		{
+			node.IsVisited = true;
+
 			if (node.Actions is null) return;
 
 			InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
@@ -84,9 +88,13 @@ namespace AutoFarmer
 
 		private bool ProcessEdge(ConditionEdge edge)
 		{
+			if (edge.Conditions is null) return true;
+
 			var preRes = ProcessConditon(edge.Conditions.PreCondition);
 
-			if (edge.Conditions.PreCondition.Equals(edge.Conditions.PostCondition))
+			Logger.Log($"Precondition processed: {preRes}");
+
+			if (edge.Conditions.PreCondition?.Equals(edge.Conditions.PostCondition) == true)
 			{
 				if (preRes) edge.CurrentCrossing++;
 
@@ -97,6 +105,8 @@ namespace AutoFarmer
 				if (preRes is false) return false;
 
 				var postRes = ProcessConditon(edge.Conditions.PostCondition);
+
+				Logger.Log($"Postcondition processed: {postRes}");
 
 				if (postRes)
 				{
@@ -113,7 +123,11 @@ namespace AutoFarmer
 
 		private bool ProcessConditon(ImageFindCondition condition)
 		{
+			if (condition is null) return true;
+
 			int retry = 0;
+
+			Logger.Log($"Attempring to find {condition.SearchRectangleName} of {condition.TemplateName} max {condition.MaxRetry + 1} times");
 
 			while (retry <= condition.MaxRetry)
 			{
@@ -129,6 +143,10 @@ namespace AutoFarmer
 
 					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, template.Bitmap, searchRectangle);
 
+					Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
+
+					Logger.Log($"Click point calculated at {clickPoint}");
+
 					Logger.GraphicalLog(sourceImage, clickPoint, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
@@ -139,6 +157,10 @@ namespace AutoFarmer
 				}
 				catch (ImageMatchNotFoundException)
 				{
+					retry++;
+
+					Logger.Log($"Match not found for the {retry}. time!", NotificationType.Error);
+
 					Thread.Sleep(condition.RetryDelay);
 				}
 				catch (ImageMatchAmbiguousException ex)

@@ -68,7 +68,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="InputHandling\InputSimulator.cs" />
-    <Compile Include="InputHandling\MouseSafetyMeasures.cs" />
+    <Compile Include="MouseSafetyMeasures.cs" />
     <Compile Include="InputHandling\NotificationPlayer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
@@ -92,7 +92,9 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="configs\actionNodes\EndNode.json" />
     <None Include="configs\actionNodes\StartContraband01.json" />
+    <None Include="configs\conditionEdges\StartContraband01-EndNode.json" />
     <None Include="configs\conditionEdges\StartContraband01-LoginContraband01.json" />
     <None Include="configs\conditionEdges\LoginContraband01-DutyOfficers1.json" />
     <None Include="configs\Config.json" />

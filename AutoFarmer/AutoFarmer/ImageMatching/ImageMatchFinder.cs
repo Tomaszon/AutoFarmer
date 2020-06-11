@@ -46,7 +46,7 @@ namespace AutoFarmer
 				throw result.Length > 1 ? (Exception)new ImageMatchAmbiguousException(result.Length) : new ImageMatchNotFoundException();
 			}
 
-			return  CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
+			return CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)

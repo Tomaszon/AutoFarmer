@@ -153,4 +153,8 @@
     <PostBuildEvent>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources\" /s /y
 xcopy "$(ProjectDir)configs" "$(TargetDir)configs\" /s /y</PostBuildEvent>
   </PropertyGroup>
+   <Target Name="SpicNSpan" AfterTargets="Clean">
+    <RemoveDir Directories="$(TargetDir)" />
+    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
+  </Target>
 </Project>

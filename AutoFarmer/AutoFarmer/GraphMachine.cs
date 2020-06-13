@@ -133,21 +133,13 @@ namespace AutoFarmer
 			{
 				try
 				{
-					var template = ImageMatchFinder.Templates.First(t => t.Name == condition.TemplateName);
-
-					var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
+					
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
 					var sourceImage = ScreenshotMaker.CreateScreenshot();
-
-					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, template.Bitmap, searchRectangle);
-
-					Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
-
-					Logger.Log($"Click point calculated at {clickPoint}");
-
-					Logger.GraphicalLog(sourceImage, clickPoint, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
+					
+					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition.TemplateName, condition.SearchRectangleName);
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 

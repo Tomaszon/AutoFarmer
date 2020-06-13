@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 
 namespace AutoFarmer
 {
@@ -28,10 +29,14 @@ namespace AutoFarmer
 			return imf;
 		}
 
-		public Point FindClickPointForTemplate(Bitmap sourceImage, Bitmap template, SearchRectangle searchRectangle)
+		public Point FindClickPointForTemplate(Bitmap sourceImage, string templateName, string searchRectangleName)
 		{
+			var template = Templates.First(t => t.Name == templateName);
+
 			Bitmap sourceImageConverted = ConvertAndScaleBitmapTo24bpp(sourceImage);
-			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template);
+			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
+
+			var searchRectangle = template.SearchRectangles[searchRectangleName];
 
 			Rectangle scaledSearchRectangle = ScaleSearchRectangle(searchRectangle);
 
@@ -46,7 +51,13 @@ namespace AutoFarmer
 				throw result.Length > 1 ? (Exception)new ImageMatchAmbiguousException(result.Length) : new ImageMatchNotFoundException();
 			}
 
-			return CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint);
+			Logger.Log($"Match found for {searchRectangleName} of {templateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
+
+			var clickPoint = CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint); ;
+
+			Logger.GraphicalLog(sourceImage, clickPoint, searchRectangle, templateName, searchRectangleName);
+
+			return clickPoint;
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)

@@ -10,7 +10,7 @@ namespace AutoFarmer
 	{
 		public string Name { get; set; }
 
-		public Bitmap Bitmap { get; private set; }
+		public Bitmap Bitmap { get; set; }
 
 		public Dictionary<string, SearchRectangle> SearchRectangles { get; set; }
 

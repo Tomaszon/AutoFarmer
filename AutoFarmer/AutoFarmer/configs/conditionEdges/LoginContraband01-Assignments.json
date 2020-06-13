@@ -3,8 +3,8 @@
 		"Condition": {
 			"TemplateName": "securityOfficer",
 			"SearchRectangleName": "assignments",
-			"MaxRetry": 3,
-			"RetryDelay": 5000
+			"MaxRetryPerSimiliarityThreshold": 3,
+			"RetryDelay": 2500
 		}
 	}
 }

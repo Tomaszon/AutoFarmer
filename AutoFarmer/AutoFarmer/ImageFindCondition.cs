@@ -6,6 +6,8 @@
 
 		public string SearchRectangleName { get; set; }
 
+		public int MaxAmbiguousity { get; set; } = 1;//TODO
+
 		public int MaxRetry { get; set; } = 1;
 
 		public int RetryDelay { get; set; } = 1000;

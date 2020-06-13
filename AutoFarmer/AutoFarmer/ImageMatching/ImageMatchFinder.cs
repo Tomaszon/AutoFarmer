@@ -14,7 +14,11 @@ namespace AutoFarmer
 	{
 		public double Scale { get; set; }
 
-		public float SimiliarityThreshold { get; set; }
+		public float TopSimiliarityThreshold { get; set; }
+
+		public float BottomSimiliarityThreshold { get; set; }//TOD
+
+		public float SimiliarityThresholdStep { get; set; }//TODO
 
 		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
@@ -32,18 +36,18 @@ namespace AutoFarmer
 
 		public Point FindClickPointForTemplate(Bitmap sourceImage, string templateName, string searchRectangleName)
 		{
-			var template = Templates.First(t => t.Name == templateName);
+			ImageMatchTemplate template = Templates.First(t => t.Name == templateName);
 
 			Bitmap sourceImageConverted = ConvertAndScaleBitmapTo24bpp(sourceImage);
 			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
 
-			var searchRectangle = template.SearchRectangles[searchRectangleName];
+			SearchRectangle searchRectangle = template.SearchRectangles[searchRectangleName];
 
 			Rectangle scaledSearchRectangle = ScaleSearchRectangle(searchRectangle);
 
 			Bitmap searchImage = CropTemplateImage(templateImageConverted, scaledSearchRectangle);
 
-			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(SimiliarityThreshold);
+			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(TopSimiliarityThreshold);
 
 			TemplateMatch[] result = matching.ProcessImage(sourceImageConverted, searchImage);
 
@@ -63,9 +67,9 @@ namespace AutoFarmer
 
 			Logger.Log($"Match found for {searchRectangleName} of {templateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
 
-			var matchRectangle = result[0].Rectangle;
+			Rectangle matchRectangle = result[0].Rectangle;
 
-			var clickPoint = CalculateClickPoint(ref matchRectangle, searchRectangle.RelativeClickPoint);
+			Point clickPoint = CalculateClickPoint(ref matchRectangle, searchRectangle.RelativeClickPoint);
 
 			Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, templateName, searchRectangleName);
 

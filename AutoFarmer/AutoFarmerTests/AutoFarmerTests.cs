@@ -29,7 +29,7 @@ namespace AutoFarmerTests
 				t
 			};
 
-			var imf = new ImageMatchFinder() { Scale = 0.5, SimiliarityThreshold = 0.99f, Templates = ts };
+			var imf = new ImageMatchFinder() { Scale = 0.5, TopSimiliarityThreshold = 0.99f, Templates = ts };
 
 			var point = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source,"TestTemplate", "TestRectangle");
 

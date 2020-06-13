@@ -10,28 +10,45 @@ namespace AutoFarmer
 
 		public static void Log(string message = "", NotificationType notificationType = NotificationType.None, int count = 1)
 		{
-			Console.WriteLine(message);
-			Console.WriteLine();
-
-			if (Config.Instance.FileLogging)
+			try
 			{
-				Directory.CreateDirectory(Config.Instance.LogDirectory);
+				Console.WriteLine(message);
+				Console.WriteLine();
 
-				File.AppendAllText(Path.Combine(Config.Instance.LogDirectory, $"{_guid}.log"), message + "\n\n");
+				if (Config.Instance.FileLogging)
+				{
+					Directory.CreateDirectory(Config.Instance.LogDirectory);
+
+					File.AppendAllText(Path.Combine(Config.Instance.LogDirectory, $"{_guid}.log"), message + "\n\n");
+				}
+
+				NotificationPlayer.Play(notificationType, count);
 			}
-
-			NotificationPlayer.Play(notificationType, count);
+			catch (Exception ex)
+			{
+				Console.WriteLine("Unexpected exception occured durning logging:\n " + ex.ToString());
+			}
 		}
 
-		public static void GraphicalLog(Bitmap source, Point clickPoint, SearchRectangle searchRectangle, string templateName, string searchRectangleName)
+		public static void GraphicalLog(Bitmap source, Point[] clickPoint, Rectangle[] searchRectangle, string templateName, string searchRectangleName)
 		{
-			if (Config.Instance.GraphicalLogging)
+			try
 			{
-				Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
+				if (Config.Instance.GraphicalLogging)
+				{
+					Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
 
-				HighlightFind(source, searchRectangle, clickPoint);
+					for (int i = 0; i < searchRectangle.Length; i++)
+					{
+						HighlightFind(source, searchRectangle[i], clickPoint[i]);
+					}
 
-				source.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+					source.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Unexpected exception occured durning logging:\n " + ex.ToString());
 			}
 		}
 

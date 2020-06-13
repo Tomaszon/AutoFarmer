@@ -92,13 +92,21 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="configs\actionNodes\CompletedTab.json" />
     <None Include="configs\actionNodes\EndNode.json" />
+    <None Include="configs\actionNodes\Assignments.json" />
+    <None Include="configs\actionNodes\DutyOfficersTab.json" />
     <None Include="configs\actionNodes\StartContraband01.json" />
-    <None Include="configs\conditionEdges\StartContraband01-EndNode.json" />
+    <None Include="configs\conditionEdges\CompletedTab-EndNode.json" />
+    <None Include="configs\conditionEdges\DutyOfficersTab-CompletedTab.json" />
+    <None Include="configs\conditionEdges\Assignments-DutyOfficersTab.json" />
     <None Include="configs\conditionEdges\StartContraband01-LoginContraband01.json" />
-    <None Include="configs\conditionEdges\LoginContraband01-DutyOfficers1.json" />
+    <None Include="configs\conditionEdges\LoginContraband01-Assignments.json" />
     <None Include="configs\Config.json" />
     <None Include="configs\actionNodes\LoginContraband01.json" />
+    <None Include="configs\imageMatchTemplates\assignmentsOverview.json" />
+    <None Include="configs\imageMatchTemplates\assignmentsDetails.json" />
+    <None Include="configs\imageMatchTemplates\securityOfficer.json" />
     <None Include="configs\imageMatchTemplates\characterSelector1.json" />
     <None Include="configs\mouseSafetyMeasuresConfig.json" />
     <None Include="example configs\exampleNode.json" />
@@ -109,12 +117,15 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\assignmentDetails.png" />
+    <None Include="Resources\assignmentsDetails.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\assignmentsOverview.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\characterSelector1.png" />
   </ItemGroup>
@@ -129,6 +140,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\soundexclamation.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\completedAssignments.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

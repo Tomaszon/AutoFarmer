@@ -62,7 +62,7 @@ namespace AutoFarmer
 				{
 					_simulator.Mouse.LeftButtonDoubleClick();
 
-					Logger.Log("Left mouse double click", NotificationType.Click, 2);
+					Logger.Log("Left mouse double click", NotificationType.Click, 1);//TODO use unique sound
 					break;
 				}
 				case MouseAction.ScanScreenForFadedUI:

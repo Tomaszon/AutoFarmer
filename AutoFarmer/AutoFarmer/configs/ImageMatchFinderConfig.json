@@ -1,4 +1,4 @@
 {
-	"Scale": 0.5,
-	"SimiliarityThreshold": 0.98
+	"Scale": 1,
+	"SimiliarityThreshold": 0.99
 }

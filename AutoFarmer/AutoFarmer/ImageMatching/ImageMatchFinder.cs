@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AutoFarmer
 {
@@ -48,14 +49,25 @@ namespace AutoFarmer
 
 			if (result.Length != 1)
 			{
-				throw result.Length > 1 ? (Exception)new ImageMatchAmbiguousException(result.Length) : new ImageMatchNotFoundException();
+				if (result.Length > 1)
+				{
+					LogAmbiguousException(result, sourceImage, searchRectangle, templateName, searchRectangleName);
+
+					throw new ImageMatchAmbiguousException(result.Length);
+				}
+				else
+				{
+					throw new ImageMatchNotFoundException();
+				}
 			}
 
 			Logger.Log($"Match found for {searchRectangleName} of {templateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
 
-			var clickPoint = CalculateClickPoint(result[0].Rectangle, searchRectangle.RelativeClickPoint); ;
+			var matchRectangle = result[0].Rectangle;
 
-			Logger.GraphicalLog(sourceImage, clickPoint, searchRectangle, templateName, searchRectangleName);
+			var clickPoint = CalculateClickPoint(ref matchRectangle, searchRectangle.RelativeClickPoint);
+
+			Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, templateName, searchRectangleName);
 
 			return clickPoint;
 		}
@@ -94,16 +106,34 @@ namespace AutoFarmer
 			return searchImage;
 		}
 
-		private Point CalculateClickPoint(Rectangle rectangle, Size relativeClickPoint)
+		private Point CalculateClickPoint(ref Rectangle rectangle, Size relativeClickPoint)
 		{
-			var backScaledRectangle = new Rectangle((int)(rectangle.X / Scale), (int)(rectangle.Y / Scale),
+			rectangle = new Rectangle((int)(rectangle.X / Scale), (int)(rectangle.Y / Scale),
 				(int)(rectangle.Width / Scale), (int)(rectangle.Height / Scale));
 
-			Point clickPoint = backScaledRectangle.Location + relativeClickPoint;
+			Point clickPoint = rectangle.Location + relativeClickPoint;
 
-			Logger.Log($"Click point calculated: {clickPoint} for rectangle: {backScaledRectangle}");
+			Logger.Log($"Click point calculated: {clickPoint} for rectangle: {rectangle}");
 
 			return clickPoint;
+		}
+
+		private void LogAmbiguousException(TemplateMatch[] result, Bitmap sourceImage, SearchRectangle searchRectangle, string templateName, string searchRectangleName)
+		{
+			List<Point> falseClickPoints = new List<Point>();
+			List<Rectangle> falseMatchRectangles = new List<Rectangle>();
+
+			foreach (var falseMatch in result)
+			{
+				var falseMatchRectangle = falseMatch.Rectangle;
+				var falseClickPoint = CalculateClickPoint(ref falseMatchRectangle, searchRectangle.RelativeClickPoint);
+
+				falseClickPoints.Add(falseClickPoint);
+				falseMatchRectangles.Add(falseMatchRectangle);
+			}
+
+			Logger.GraphicalLog(sourceImage, falseClickPoints.ToArray(), falseMatchRectangles.ToArray(), templateName, searchRectangleName);
+
 		}
 	}
 }

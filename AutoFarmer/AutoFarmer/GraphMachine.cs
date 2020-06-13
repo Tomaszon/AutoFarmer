@@ -61,7 +61,7 @@ namespace AutoFarmer
 		{
 			edge = Graph.GetNextEdge(currentNode);
 
-			Logger.Log($"Next edge selected: {edge.Name}");
+			Logger.Log($"Next edge selected: {(edge is null ? "none" : edge.Name)}");
 
 			return edge != null;
 		}
@@ -133,12 +133,12 @@ namespace AutoFarmer
 			{
 				try
 				{
-					
+
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
 					var sourceImage = ScreenshotMaker.CreateScreenshot();
-					
+
 					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition.TemplateName, condition.SearchRectangleName);
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();

@@ -1,6 +1,6 @@
 {
 	"ActionSounds": true,
-	"ProcessCountdown": 5000,
+	"ProcessCountdown": 10000,
 	"ImageMatchTemplateResourcesDirectory": ".\\Resources",
 	"GraphicalLogging": true,
 	"FileLogging": true

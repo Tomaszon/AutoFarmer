@@ -21,10 +21,5 @@ namespace AutoFarmer
 				return ClickPoint == null ? new Size(W / 2, H / 2) : new Size(ClickPoint.X - X, ClickPoint.Y - Y);
 			}
 		}
-
-		public static implicit operator Rectangle(SearchRectangle searchRectangle)
-		{
-			return new Rectangle(searchRectangle.X, searchRectangle.Y, searchRectangle.W, searchRectangle.H);
-		}
 	}
 }

@@ -119,10 +119,16 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="assignmentDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\assignmentDetails.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\assignmentsDetails.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="assignmentsOverview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\assignmentsOverview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="characterSelector1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\characterSelector1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="completedAssignments" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\completedAssignments.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="securityOfficer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\securityOfficer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

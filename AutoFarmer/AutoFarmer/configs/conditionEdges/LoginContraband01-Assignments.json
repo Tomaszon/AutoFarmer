@@ -1,8 +1,8 @@
 {
 	"Conditions": {
 		"Condition": {
-			"TemplateName": "genericTemplate",
-			"SearchRectangleName": "loginContraband01",
+			"TemplateName": "securityOfficer",
+			"SearchRectangleName": "assignments",
 			"MaxRetry": 3,
 			"RetryDelay": 5000
 		}

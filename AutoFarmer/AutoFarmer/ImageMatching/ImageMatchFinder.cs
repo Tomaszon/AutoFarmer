@@ -34,14 +34,14 @@ namespace AutoFarmer
 			return imf;
 		}
 
-		public Point FindClickPointForTemplate(Bitmap sourceImage, string templateName, string searchRectangleName)
+		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, ImageFindCondition condition)
 		{
-			ImageMatchTemplate template = Templates.First(t => t.Name == templateName);
+			ImageMatchTemplate template = Templates.First(t => t.Name == condition.TemplateName);
 
 			Bitmap sourceImageConverted = ConvertAndScaleBitmapTo24bpp(sourceImage);
 			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
 
-			SearchRectangle searchRectangle = template.SearchRectangles[searchRectangleName];
+			SearchRectangle searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
 			Rectangle scaledSearchRectangle = ScaleSearchRectangle(searchRectangle);
 
@@ -49,31 +49,33 @@ namespace AutoFarmer
 
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(TopSimiliarityThreshold);
 
-			TemplateMatch[] result = matching.ProcessImage(sourceImageConverted, searchImage);
+			TemplateMatch[] matches = matching.ProcessImage(sourceImageConverted, searchImage);
 
-			if (result.Length != 1)
+			if (matches.Length == 0) throw new ImageMatchNotFoundException();
+
+			if (matches.Length > condition.MaxAmbiguousity)
 			{
-				if (result.Length > 1)
-				{
-					LogAmbiguousException(result, sourceImage, searchRectangle, templateName, searchRectangleName);
+				LogAmbiguousException(matches, sourceImage, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
 
-					throw new ImageMatchAmbiguousException(result.Length);
-				}
-				else
-				{
-					throw new ImageMatchNotFoundException();
-				}
+				throw new ImageMatchAmbiguousException(matches.Length);
 			}
 
-			Logger.Log($"Match found for {searchRectangleName} of {templateName}, X:{searchRectangle.X} Y:{searchRectangle.Y}");
+			List<Point> clickPoints = new List<Point>();
 
-			Rectangle matchRectangle = result[0].Rectangle;
+			foreach (var match in matches)
+			{
+				Rectangle matchRectangle = match.Rectangle;
 
-			Point clickPoint = CalculateClickPoint(ref matchRectangle, searchRectangle.RelativeClickPoint);
+				Point clickPoint = CalculateClickPoint(ref matchRectangle, searchRectangle.RelativeClickPoint);
 
-			Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, templateName, searchRectangleName);
+				clickPoints.Add(clickPoint);
 
-			return clickPoint;
+				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at X: {clickPoint.X} Y: {clickPoint.Y}");
+
+				Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, condition.TemplateName, condition.SearchRectangleName);
+			}
+
+			return clickPoints;
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)

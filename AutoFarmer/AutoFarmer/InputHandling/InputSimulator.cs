@@ -77,6 +77,11 @@ namespace AutoFarmer
 			Thread.Sleep(Delay + additionalDelay);
 		}
 
+		/// <summary>
+		/// Moves the cursor to the given position.
+		/// </summary>
+		/// <param name="point"></param>
+		/// <param name="additionalDelay"></param>
 		public void MouseEvent(Point point, int additionalDelay = 0)
 		{
 			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.Width), point.Y * (65536.0 / ScreenSize.Height));

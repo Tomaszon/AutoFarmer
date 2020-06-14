@@ -15,6 +15,8 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
+			ImageFindCondition c = new ImageFindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
+
 			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
 
 			var srs = new Dictionary<string, SearchRectangle>
@@ -31,11 +33,11 @@ namespace AutoFarmerTests
 
 			var imf = new ImageMatchFinder() { Scale = 0.5, TopSimiliarityThreshold = 0.99f, Templates = ts };
 
-			var point = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source,"TestTemplate", "TestRectangle");
+			var points = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c);
 
 			var expectedPoint = new Point(480, 843);
 
-			Assert.AreEqual(expectedPoint, point);
+			Assert.AreEqual(expectedPoint, points[0]);
 		}
 	}
 }

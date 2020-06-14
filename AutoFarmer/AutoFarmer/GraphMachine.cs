@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 
@@ -21,11 +22,13 @@ namespace AutoFarmer
 
 		public void Process()
 		{
+			List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.GetCursorCurrentPosition() };
+
 			while (GetNextStartNode(out var currentNode))
 			{
 				do
 				{
-					ProcessNode(currentNode, MouseSafetyMeasures.Instance.GetCursorCurrentPosition());
+					ProcessNode(currentNode, actionPoints.ToArray());
 
 					InputSimulator.MouseEvent(MouseSafetyMeasures.Instance.MouseSafePosition);
 
@@ -33,7 +36,7 @@ namespace AutoFarmer
 
 					while (GetNextOutgoingEdge(currentNode, out currentEdge))
 					{
-						if (ProcessEdge(currentEdge))
+						if (ProcessEdge(currentEdge, out actionPoints))
 						{
 							currentNode = Graph.GetNextNode(currentEdge);
 
@@ -75,22 +78,29 @@ namespace AutoFarmer
 			return node != null;
 		}
 
-		private void ProcessNode(ActionNode node, Point actionPosition)
+		private void ProcessNode(ActionNode node, params Point[] actionPositions)
 		{
 			node.IsVisited = true;
 
 			if (node.Actions is null) return;
 
-			InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
+			foreach (var actionPosition in actionPositions)
+			{
+				InputSimulator.MouseEvent(actionPosition);
 
-			Thread.Sleep(node.Actions.AdditionalDelayAfterLastAction);
+				InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
+
+				Thread.Sleep(node.Actions.AdditionalDelayAfterLastAction);
+			}
 		}
 
-		private bool ProcessEdge(ConditionEdge edge)
+		private bool ProcessEdge(ConditionEdge edge, out List<Point> actionPoints)
 		{
+			actionPoints = new List<Point>();
+
 			if (edge.Conditions is null) return true;
 
-			var preRes = ProcessConditon(edge.Conditions.PreCondition);
+			var preRes = ProcessConditon(edge.Conditions.PreCondition, out actionPoints);
 
 			Logger.Log($"Precondition processed: {preRes}");
 
@@ -104,7 +114,7 @@ namespace AutoFarmer
 			{
 				if (preRes is false) return false;
 
-				var postRes = ProcessConditon(edge.Conditions.PostCondition);
+				var postRes = ProcessConditon(edge.Conditions.PostCondition, out actionPoints);
 
 				Logger.Log($"Postcondition processed: {postRes}");
 
@@ -121,8 +131,10 @@ namespace AutoFarmer
 			}
 		}
 
-		private bool ProcessConditon(ImageFindCondition condition)
+		private bool ProcessConditon(ImageFindCondition condition, out List<Point> actionPoints)
 		{
+			actionPoints = new List<Point>();
+
 			if (condition is null) return true;
 
 			int retry = 0;
@@ -133,17 +145,13 @@ namespace AutoFarmer
 			{
 				try
 				{
-
-
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
 					var sourceImage = ScreenshotMaker.CreateScreenshot();
 
-					var clickPoint = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition.TemplateName, condition.SearchRectangleName);
+					actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition);
 
 					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
-
-					InputSimulator.MouseEvent(clickPoint);
 
 					break;
 				}

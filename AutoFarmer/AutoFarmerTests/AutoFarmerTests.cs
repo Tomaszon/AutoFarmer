@@ -31,9 +31,9 @@ namespace AutoFarmerTests
 				t
 			};
 
-			var imf = new ImageMatchFinder() { Scale = 0.5, TopSimiliarityThreshold = 0.99f, Templates = ts };
+			var imf = new ImageMatchFinder() { Scale = 0.5, Templates = ts };
 
-			var points = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c);
+			var points = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c, 0.99f);
 
 			var expectedPoint = new Point(480, 843);
 

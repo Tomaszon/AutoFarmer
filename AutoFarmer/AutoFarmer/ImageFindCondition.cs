@@ -12,6 +12,12 @@
 
 		public int RetryDelay { get; set; } = 1000;
 
+		public float MaximumSimiliarityThreshold { get; set; } = 1;
+
+		public float MinimumSimiliarityThreshold { get; set; } = 0.98f;
+
+		public float SimiliarityThresholdStep { get; set; } = 0.01f;
+
 		public override bool Equals(object obj)
 		{
 			if (obj is null) return false;

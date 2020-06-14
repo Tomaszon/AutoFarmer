@@ -1,6 +1,3 @@
 {
-	"Scale": 1,
-	"TopSimiliarityThreshold": 1,
-	"BottomSimiliarityThreshold": 0.97,
-	"SimiliarityThresholdStep": 0.01
+	"Scale": 1
 }

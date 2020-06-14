@@ -14,12 +14,6 @@ namespace AutoFarmer
 	{
 		public double Scale { get; set; }
 
-		public float TopSimiliarityThreshold { get; set; }
-
-		public float BottomSimiliarityThreshold { get; set; }//TOD
-
-		public float SimiliarityThresholdStep { get; set; }//TODO
-
 		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
 		public static ImageMatchFinder FromConfig()
@@ -34,7 +28,7 @@ namespace AutoFarmer
 			return imf;
 		}
 
-		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, ImageFindCondition condition)
+		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, ImageFindCondition condition, float similiarityThreshold)
 		{
 			ImageMatchTemplate template = Templates.First(t => t.Name == condition.TemplateName);
 
@@ -47,7 +41,7 @@ namespace AutoFarmer
 
 			Bitmap searchImage = CropTemplateImage(templateImageConverted, scaledSearchRectangle);
 
-			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(TopSimiliarityThreshold);
+			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
 			TemplateMatch[] matches = matching.ProcessImage(sourceImageConverted, searchImage);
 

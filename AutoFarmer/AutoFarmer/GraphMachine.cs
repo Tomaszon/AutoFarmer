@@ -137,39 +137,49 @@ namespace AutoFarmer
 
 			if (condition is null) return true;
 
-			int retry = 0;
+			float similiarityThreshold = condition.MaximumSimiliarityThreshold;
 
-			Logger.Log($"Attempring to find {condition.SearchRectangleName} of {condition.TemplateName} max {condition.MaxRetry + 1} times");
+			Logger.Log($"Attempting to find {condition.SearchRectangleName} search rectangle of {condition.TemplateName} " +
+				$"template max {condition.MaxRetry + 1} times per similiarity threshold from: " +
+				$"{condition.MaximumSimiliarityThreshold} to {condition.MinimumSimiliarityThreshold} " +
+				$"with -{condition.SimiliarityThresholdStep} steps");
 
-			while (retry <= condition.MaxRetry)
+			while (similiarityThreshold >= condition.MinimumSimiliarityThreshold)
 			{
-				try
+				int retry = 0;
+
+				while (retry <= condition.MaxRetry)
 				{
-					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
+					try
+					{
+						MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
-					var sourceImage = ScreenshotMaker.CreateScreenshot();
+						var sourceImage = ScreenshotMaker.CreateScreenshot();
 
-					actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition);
+						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition, similiarityThreshold);
 
-					MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
+						MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
-					break;
+						return true;
+					}
+					catch (ImageMatchNotFoundException)
+					{
+						retry++;
+
+						Logger.Log($"Match not found for the {retry}. time with {similiarityThreshold} similiarity threshold!", NotificationType.Error);
+
+						Thread.Sleep(condition.RetryDelay);
+					}
+					catch (ImageMatchAmbiguousException ex)
+					{
+						throw new AutoFarmerException("Automatic emergency stop!", ex);
+					}
 				}
-				catch (ImageMatchNotFoundException)
-				{
-					retry++;
 
-					Logger.Log($"Match not found for the {retry}. time!", NotificationType.Error);
-
-					Thread.Sleep(condition.RetryDelay);
-				}
-				catch (ImageMatchAmbiguousException ex)
-				{
-					throw new AutoFarmerException("Automatic emergency stop!", ex);
-				}
+				similiarityThreshold -= condition.SimiliarityThresholdStep;
 			}
 
-			return retry <= condition.MaxRetry;
+			return false;
 		}
 	}
 }

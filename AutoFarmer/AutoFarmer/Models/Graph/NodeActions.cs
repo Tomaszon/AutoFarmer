@@ -1,4 +1,4 @@
-﻿namespace AutoFarmer
+﻿namespace AutoFarmer.Models.GraphNamespace
 {
 	public class NodeActions
 	{

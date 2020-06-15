@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Models.InputHandling;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models
 {
 	public class GraphMachine
 	{
@@ -22,7 +25,7 @@ namespace AutoFarmer
 
 		public void Process()
 		{
-			List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.GetCursorCurrentPosition() };
+			List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.MouseSafePosition };
 
 			while (GetNextStartNode(out var currentNode))
 			{
@@ -54,7 +57,7 @@ namespace AutoFarmer
 				}
 				while (!currentNode.IsEndNode);
 
-				ProcessNode(currentNode, MouseSafetyMeasures.Instance.GetCursorCurrentPosition());
+				ProcessNode(currentNode, MouseSafetyMeasures.Instance.MouseSafePosition);
 
 				Graph.ResetStates();
 			}
@@ -131,7 +134,7 @@ namespace AutoFarmer
 			}
 		}
 
-		private bool ProcessConditon(ImageFindCondition condition, out List<Point> actionPoints)
+		private bool ProcessConditon(FindCondition condition, out List<Point> actionPoints)
 		{
 			actionPoints = new List<Point>();
 

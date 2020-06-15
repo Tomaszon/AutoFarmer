@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AutoFarmer.Models.InputHandling;
+using System;
 using System.Drawing;
 using System.IO;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models
 {
 	public static class Logger
 	{

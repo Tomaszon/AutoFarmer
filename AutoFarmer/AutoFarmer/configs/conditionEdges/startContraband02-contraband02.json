@@ -2,7 +2,7 @@
 	"Conditions": {
 		"Condition": {
 			"TemplateName": "characterSelector1",
-			"SearchRectangleName": "loginContraband01"
+			"SearchRectangleName": "contraband02"
 		}
 	}
 }

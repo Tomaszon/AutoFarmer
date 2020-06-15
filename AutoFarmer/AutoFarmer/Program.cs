@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models;
+using AutoFarmer.Models.GraphNamespace;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 
 namespace AutoFarmer

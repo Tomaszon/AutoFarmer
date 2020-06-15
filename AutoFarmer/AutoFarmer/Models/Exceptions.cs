@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models
 {
 	public class ImageMatchNotFoundException : Exception
 	{

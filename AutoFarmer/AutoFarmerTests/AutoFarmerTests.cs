@@ -1,9 +1,10 @@
-﻿using AutoFarmer;
+﻿using AutoFarmer.Models;
+using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace AutoFarmerTests
 {
@@ -15,7 +16,7 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			ImageFindCondition c = new ImageFindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
+			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
 
 			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
 
@@ -38,6 +39,43 @@ namespace AutoFarmerTests
 			var expectedPoint = new Point(480, 843);
 
 			Assert.AreEqual(expectedPoint, points[0]);
+		}
+
+		[TestMethod]
+		public void TestMethod2()
+		{
+			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>()
+			{
+				{ MatchOrderBy.Y, MatchOrderLike.Descending }
+			};
+
+			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaxAmbiguousity = 2, OrderBy = o };
+
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20 };
+
+			var srs = new Dictionary<string, SearchRectangle>
+			{
+				{ "TestRectangle", sr }
+			};
+
+			var t = new ImageMatchTemplate() { Name = "TestTemplate", Bitmap = Properties.Resources.assignmentsCompleted, SearchRectangles = srs };
+
+			var ts = new List<ImageMatchTemplate>
+			{
+				t
+			};
+
+			var imf = new ImageMatchFinder() { Scale = 1, Templates = ts };
+
+			var points = imf.FindClickPointForTemplate(Properties.Resources.assignmentsCompleted, c, 0.99f);
+
+			var expectedPoint1 = new Point(1388, 393);
+			var expectedPoint2 = new Point(1388, 527);
+
+			Assert.AreEqual(expectedPoint1, points[1]);
+			Assert.AreEqual(expectedPoint2, points[0]);
 		}
 	}
 }

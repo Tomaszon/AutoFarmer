@@ -1,12 +1,9 @@
-﻿using AForge.Imaging.Filters;
-using System;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 using WindowsInput.Native;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.InputHandling
 {
 	public class InputSimulator
 	{
@@ -84,7 +81,7 @@ namespace AutoFarmer
 		/// <param name="additionalDelay"></param>
 		public void MouseEvent(Point point, int additionalDelay = 0)
 		{
-			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.Width), point.Y * (65536.0 / ScreenSize.Height));
+			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.Width) + 1, point.Y * (65536.0 / ScreenSize.Height) + 1);
 
 			Logger.Log($"Mouse move to: {point}");
 

@@ -59,59 +59,64 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NodeActions.cs" />
-    <Compile Include="ImageFindCondition.cs" />
-    <Compile Include="ConditionEdge.cs" />
-    <Compile Include="Conditions.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="Graph.cs" />
-    <Compile Include="InputHandling\InputSimulator.cs" />
-    <Compile Include="MouseSafetyMeasures.cs" />
-    <Compile Include="InputHandling\NotificationPlayer.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Models\Graph\NodeActions.cs" />
+    <Compile Include="Models\Graph\FindCondition.cs" />
+    <Compile Include="Models\Graph\ConditionEdge.cs" />
+    <Compile Include="Models\Graph\Conditions.cs" />
+    <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Exceptions.cs" />
+    <Compile Include="Models\Graph\Graph.cs" />
+    <Compile Include="Models\InputHandling\InputSimulator.cs" />
+    <Compile Include="Models\MouseSafetyMeasures.cs" />
+    <Compile Include="Models\InputHandling\NotificationPlayer.cs" />
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ImageMatching\ImageMatchFinder.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatchFinder.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ActionNode.cs" />
-    <Compile Include="Scenario.cs" />
-    <Compile Include="GraphMachine.cs" />
-    <Compile Include="ImageMatching\ScreenshotMaker.cs" />
-    <Compile Include="ImageMatching\SearchRectangle.cs" />
-    <Compile Include="SerializablePoint.cs" />
-    <Compile Include="ImageMatching\ImageMatchTemplate.cs" />
+    <Compile Include="Models\Graph\ActionNode.cs" />
+    <Compile Include="Models\GraphMachine.cs" />
+    <Compile Include="Models\ImageMatching\ScreenshotMaker.cs" />
+    <Compile Include="Models\ImageMatching\SearchRectangle.cs" />
+    <Compile Include="Models\SerializablePoint.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatchTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
-    <None Include="configs\actionNodes\CompletedTab.json" />
-    <None Include="configs\actionNodes\EndNode.json" />
-    <None Include="configs\actionNodes\Assignments.json" />
-    <None Include="configs\actionNodes\DutyOfficersTab.json" />
-    <None Include="configs\actionNodes\StartContraband01.json" />
-    <None Include="configs\conditionEdges\CompletedTab-EndNode.json" />
-    <None Include="configs\conditionEdges\DutyOfficersTab-CompletedTab.json" />
-    <None Include="configs\conditionEdges\Assignments-DutyOfficersTab.json" />
-    <None Include="configs\conditionEdges\StartContraband01-LoginContraband01.json" />
-    <None Include="configs\conditionEdges\LoginContraband01-Assignments.json" />
-    <None Include="configs\Config.json" />
-    <None Include="configs\actionNodes\LoginContraband01.json" />
+    <None Include="configs\actionNodes\completedButton.json" />
+    <None Include="configs\actionNodes\completedTab.json" />
+    <None Include="configs\actionNodes\assignments.json" />
+    <None Include="configs\actionNodes\contraband02.json" />
+    <None Include="configs\actionNodes\dutyOfficersTab.json" />
+    <None Include="configs\actionNodes\end.json" />
+    <None Include="configs\actionNodes\startContraband01.json" />
+    <None Include="configs\actionNodes\startContraband02.json" />
+    <None Include="configs\conditionEdges\completedButton-end.json" />
+    <None Include="configs\conditionEdges\completedTab-completedButton.json" />
+    <None Include="configs\conditionEdges\contraband02-assignments.json" />
+    <None Include="configs\conditionEdges\dutyOfficersTab-completedTab.json" />
+    <None Include="configs\conditionEdges\assignments-dutyOfficersTab.json" />
+    <None Include="configs\conditionEdges\contraband01-Assignments.json" />
+    <None Include="configs\conditionEdges\startContraband01-contraband01.json" />
+    <None Include="configs\conditionEdges\startContraband02-contraband02.json" />
+    <None Include="configs\config.json" />
+    <None Include="configs\actionNodes\contraband01.json" />
+    <None Include="configs\imageMatchTemplates\assignmentsCompleted.json" />
     <None Include="configs\imageMatchTemplates\assignmentsOverview.json" />
     <None Include="configs\imageMatchTemplates\assignmentsDetails.json" />
     <None Include="configs\imageMatchTemplates\securityOfficer.json" />
     <None Include="configs\imageMatchTemplates\characterSelector1.json" />
     <None Include="configs\mouseSafetyMeasuresConfig.json" />
-    <None Include="example configs\exampleNode.json" />
     <None Include="packages.config" />
-    <None Include="configs\ImageMatchFinderConfig.json" />
+    <None Include="configs\imageMatchFinderConfig.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -142,7 +147,7 @@
     <None Include="Resources\soundexclamation.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\completedAssignments.png" />
+    <None Include="Resources\assignmentsCompleted.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -153,7 +158,7 @@
     <PostBuildEvent>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources\" /s /y
 xcopy "$(ProjectDir)configs" "$(TargetDir)configs\" /s /y</PostBuildEvent>
   </PropertyGroup>
-   <Target Name="SpicNSpan" AfterTargets="Clean">
+  <Target Name="SpicNSpan" AfterTargets="Clean">
     <RemoveDir Directories="$(TargetDir)" />
     <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
   </Target>

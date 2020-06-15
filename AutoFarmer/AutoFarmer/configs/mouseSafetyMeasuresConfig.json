@@ -4,5 +4,6 @@
 		"X": 50,
 		"Y": 50
 	},
-	"SafeAreaRadius": 50
+	"SafeAreaRadius": 50,
+	"ActionPositionToleranceRadius": 2
 }

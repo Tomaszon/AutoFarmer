@@ -1,7 +1,7 @@
 ﻿using AutoFarmer.Properties;
 using System.Media;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.InputHandling
 {
 	public static class NotificationPlayer
 	{

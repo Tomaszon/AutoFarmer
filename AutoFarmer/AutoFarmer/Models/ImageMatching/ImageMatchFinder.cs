@@ -1,14 +1,13 @@
 ﻿using AForge.Imaging;
+using AutoFarmer.Models.GraphNamespace;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.ImageMatching
 {
 	public class ImageMatchFinder
 	{
@@ -28,7 +27,7 @@ namespace AutoFarmer
 			return imf;
 		}
 
-		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, ImageFindCondition condition, float similiarityThreshold)
+		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, FindCondition condition, float similiarityThreshold)
 		{
 			ImageMatchTemplate template = Templates.First(t => t.Name == condition.TemplateName);
 
@@ -69,7 +68,7 @@ namespace AutoFarmer
 				Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, condition.TemplateName, condition.SearchRectangleName);
 			}
 
-			return clickPoints;
+			return OrderResults(clickPoints, condition.OrderBy);
 		}
 
 		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
@@ -133,7 +132,17 @@ namespace AutoFarmer
 			}
 
 			Logger.GraphicalLog(sourceImage, falseClickPoints.ToArray(), falseMatchRectangles.ToArray(), templateName, searchRectangleName);
+		}
 
+		private List<Point> OrderResults(List<Point> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
+		{
+			var result = orderBy.TryGetValue(MatchOrderBy.X, out var orderLike) && orderLike == MatchOrderLike.Descending
+				? points.OrderByDescending(e => e.X) : points.OrderBy(e => e.X);
+
+			result = orderBy.TryGetValue(MatchOrderBy.Y, out orderLike) && orderLike == MatchOrderLike.Descending
+				? result.ThenByDescending(e => e.Y) : result.ThenBy(e => e.Y);
+
+			return result.ToList();
 		}
 	}
 }

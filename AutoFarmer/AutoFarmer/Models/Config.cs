@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.IO;
-using System.Net.Http.Headers;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models
 {
 	public class Config
 	{
@@ -65,6 +63,8 @@ namespace AutoFarmer
 		}
 
 		public bool FileLogging { get; set; }
+
+		public string[] ActiveStartNodes { get; set; }
 
 		public bool GraphicalLogging { get; set; }
 

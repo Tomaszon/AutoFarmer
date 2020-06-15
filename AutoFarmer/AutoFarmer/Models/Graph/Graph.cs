@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.GraphNamespace
 {
 	public class Graph
 	{
 		public List<ActionNode> StartNodes
 		{
-			get { return ActionNodes.Where(a => a.IsStartNode).ToList(); }
+			get { return ActionNodes.Where(a => a.IsStartNode && Config.Instance.ActiveStartNodes.Contains(a.Name)).ToList(); }
 		}
 
 		public List<ActionNode> EndNodes

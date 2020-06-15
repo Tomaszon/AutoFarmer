@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.ImageMatching
 {
 	public static class ScreenshotMaker
 	{

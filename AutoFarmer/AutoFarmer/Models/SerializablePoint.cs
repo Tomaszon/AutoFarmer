@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models
 {
 	public class SerializablePoint
 	{

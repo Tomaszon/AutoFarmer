@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace AutoFarmer
+namespace AutoFarmer.Models.GraphNamespace
 {
 	public class ConditionEdge
 	{

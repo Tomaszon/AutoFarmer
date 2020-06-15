@@ -1,4 +1,4 @@
-﻿namespace AutoFarmer
+﻿namespace AutoFarmer.Models
 {
 	public enum NotificationType
 	{
@@ -13,5 +13,17 @@
 		LeftClick,
 		LeftDoubleClick,
 		ScanScreenForFadedUI
+	}
+
+	public enum MatchOrderBy
+	{
+		X,
+		Y
+	}
+
+	public enum MatchOrderLike
+	{
+		Ascending,
+		Descending
 	}
 }

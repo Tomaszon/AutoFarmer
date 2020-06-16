@@ -51,7 +51,7 @@ namespace AutoFarmerTests
 				{ MatchOrderBy.Y, MatchOrderLike.Descending }
 			};
 
-			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaxAmbiguousity = 2, OrderBy = o };
+			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
 
 			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20 };
 

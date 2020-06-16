@@ -44,9 +44,12 @@ namespace AutoFarmer.Models.ImageMatching
 
 			TemplateMatch[] matches = matching.ProcessImage(sourceImageConverted, searchImage);
 
-			if (matches.Length == 0) throw new ImageMatchNotFoundException();
+			if (matches.Length < condition.MinimumOccurrence)
+			{
+				throw new ImageMatchNotFoundException();
+			}
 
-			if (matches.Length > condition.MaxAmbiguousity)
+			if (matches.Length > condition.MaximumOccurrence)
 			{
 				LogAmbiguousException(matches, sourceImage, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
 

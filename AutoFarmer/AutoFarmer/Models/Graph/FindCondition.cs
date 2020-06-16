@@ -8,7 +8,9 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public string SearchRectangleName { get; set; }
 
-		public int MaxAmbiguousity { get; set; } = 1;
+		public int MaximumOccurrence { get; set; } = 1;
+
+		public int MinimumOccurrence { get; set; } = 1;
 
 		public int MaxRetry { get; set; } = 1;
 

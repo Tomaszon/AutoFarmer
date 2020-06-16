@@ -94,21 +94,35 @@
     <None Include="configs\actionNodes\completedButton.json" />
     <None Include="configs\actionNodes\completedTab.json" />
     <None Include="configs\actionNodes\assignments.json" />
-    <None Include="configs\actionNodes\contraband02.json" />
     <None Include="configs\actionNodes\dutyOfficersTab.json" />
     <None Include="configs\actionNodes\end.json" />
+    <None Include="configs\actionNodes\farmCharacter.json" />
     <None Include="configs\actionNodes\startContraband01.json" />
     <None Include="configs\actionNodes\startContraband02.json" />
+    <None Include="configs\actionNodes\startContraband03.json" />
+    <None Include="configs\actionNodes\startContraband04.json" />
+    <None Include="configs\actionNodes\startContraband05.json" />
+    <None Include="configs\actionNodes\startContraband06.json" />
+    <None Include="configs\actionNodes\startContraband07.json" />
+    <None Include="configs\actionNodes\startTomaszon.json" />
+    <None Include="configs\actionNodes\startTomaszon_Dil_2.json" />
+    <None Include="configs\actionNodes\startZeedei.json" />
     <None Include="configs\conditionEdges\completedButton-end.json" />
     <None Include="configs\conditionEdges\completedTab-completedButton.json" />
-    <None Include="configs\conditionEdges\contraband02-assignments.json" />
     <None Include="configs\conditionEdges\dutyOfficersTab-completedTab.json" />
     <None Include="configs\conditionEdges\assignments-dutyOfficersTab.json" />
-    <None Include="configs\conditionEdges\contraband01-Assignments.json" />
-    <None Include="configs\conditionEdges\startContraband01-contraband01.json" />
-    <None Include="configs\conditionEdges\startContraband02-contraband02.json" />
+    <None Include="configs\conditionEdges\farmCharacter-assignments.json" />
+    <None Include="configs\conditionEdges\startContraband01-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband02-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband03-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband04-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband05-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband06-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startContraband07-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startTomaszon-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startTomaszon_Dil_2-farmCharacter.json" />
+    <None Include="configs\conditionEdges\startZeedei-farmCharacter.json" />
     <None Include="configs\config.json" />
-    <None Include="configs\actionNodes\contraband01.json" />
     <None Include="configs\imageMatchTemplates\assignmentsCompleted.json" />
     <None Include="configs\imageMatchTemplates\assignmentsOverview.json" />
     <None Include="configs\imageMatchTemplates\assignmentsDetails.json" />
@@ -126,28 +140,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\assignmentsDetails.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\assignmentsOverview.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\characterSelector1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\securityOfficer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soundnavigate.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sounderror.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soundexclamation.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\assignmentsCompleted.png" />
+    <Content Include="Resources\images\assignmentsCompleted.png" />
+    <Content Include="Resources\images\assignmentsDetails.png" />
+    <Content Include="Resources\images\assignmentsOverview.png" />
+    <Content Include="Resources\images\characterSelector1.png" />
+    <Content Include="Resources\images\securityOfficer.png" />
+    <Content Include="Resources\sounds\sounderror.wav" />
+    <Content Include="Resources\sounds\soundexclamation.wav" />
+    <Content Include="Resources\sounds\soundnavigate.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

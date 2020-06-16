@@ -74,7 +74,7 @@ namespace AutoFarmer.Models
 
 		private bool GetNextStartNode(out ActionNode node)
 		{
-			node = Graph.StartNodes.FirstOrDefault(n => !n.IsVisited);
+			node = Graph.ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
 
 			Logger.Log($"Start node selected: {(node is null ? "none" : node.Name)}");
 

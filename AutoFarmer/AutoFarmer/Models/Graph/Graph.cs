@@ -6,9 +6,14 @@ namespace AutoFarmer.Models.GraphNamespace
 {
 	public class Graph
 	{
-		public List<ActionNode> StartNodes
+		public List<ActionNode> ActiveStartNodes
 		{
-			get { return ActionNodes.Where(a => a.IsStartNode && Config.Instance.ActiveStartNodes.Contains(a.Name)).ToList(); }
+			get
+			{
+				var activeStartNodes = ActionNodes.Where(a => a.IsStartNode && Config.Instance.ActiveStartNodes.Contains(a.Name));
+
+				return activeStartNodes.OrderBy(n => Config.Instance.ActiveStartNodes.ToList().IndexOf(n.Name)).ToList();
+			}
 		}
 
 		public List<ActionNode> EndNodes

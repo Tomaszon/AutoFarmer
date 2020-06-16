@@ -3,7 +3,7 @@
 		"Condition": {
 			"TemplateName": "assignmentsCompleted",
 			"SearchRectangleName": "completedButton",
-			"MaximumOccurrence": 2,
+			"MaximumOccurrence": 3,
 			"OrderBy": {
 				"Y": "Descending",
 				"X": "Ascending"

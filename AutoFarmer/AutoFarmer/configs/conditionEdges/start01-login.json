@@ -2,7 +2,8 @@
 	"Conditions": {
 		"Condition": {
 			"TemplateName": "characterSelector1",
-			"SearchRectangleName": "contraband07"
+			"SearchRectangleName": "contraband01"
 		}
-	}
+	},
+	"Order": 1
 }

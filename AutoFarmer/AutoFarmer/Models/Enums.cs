@@ -12,7 +12,9 @@
 	{
 		LeftClick,
 		LeftDoubleClick,
-		ScanScreenForFadedUI
+		ScanScreenForFadedUI,
+		LeftHold1sec,
+		LeftHold5sec
 	}
 
 	public enum MatchOrderBy

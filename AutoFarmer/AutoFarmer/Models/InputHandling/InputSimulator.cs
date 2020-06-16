@@ -69,6 +69,26 @@ namespace AutoFarmer.Models.InputHandling
 					Logger.Log("Scanning for faded UI");
 					break;
 				}
+				case MouseAction.LeftHold1sec:
+				{
+					_simulator.Mouse.LeftButtonDown();
+
+					Thread.Sleep(1000);
+
+					_simulator.Mouse.LeftButtonUp();
+
+					break;
+				}
+				case MouseAction.LeftHold5sec:
+				{
+					_simulator.Mouse.LeftButtonDown();
+
+					Thread.Sleep(5000);
+
+					_simulator.Mouse.LeftButtonUp();
+
+					break;
+				}
 			}
 
 			Thread.Sleep(Delay + additionalDelay);

@@ -1,0 +1,9 @@
+{
+	"Actions": {
+		"InputActionNames": [
+			"LeftHold1sec"
+		],
+		"AdditionalDelayBetweenActions": 0,
+		"AdditionalDelayAfterLastAction": 0
+	}
+}

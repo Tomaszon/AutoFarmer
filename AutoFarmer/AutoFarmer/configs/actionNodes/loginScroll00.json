@@ -1,10 +1,9 @@
 {
 	"Actions": {
 		"InputActionNames": [
-			"LeftClick",
-			"LeftDoubleClick"
+			"LeftHold1sec"
 		],
 		"AdditionalDelayBetweenActions": 0,
-		"AdditionalDelayAfterLastAction": 7500
+		"AdditionalDelayAfterLastAction": 0
 	}
 }

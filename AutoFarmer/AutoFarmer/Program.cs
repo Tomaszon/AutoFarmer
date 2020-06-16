@@ -34,7 +34,7 @@ namespace AutoFarmer
 
 				Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 			}
-			catch (Exception ex)
+			catch (AutoFarmerException ex)
 			{
 				Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
 			}

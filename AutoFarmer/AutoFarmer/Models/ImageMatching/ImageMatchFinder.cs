@@ -139,6 +139,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		private List<Point> OrderResults(List<Point> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
 		{
+			if (orderBy is null) return points;
+
 			var result = orderBy.TryGetValue(MatchOrderBy.X, out var orderLike) && orderLike == MatchOrderLike.Descending
 				? points.OrderByDescending(e => e.X) : points.OrderBy(e => e.X);
 

@@ -5,6 +5,6 @@
 	"GraphicalLogging": true,
 	"FileLogging": true,
 	"ActiveStartNodes": [
-		"startContraband03"
+		"start01"
 	]
 }

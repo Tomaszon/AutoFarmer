@@ -1,4 +1,8 @@
 {
+	"Nodes": {
+		"start00": "login",
+		"loginScroll00": "login"
+	},
 	"Conditions": {
 		"Condition": {
 			"TemplateName": "characterSelector1",

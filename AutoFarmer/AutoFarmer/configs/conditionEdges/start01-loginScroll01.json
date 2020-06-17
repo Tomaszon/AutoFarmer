@@ -1,9 +1,0 @@
-{
-	"Conditions": {
-		"Condition": {
-			"TemplateName": "characterSelector1",
-			"SearchRectangleName": "scrollBar"
-		}
-	},
-	"Order": 2
-}

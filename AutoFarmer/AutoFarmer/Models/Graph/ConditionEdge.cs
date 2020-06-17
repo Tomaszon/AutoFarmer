@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
@@ -17,7 +16,7 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public int CurrentCrossing { get; set; }
 
-		public int Order { get; set; }
+		public int Order { get; set; } = 1;
 
 		public bool IsEnabled
 		{
@@ -34,17 +33,25 @@ namespace AutoFarmer.Models.GraphNamespace
 			CurrentCrossing = 0;
 		}
 
-		public static ConditionEdge FromJsonFile(string path)
+		public static List<ConditionEdge> FromOptions(ConditionEdgeOptions options)
 		{
-			var edge = JsonConvert.DeserializeObject<ConditionEdge>(File.ReadAllText(path));
-			edge.Name = Path.GetFileNameWithoutExtension(path);
+			List<ConditionEdge> result = new List<ConditionEdge>();
 
-			var arr = edge.Name.Split('-');
+			foreach (var endPoint in options.Nodes)
+			{
+				result.Add(new ConditionEdge()
+				{
+					Conditions = options.Conditions,
+					CurrentCrossing = options.CurrentCrossing,
+					MaxCrossing = options.MaxCrossing,
+					Order = options.Order,
+					StartNodeName = endPoint.Key,
+					EndNodeName = endPoint.Value,
+					Name = $"{endPoint.Key}-{endPoint.Value}"
+				});
+			}
 
-			edge.StartNodeName = arr[0];
-			edge.EndNodeName = arr[1];
-
-			return edge;
+			return result;
 		}
 	}
 }

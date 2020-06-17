@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
@@ -23,12 +22,23 @@ namespace AutoFarmer.Models.GraphNamespace
 			}
 		}
 
-		public static ActionNode FromJsonFile(string path)
+		public static List<ActionNode> FromOptions(ActionNodeOptions options)
 		{
-			var node = JsonConvert.DeserializeObject<ActionNode>(File.ReadAllText(path));
-			node.Name = Path.GetFileNameWithoutExtension(path);
+			List<ActionNode> result = new List<ActionNode>();
 
-			return node;
+			foreach (var name in options.Names)
+			{
+				result.Add(new ActionNode()
+				{
+					Name = name,
+					Actions = options.Actions,
+					IsEndNode = options.IsEndNode,
+					IsVisited = options.IsVisited,
+					IsStartNode = options.IsStartNode
+				});
+			}
+
+			return result;
 		}
 	}
 }

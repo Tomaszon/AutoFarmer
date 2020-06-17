@@ -1,0 +1,21 @@
+{
+	"Names": [
+		"loginScroll00",
+		"loginScroll01",
+		"loginScroll02",
+		"loginScroll03",
+		"loginScroll04",
+		"loginScroll05",
+		"loginScroll06",
+		"loginScroll07",
+		"loginScroll08",
+		"loginScroll09"
+	],
+	"Actions": {
+		"InputActionNames": [
+			"LeftHold1sec"
+		],
+		"AdditionalDelayBetweenActions": 0,
+		"AdditionalDelayAfterLastAction": 0
+	}
+}

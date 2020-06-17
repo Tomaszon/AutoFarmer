@@ -31,11 +31,11 @@ namespace AutoFarmer.Models.GraphNamespace
 
 			foreach (var file in Directory.GetFiles(Config.Instance.ActionNodesDirectory))
 			{
-				graph.ActionNodes.Add(ActionNode.FromJsonFile(file));
+				graph.ActionNodes.AddRange(ActionNode.FromOptions(ActionNodeOptions.FromJsonFile(file)));
 			}
 			foreach (var file in Directory.GetFiles(Config.Instance.ConditionEdgesDirectory))
 			{
-				graph.ConditionEdges.Add(ConditionEdge.FromJsonFile(file));
+				graph.ConditionEdges.AddRange(ConditionEdge.FromOptions(ConditionEdgeOptions.FromJsonFile(file)));
 			}
 
 			return graph;

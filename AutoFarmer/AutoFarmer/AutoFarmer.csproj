@@ -59,6 +59,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Graph\ActionNodeOptions.cs" />
+    <Compile Include="Models\Graph\ConditionEdgeOptions.cs" />
     <Compile Include="Models\Graph\NodeActions.cs" />
     <Compile Include="Models\Graph\FindCondition.cs" />
     <Compile Include="Models\Graph\ConditionEdge.cs" />
@@ -91,45 +93,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
-    <None Include="configs\actionNodes\completedButton.json" />
-    <None Include="configs\actionNodes\completedTab.json" />
-    <None Include="configs\actionNodes\assignments.json" />
-    <None Include="configs\actionNodes\dutyOfficersTab.json" />
-    <None Include="configs\actionNodes\end.json" />
-    <None Include="configs\actionNodes\login.json" />
-    <None Include="configs\actionNodes\loginScroll00.json" />
-    <None Include="configs\actionNodes\loginScroll01.json" />
-    <None Include="configs\actionNodes\start01.json" />
-    <None Include="configs\actionNodes\start02.json" />
-    <None Include="configs\actionNodes\start03.json" />
-    <None Include="configs\actionNodes\start04.json" />
-    <None Include="configs\actionNodes\start05.json" />
-    <None Include="configs\actionNodes\start06.json" />
-    <None Include="configs\actionNodes\start07.json" />
-    <None Include="configs\actionNodes\start09.json" />
-    <None Include="configs\actionNodes\start08.json" />
-    <None Include="configs\actionNodes\start00.json" />
-    <None Include="configs\conditionEdges\completedButton-end.json" />
-    <None Include="configs\conditionEdges\completedTab-completedButton.json" />
-    <None Include="configs\conditionEdges\dutyOfficersTab-completedTab.json" />
-    <None Include="configs\conditionEdges\assignments-dutyOfficersTab.json" />
-    <None Include="configs\conditionEdges\login-assignments.json" />
-    <None Include="configs\conditionEdges\loginScroll00-login.json" />
-    <None Include="configs\conditionEdges\loginScroll01-login.json" />
-    <None Include="configs\conditionEdges\start00-login.json" />
-    <None Include="configs\conditionEdges\start00-loginScroll00.json" />
-    <None Include="configs\conditionEdges\start01-login.json" />
-    <None Include="configs\conditionEdges\start01-loginScroll01.json" />
-    <None Include="configs\config.json" />
-    <None Include="configs\imageMatchTemplates\assignmentsCompleted.json" />
-    <None Include="configs\imageMatchTemplates\assignmentsOverview.json" />
-    <None Include="configs\imageMatchTemplates\assignmentsDetails.json" />
-    <None Include="configs\imageMatchTemplates\characterSelector2.json" />
-    <None Include="configs\imageMatchTemplates\securityOfficer.json" />
-    <None Include="configs\imageMatchTemplates\characterSelector1.json" />
-    <None Include="configs\mouseSafetyMeasuresConfig.json" />
     <None Include="packages.config" />
-    <None Include="configs\imageMatchFinderConfig.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -139,14 +103,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\images\assignmentsCompleted.png" />
-    <Content Include="Resources\images\assignmentsDetails.png" />
-    <Content Include="Resources\images\assignmentsOverview.png" />
-    <Content Include="Resources\images\characterSelector1.png" />
-    <Content Include="Resources\images\securityOfficer.png" />
     <Content Include="Resources\sounds\sounderror.wav" />
     <Content Include="Resources\sounds\soundexclamation.wav" />
     <Content Include="Resources\sounds\soundnavigate.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="configs\actionNodes\" />
+    <Folder Include="configs\conditionEdges\" />
+    <Folder Include="configs\imageMatchTemplates\" />
+    <Folder Include="Resources\images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

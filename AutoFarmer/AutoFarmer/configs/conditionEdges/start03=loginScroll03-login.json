@@ -1,0 +1,12 @@
+{
+	"Nodes": {
+		"start03": "login",
+		"loginScroll03": "login"
+	},
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "characterSelector1",
+			"SearchRectangleName": "contraband03"
+		}
+	}
+}

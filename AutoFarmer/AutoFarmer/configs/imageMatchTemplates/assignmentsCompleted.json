@@ -1,10 +1,32 @@
 {
 	"SearchRectangles": {
-		"completedButton": {
+		"dutyOfficersTab": {
+			"X": 758,
+			"Y": 222,
+			"W": 72,
+			"H": 23,
+			"ClickPoint": {
+				"X": 889,
+				"Y": 232
+			}
+		},
+		"collectButton": {
 			"X": 1322,
 			"Y": 383,
 			"W": 132,
 			"H": 20
+		},
+		"personalTab": {
+			"X": 488,
+			"Y": 336,
+			"W": 63,
+			"H": 15
+		},
+		"closeButton": {
+			"X": 1456,
+			"Y": 222,
+			"W": 23,
+			"H": 23
 		}
 	}
 }

@@ -143,7 +143,7 @@ namespace AutoFarmer.Models
 			float similiarityThreshold = condition.MaximumSimiliarityThreshold;
 
 			Logger.Log($"Attempting to find {condition.SearchRectangleName} search rectangle of {condition.TemplateName} " +
-				$"template max {condition.MaxRetry + 1} times per similiarity threshold from: " +
+				$"template max {condition.MaxRetryPerSimiliarityThreshold + 1} times per similiarity threshold from: " +
 				$"{condition.MaximumSimiliarityThreshold} to {condition.MinimumSimiliarityThreshold} " +
 				$"with -{condition.SimiliarityThresholdStep} steps");
 
@@ -151,7 +151,7 @@ namespace AutoFarmer.Models
 			{
 				int retry = 0;
 
-				while (retry <= condition.MaxRetry)
+				while (retry <= condition.MaxRetryPerSimiliarityThreshold)
 				{
 					try
 					{

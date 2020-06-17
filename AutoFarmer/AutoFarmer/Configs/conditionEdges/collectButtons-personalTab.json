@@ -1,0 +1,8 @@
+{
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "assignmentsCompleted",
+			"SearchRectangleName": "personalTab"
+		}
+	}
+}

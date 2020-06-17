@@ -1,7 +1,11 @@
 {
+	"Names": [
+		"personalTabScroll",
+		"inventoryScroll"
+	],
 	"Actions": {
 		"InputActionNames": [
-			"LeftClick"
+			"LeftHold1sec"
 		],
 		"AdditionalDelayBetweenActions": 0,
 		"AdditionalDelayAfterLastAction": 0

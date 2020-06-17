@@ -12,7 +12,7 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public int MinimumOccurrence { get; set; } = 1;
 
-		public int MaxRetry { get; set; } = 1;
+		public int MaxRetryPerSimiliarityThreshold { get; set; } = 1;
 
 		public int RetryDelay { get; set; } = 1000;
 

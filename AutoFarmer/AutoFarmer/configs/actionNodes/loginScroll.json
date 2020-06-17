@@ -1,15 +1,15 @@
 {
 	"Names": [
-		"loginScroll00",
-		"loginScroll01",
-		"loginScroll02",
-		"loginScroll03",
-		"loginScroll04",
-		"loginScroll05",
-		"loginScroll06",
-		"loginScroll07",
-		"loginScroll08",
-		"loginScroll09"
+		"startScroll00",
+		"startScroll01",
+		"startScroll02",
+		"startScroll03",
+		"startScroll04",
+		"startScroll05",
+		"startScroll06",
+		"startScroll07",
+		"startScroll08",
+		"startScroll09"
 	],
 	"Actions": {
 		"InputActionNames": [

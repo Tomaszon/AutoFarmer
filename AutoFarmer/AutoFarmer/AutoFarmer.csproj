@@ -108,9 +108,9 @@
     <Content Include="Resources\sounds\soundnavigate.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="configs\actionNodes\" />
-    <Folder Include="configs\conditionEdges\" />
-    <Folder Include="configs\imageMatchTemplates\" />
+    <Folder Include="Configs\actionNodes\" />
+    <Folder Include="Configs\conditionEdges\" />
+    <Folder Include="Configs\imageMatchTemplates\" />
     <Folder Include="Resources\images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

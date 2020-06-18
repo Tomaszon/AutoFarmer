@@ -1,0 +1,79 @@
+{
+	"TemplateParameters": {
+		"i": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9
+		],
+		"j": [
+			1,
+			1,
+			1,
+			1,
+			1,
+			2,
+			2,
+			2,
+			2,
+			2,
+			1,
+			1,
+			1,
+			1,
+			1,
+			2,
+			2,
+			2,
+			2,
+			2
+		],
+		"destination": [
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Down",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up",
+			"Up"
+		]
+	},
+	"Nodes": {
+		"startScroll{destination}Button0{i}": "login"
+	},
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "characterSelector{j}",
+			"SearchRectangleName": "contraband0{i}"
+		}
+	}
+}

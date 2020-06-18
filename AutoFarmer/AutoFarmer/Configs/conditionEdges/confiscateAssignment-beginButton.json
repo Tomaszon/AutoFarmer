@@ -1,0 +1,8 @@
+{
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "assignmentsDetails",
+			"SearchRectangleName": "beginButton"
+		}
+	}
+}

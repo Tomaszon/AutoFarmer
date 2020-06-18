@@ -4,7 +4,6 @@ using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.Remoting.Messaging;
 
 namespace AutoFarmerTests
 {
@@ -76,6 +75,31 @@ namespace AutoFarmerTests
 
 			Assert.AreEqual(expectedPoint1, points[1]);
 			Assert.AreEqual(expectedPoint2, points[0]);
+		}
+
+		[TestMethod]
+		public void TestMethod3()
+		{
+			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\actionNodes\startScrollUpButtons.json");
+
+			Assert.AreEqual(a.Count, 10);
+
+			for (int i = 0; i < a.Count; i++)
+			{
+				Assert.AreEqual($"startScrollUpButton0{i}", a[i].Name);
+			}
+		}
+
+		[TestMethod]
+		public void TestMethod4()
+		{
+			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\conditionEdges\startScrollButtons.json");
+
+			Assert.AreEqual(a.Count, 20);
+
+			Assert.AreEqual($"startScrollDownButton05", a[5].StartNodeName);
+
+			Assert.AreEqual($"startScrollUpButton06", a[16].StartNodeName);
 		}
 	}
 }

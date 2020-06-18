@@ -2,7 +2,7 @@
 	"Conditions": {
 		"Condition": {
 			"TemplateName": "securityOfficer",
-			"SearchRectangleName": "assignments",
+			"SearchRectangleName": "assignmentsButton",
 			"MaxRetryPerSimiliarityThreshold": 3,
 			"RetryDelay": 2500
 		}

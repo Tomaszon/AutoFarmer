@@ -30,9 +30,15 @@
 			"W": 22,
 			"H": 13
 		},
-		"scrollBar": {
+		"scrollDownButton": {
 			"X": 473,
 			"Y": 836,
+			"W": 13,
+			"H": 13
+		},
+		"scrollUpButton": {
+			"X": 473,
+			"Y": 190,
 			"W": 13,
 			"H": 13
 		}

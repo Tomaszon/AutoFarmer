@@ -69,6 +69,7 @@
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\Graph\Graph.cs" />
+    <Compile Include="Models\Graph\Options.cs" />
     <Compile Include="Models\InputHandling\InputSimulator.cs" />
     <Compile Include="Models\MouseSafetyMeasures.cs" />
     <Compile Include="Models\InputHandling\NotificationPlayer.cs" />

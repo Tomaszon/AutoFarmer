@@ -1,7 +1,7 @@
 {
 	"Nodes": {
 		"personalTab": "confiscateAssignment",
-		"personalTabScroll": "confiscateAssignment"
+		"personalTabScrollDownButton": "confiscateAssignment"
 	},
 	"Conditions": {
 		"Condition": {

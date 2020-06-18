@@ -1,0 +1,12 @@
+{
+	"Nodes": {
+		"personalTab": "personalTabScrollDownButton"
+	},
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "characterSelector1",
+			"SearchRectangleName": "scrollDownButton"
+		}
+	},
+	"Order": 2
+}

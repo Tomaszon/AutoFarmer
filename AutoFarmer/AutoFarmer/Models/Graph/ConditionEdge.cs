@@ -32,26 +32,5 @@ namespace AutoFarmer.Models.GraphNamespace
 		{
 			CurrentCrossing = 0;
 		}
-
-		public static List<ConditionEdge> FromOptions(ConditionEdgeOptions options)
-		{
-			List<ConditionEdge> result = new List<ConditionEdge>();
-
-			foreach (var endPoint in options.Nodes)
-			{
-				result.Add(new ConditionEdge()
-				{
-					Conditions = options.Conditions,
-					CurrentCrossing = options.CurrentCrossing,
-					MaxCrossing = options.MaxCrossing,
-					Order = options.Order,
-					StartNodeName = endPoint.Key,
-					EndNodeName = endPoint.Value,
-					Name = $"{endPoint.Key}-{endPoint.Value}"
-				});
-			}
-
-			return result;
-		}
 	}
 }

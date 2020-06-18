@@ -1,0 +1,26 @@
+{
+	"TemplateParameters": {
+		"i": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9
+		]
+	},
+	"Names": [
+		"startScrollDownButton0{i}"
+	],
+	"Actions": {
+		"InputActionNames": [
+			"LeftHold1sec"
+		],
+		"AdditionalDelayBetweenActions": 0,
+		"AdditionalDelayAfterLastAction": 0
+	}
+}

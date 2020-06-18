@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
@@ -16,9 +17,9 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public int RetryDelay { get; set; } = 1000;
 
-		public float MaximumSimiliarityThreshold { get; set; } = 0.98f;
+		public float MaximumSimiliarityThreshold { get; set; } = 0.99f;
 
-		public float MinimumSimiliarityThreshold { get; set; } = 0.97f;
+		public float MinimumSimiliarityThreshold { get; set; } = 0.98f;
 
 		public float SimiliarityThresholdStep { get; set; } = 0.01f;
 
@@ -34,6 +35,11 @@ namespace AutoFarmer.Models.GraphNamespace
 			}
 
 			return false;
+		}
+
+		public FindCondition Clone()
+		{
+			return JsonConvert.DeserializeObject<FindCondition>(JsonConvert.SerializeObject(this));
 		}
 	}
 }

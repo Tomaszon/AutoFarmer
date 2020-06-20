@@ -60,7 +60,7 @@ namespace AutoFarmer.Models.GraphNamespace
 							postCondition.SearchRectangleName = ReplaceTemplates(postCondition.SearchRectangleName, edgeOptions.TemplateParameters, i);
 						}
 
-						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, new Conditions() { PreCondition = preCondition, PostCondition = postCondition }));
+						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, preCondition is null && postCondition is null ? null : new Conditions() { PreCondition = preCondition, PostCondition = postCondition }));
 					}
 				}
 				else

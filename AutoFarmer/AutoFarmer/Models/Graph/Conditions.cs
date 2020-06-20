@@ -4,10 +4,10 @@ namespace AutoFarmer.Models.GraphNamespace
 {
 	public class Conditions
 	{
-		public FindCondition PreCondition { get; set; }
+		public MatchCondition PreCondition { get; set; }
 
-		public FindCondition PostCondition { get; set; }
+		public MatchCondition PostCondition { get; set; }
 
-		public FindCondition Condition { set { PreCondition = PostCondition = value; } }
+		public MatchCondition Condition { set { PreCondition = PostCondition = value; } }
 	}
 }

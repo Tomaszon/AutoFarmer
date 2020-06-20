@@ -68,7 +68,7 @@
 		]
 	},
 	"Nodes": {
-		"startScroll{destination}Button0{i}": "login"
+		"startScroll{destination}Button0{i}": "selectCharacter0{i}"
 	},
 	"Conditions": {
 		"Condition": {

@@ -1,10 +1,10 @@
 {
 	"ActionSounds": true,
-	"ProcessCountdown": 5000,
+	"ProcessCountdown": 7500,
 	"ImageMatchTemplateResourcesDirectory": ".\\Resources\\images",
 	"GraphicalLogging": true,
 	"FileLogging": true,
 	"ActiveStartNodes": [
-		"start01"
+		"start05"
 	]
 }

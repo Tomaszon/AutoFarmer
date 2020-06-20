@@ -13,8 +13,8 @@
 			9
 		]
 	},
-	"Names": [
-		"start0{i}"
-	],
-	"IsStartNode": true
+	"Nodes": {
+		"loadingCharacter0{i}": "selectCharacter0{i}"
+	},
+	"Conditions": null
 }

@@ -62,7 +62,7 @@
     <Compile Include="Models\Graph\ActionNodeOptions.cs" />
     <Compile Include="Models\Graph\ConditionEdgeOptions.cs" />
     <Compile Include="Models\Graph\NodeActions.cs" />
-    <Compile Include="Models\Graph\FindCondition.cs" />
+    <Compile Include="Models\Graph\MatchCondition.cs" />
     <Compile Include="Models\Graph\ConditionEdge.cs" />
     <Compile Include="Models\Graph\Conditions.cs" />
     <Compile Include="Models\Config.cs" />

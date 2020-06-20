@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
-	public class FindCondition
+	public class MatchCondition
 	{
 		public string TemplateName { get; set; }
 
@@ -17,11 +17,11 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public int RetryDelay { get; set; } = 1000;
 
-		public float MaximumSimiliarityThreshold { get; set; } = 0.99f;
+		public float MaximumSimiliarityThreshold { get; set; }
 
-		public float MinimumSimiliarityThreshold { get; set; } = 0.98f;
+		public float MinimumSimiliarityThreshold { get; set; }
 
-		public float SimiliarityThresholdStep { get; set; } = 0.01f;
+		public float SimiliarityThresholdStep { get; set; }
 
 		public Dictionary<MatchOrderBy, MatchOrderLike> OrderBy { get; set; }
 
@@ -29,7 +29,7 @@ namespace AutoFarmer.Models.GraphNamespace
 		{
 			if (obj is null) return false;
 
-			if (obj is FindCondition c)
+			if (obj is MatchCondition c)
 			{
 				return TemplateName == c.TemplateName && SearchRectangleName == c.SearchRectangleName;
 			}
@@ -37,9 +37,9 @@ namespace AutoFarmer.Models.GraphNamespace
 			return false;
 		}
 
-		public FindCondition Clone()
+		public MatchCondition Clone()
 		{
-			return JsonConvert.DeserializeObject<FindCondition>(JsonConvert.SerializeObject(this));
+			return JsonConvert.DeserializeObject<MatchCondition>(JsonConvert.SerializeObject(this));
 		}
 	}
 }

@@ -13,8 +13,9 @@
 			9
 		]
 	},
-	"Names": [
-		"start0{i}"
-	],
-	"IsStartNode": true
+	"Nodes": {
+		"selectCharacter0{i}": "loginCharacter0{i}"
+	},
+	"Conditions": null,
+	"Order": 2
 }

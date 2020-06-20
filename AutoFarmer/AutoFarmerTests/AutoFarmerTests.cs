@@ -15,7 +15,7 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
+			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
 
 			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
 
@@ -50,7 +50,7 @@ namespace AutoFarmerTests
 				{ MatchOrderBy.Y, MatchOrderLike.Descending }
 			};
 
-			FindCondition c = new FindCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
+			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
 
 			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20 };
 

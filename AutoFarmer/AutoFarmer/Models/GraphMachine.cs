@@ -1,9 +1,11 @@
 ﻿using AutoFarmer.Models.GraphNamespace;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AutoFarmer.Models
@@ -99,7 +101,7 @@ namespace AutoFarmer.Models
 
 		private bool ProcessEdge(ConditionEdge edge, out List<Point> actionPoints)
 		{
-			actionPoints = new List<Point>();
+			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.MouseSafePosition };
 
 			if (edge.Conditions is null) return true;
 
@@ -134,20 +136,23 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		private bool ProcessConditon(FindCondition condition, out List<Point> actionPoints)
+		private bool ProcessConditon(MatchCondition condition, out List<Point> actionPoints)
 		{
 			actionPoints = new List<Point>();
 
 			if (condition is null) return true;
 
-			float similiarityThreshold = condition.MaximumSimiliarityThreshold;
+			float maximum = condition.MaximumSimiliarityThreshold == default ? ImageMatchFinder.DefaultMaximumSimiliarityThreshold : condition.MaximumSimiliarityThreshold;
+			float minimum = condition.MinimumSimiliarityThreshold == default ? ImageMatchFinder.DefaultMiniumuSimiliarityThreshold : condition.MinimumSimiliarityThreshold;
+			float step = condition.SimiliarityThresholdStep == default ? ImageMatchFinder.DefaultSimiliarityThresholdStep : condition.SimiliarityThresholdStep;
+
+			float current = maximum;
 
 			Logger.Log($"Attempting to find {condition.SearchRectangleName} search rectangle of {condition.TemplateName} " +
 				$"template max {condition.MaxRetryPerSimiliarityThreshold + 1} times per similiarity threshold from: " +
-				$"{condition.MaximumSimiliarityThreshold} to {condition.MinimumSimiliarityThreshold} " +
-				$"with -{condition.SimiliarityThresholdStep} steps");
+				$"{maximum} to {minimum} with -{step} steps");
 
-			while (similiarityThreshold >= condition.MinimumSimiliarityThreshold)
+			while (current >= minimum)
 			{
 				int retry = 0;
 
@@ -159,7 +164,7 @@ namespace AutoFarmer.Models
 
 						var sourceImage = ScreenshotMaker.CreateScreenshot();
 
-						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition, similiarityThreshold);
+						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition, current);
 
 						MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
 
@@ -169,7 +174,7 @@ namespace AutoFarmer.Models
 					{
 						retry++;
 
-						Logger.Log($"Match not found for the {retry}. time with {similiarityThreshold} similiarity threshold!", NotificationType.Error);
+						Logger.Log($"Match not found for the {retry}. time with {current} similiarity threshold!", NotificationType.Error);
 
 						Thread.Sleep(condition.RetryDelay);
 					}
@@ -179,7 +184,7 @@ namespace AutoFarmer.Models
 					}
 				}
 
-				similiarityThreshold -= condition.SimiliarityThresholdStep;
+				current -= step;
 			}
 
 			return false;

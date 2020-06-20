@@ -1,0 +1,27 @@
+{
+	"TemplateParameters": {
+		"i": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9
+		]
+	},
+	"Nodes": {
+		"loginCharacter0{i}": "assignmentsButton"
+	},
+	"Conditions": {
+		"Condition": {
+			"TemplateName": "securityOfficer",
+			"SearchRectangleName": "assignmentsButton",
+			"MaxRetryPerSimiliarityThreshold": 3,
+			"RetryDelay": 5000
+		}
+	}
+}

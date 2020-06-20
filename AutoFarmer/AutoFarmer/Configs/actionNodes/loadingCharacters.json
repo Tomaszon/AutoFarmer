@@ -14,7 +14,9 @@
 		]
 	},
 	"Names": [
-		"start0{i}"
+		"loadingCharacter0{i}"
 	],
-	"IsStartNode": true
+	"Actions": {
+		"AdditionalDelayAfterLastAction": 5000
+	}
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AutoFarmer.Models.ImageMatching;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
@@ -25,12 +27,56 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public void Disable()
 		{
+			Logger.Log($"Edge {Name} disabled!");
+
 			CurrentCrossing = int.MaxValue;
 		}
 
 		public void ResetState()
 		{
 			CurrentCrossing = 0;
+		}
+
+		public bool Process(out List<Point> actionPoints)
+		{
+			var preRes = ProcessConditon(Conditions.PreCondition, out actionPoints);
+
+			Logger.Log($"Precondition processed: {preRes}");
+
+			if (Conditions.PreCondition?.Equals(Conditions.PostCondition) == true)
+			{
+				if (preRes) CurrentCrossing++;
+
+				return preRes;
+			}
+			else
+			{
+				if (preRes is false) return false;
+
+				var postRes = ProcessConditon(Conditions.PostCondition, out actionPoints);
+
+				Logger.Log($"Postcondition processed: {postRes}");
+
+				if (postRes)
+				{
+					CurrentCrossing++;
+
+					return true;
+				}
+				else
+				{
+					throw new AutoFarmerException($"Stuck in {Name} condition edge!");
+				}
+			}
+		}
+
+		private bool ProcessConditon(MatchCondition condition, out List<Point> actionPoints)
+		{
+			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
+
+			if (condition is null) return true;
+
+			return condition.Process(out actionPoints);
 		}
 	}
 }

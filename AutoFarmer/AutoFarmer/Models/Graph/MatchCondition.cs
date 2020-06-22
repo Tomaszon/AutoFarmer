@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.ImageMatching;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
 
 namespace AutoFarmer.Models.GraphNamespace
 {
@@ -40,6 +43,58 @@ namespace AutoFarmer.Models.GraphNamespace
 		public MatchCondition Clone()
 		{
 			return JsonConvert.DeserializeObject<MatchCondition>(JsonConvert.SerializeObject(this));
+		}
+
+		public bool Process(out List<Point> actionPoints)
+		{
+			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
+
+			float maximum = MaximumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMaximumSimiliarityThreshold : MaximumSimiliarityThreshold;
+			float minimum = MinimumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMiniumuSimiliarityThreshold : MinimumSimiliarityThreshold;
+			float step = SimiliarityThresholdStep == default ? ImageMatchFinder.Instance.DefaultSimiliarityThresholdStep : SimiliarityThresholdStep;
+
+			float current = maximum;
+
+			Logger.Log($"Attempting to find {SearchRectangleName} search rectangle of {TemplateName} " +
+				$"template max {MaxRetryPerSimiliarityThreshold + 1} times per similiarity threshold from: " +
+				$"{maximum} to {minimum} with -{step} steps");
+
+			while (current >= minimum)
+			{
+				int retry = 0;
+
+				while (retry <= MaxRetryPerSimiliarityThreshold)
+				{
+					try
+					{
+						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
+
+						var sourceImage = ScreenshotMaker.CreateScreenshot();
+
+						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, this, current);
+
+						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
+
+						return true;
+					}
+					catch (ImageMatchNotFoundException)
+					{
+						retry++;
+
+						Logger.Log($"Match not found for the {retry}. time with {current} similiarity threshold!", NotificationType.Error);
+
+						Thread.Sleep(RetryDelay);
+					}
+					catch (ImageMatchAmbiguousException ex)
+					{
+						throw new AutoFarmerException("Automatic emergency stop!", ex);
+					}
+				}
+
+				current -= step;
+			}
+
+			return false;
 		}
 	}
 }

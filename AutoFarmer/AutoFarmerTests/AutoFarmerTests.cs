@@ -31,9 +31,10 @@ namespace AutoFarmerTests
 				t
 			};
 
-			var imf = new ImageMatchFinder() { Scale = 0.5, Templates = ts };
+			ImageMatchFinder.FromConfig();
+			ImageMatchFinder.Instance.Templates = ts;
 
-			var points = imf.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c, 0.99f);
+			var points = ImageMatchFinder.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c, 0.99f);
 
 			var expectedPoint = new Point(480, 843);
 
@@ -66,9 +67,10 @@ namespace AutoFarmerTests
 				t
 			};
 
-			var imf = new ImageMatchFinder() { Scale = 1, Templates = ts };
+			ImageMatchFinder.FromConfig();
+			ImageMatchFinder.Instance.Templates = ts;
 
-			var points = imf.FindClickPointForTemplate(Properties.Resources.assignmentsCompleted, c, 0.99f);
+			var points = ImageMatchFinder.FindClickPointForTemplate(Properties.Resources.assignmentsCompleted, c, 0.99f);
 
 			var expectedPoint1 = new Point(1388, 393);
 			var expectedPoint2 = new Point(1388, 527);

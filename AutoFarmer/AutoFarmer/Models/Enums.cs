@@ -13,8 +13,8 @@
 		LeftClick,
 		LeftDoubleClick,
 		ScanScreenForFadedUI,
-		LeftHold1sec,
-		LeftHold5sec
+		LeftHold1sec = 1000,
+		LeftHold5sec = 5000
 	}
 
 	public enum MatchOrderBy

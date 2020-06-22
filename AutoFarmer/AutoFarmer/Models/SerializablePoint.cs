@@ -14,6 +14,11 @@ namespace AutoFarmer.Models
 			Y = y;
 		}
 
+		public override string ToString()
+		{
+			return $"X: {X}, Y: {Y}";
+		}
+
 		public static Size operator -(SerializablePoint point, SerializablePoint other)
 		{
 			return new Size(point.X - other.X, point.Y - other.Y);

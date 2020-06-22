@@ -14,28 +14,24 @@ namespace AutoFarmer.Models
 	{
 		public Graph Graph { get; set; }
 
-		public ImageMatchFinder ImageMatchFinder { get; set; }
-
 		public InputSimulator InputSimulator { get; set; } = new InputSimulator();
 
 		public GraphMachine(Graph graph)
 		{
-			ImageMatchFinder = ImageMatchFinder.FromConfig();
-
 			Graph = graph;
 		}
 
 		public void Process()
 		{
-			List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.MouseSafePosition };
-
 			while (GetNextStartNode(out var currentNode))
 			{
+				MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
+
+				List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.GetCursorCurrentPosition() };
+
 				do
 				{
 					ProcessNode(currentNode, actionPoints.ToArray());
-
-					InputSimulator.MouseEvent(MouseSafetyMeasures.Instance.MouseSafePosition);
 
 					ConditionEdge currentEdge;
 
@@ -59,7 +55,7 @@ namespace AutoFarmer.Models
 				}
 				while (!currentNode.IsEndNode);
 
-				ProcessNode(currentNode, MouseSafetyMeasures.Instance.MouseSafePosition);
+				ProcessNode(currentNode, MouseSafetyMeasures.Instance.LastActionPosition);
 
 				Graph.ResetStates();
 			}
@@ -91,7 +87,7 @@ namespace AutoFarmer.Models
 
 			foreach (var actionPosition in actionPositions)
 			{
-				InputSimulator.MouseEvent(actionPosition);
+				InputSimulator.MoveMouseTo(actionPosition);
 
 				InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
 
@@ -101,93 +97,11 @@ namespace AutoFarmer.Models
 
 		private bool ProcessEdge(ConditionEdge edge, out List<Point> actionPoints)
 		{
-			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.MouseSafePosition };
+			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
 
 			if (edge.Conditions is null) return true;
 
-			var preRes = ProcessConditon(edge.Conditions.PreCondition, out actionPoints);
-
-			Logger.Log($"Precondition processed: {preRes}");
-
-			if (edge.Conditions.PreCondition?.Equals(edge.Conditions.PostCondition) == true)
-			{
-				if (preRes) edge.CurrentCrossing++;
-
-				return preRes;
-			}
-			else
-			{
-				if (preRes is false) return false;
-
-				var postRes = ProcessConditon(edge.Conditions.PostCondition, out actionPoints);
-
-				Logger.Log($"Postcondition processed: {postRes}");
-
-				if (postRes)
-				{
-					edge.CurrentCrossing++;
-
-					return true;
-				}
-				else
-				{
-					throw new AutoFarmerException($"Stuck in {edge.Name} condition edge!");
-				}
-			}
-		}
-
-		private bool ProcessConditon(MatchCondition condition, out List<Point> actionPoints)
-		{
-			actionPoints = new List<Point>();
-
-			if (condition is null) return true;
-
-			float maximum = condition.MaximumSimiliarityThreshold == default ? ImageMatchFinder.DefaultMaximumSimiliarityThreshold : condition.MaximumSimiliarityThreshold;
-			float minimum = condition.MinimumSimiliarityThreshold == default ? ImageMatchFinder.DefaultMiniumuSimiliarityThreshold : condition.MinimumSimiliarityThreshold;
-			float step = condition.SimiliarityThresholdStep == default ? ImageMatchFinder.DefaultSimiliarityThresholdStep : condition.SimiliarityThresholdStep;
-
-			float current = maximum;
-
-			Logger.Log($"Attempting to find {condition.SearchRectangleName} search rectangle of {condition.TemplateName} " +
-				$"template max {condition.MaxRetryPerSimiliarityThreshold + 1} times per similiarity threshold from: " +
-				$"{maximum} to {minimum} with -{step} steps");
-
-			while (current >= minimum)
-			{
-				int retry = 0;
-
-				while (retry <= condition.MaxRetryPerSimiliarityThreshold)
-				{
-					try
-					{
-						MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
-
-						var sourceImage = ScreenshotMaker.CreateScreenshot();
-
-						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, condition, current);
-
-						MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop();
-
-						return true;
-					}
-					catch (ImageMatchNotFoundException)
-					{
-						retry++;
-
-						Logger.Log($"Match not found for the {retry}. time with {current} similiarity threshold!", NotificationType.Error);
-
-						Thread.Sleep(condition.RetryDelay);
-					}
-					catch (ImageMatchAmbiguousException ex)
-					{
-						throw new AutoFarmerException("Automatic emergency stop!", ex);
-					}
-				}
-
-				current -= step;
-			}
-
-			return false;
+			return edge.Process(out actionPoints);
 		}
 	}
 }

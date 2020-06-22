@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.InputHandling;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
@@ -13,11 +14,9 @@ namespace AutoFarmer.Models
 
 		public bool IsEnabled { get; set; } = true;
 
-		public SerializablePoint MouseSafePosition { get; set; }
+		public SerializablePoint LastActionPosition { get; set; }
 
-		public int SafeAreaRadius { get; set; }
-
-		public int ActionPositionToleranceRadius { get; set; }
+		public double SafeAreaRadius { get; set; }
 
 		public static MouseSafetyMeasures Instance { get; private set; }
 
@@ -26,45 +25,29 @@ namespace AutoFarmer.Models
 			Instance = JsonConvert.DeserializeObject<MouseSafetyMeasures>(File.ReadAllText(Config.Instance.MouseSafetyMeasuresConfigPath));
 		}
 
-		private Point GetCursorCurrentPosition()
+		public static SerializablePoint GetCursorCurrentPosition()
 		{
 			GetCursorPos(out Point currentPosition);
 
 			return currentPosition;
 		}
 
-		public bool IsMouseInActionPosition(Point actionPosition)
-		{
-			return IsInRange(actionPosition, ActionPositionToleranceRadius);
-		}
-
-		public bool IsMouseInSafePosition()
-		{
-			return IsInRange(MouseSafePosition, SafeAreaRadius);
-		}
-
-		private bool IsInRange(Point center, int maxDistance)
+		public static bool IsMouseInSafePosition()
 		{
 			var currentPosition = GetCursorCurrentPosition();
 
-			Size difference = (SerializablePoint)center - currentPosition;
+			Size difference = Instance.LastActionPosition - currentPosition;
 
 			double distance = Math.Sqrt(Math.Pow(difference.Width, 2) + Math.Pow(difference.Height, 2));
 
-			return distance <= maxDistance;
+			Logger.Log($"Safe position check: current mouse position: {currentPosition}, last action position: {Instance.LastActionPosition}, distance: {distance}");
+
+			return distance <= Instance.SafeAreaRadius;
 		}
 
-		public void CheckForIntentionalEmergencyStop()
+		public static void CheckForIntentionalEmergencyStop()
 		{
-			if (IsEnabled && !IsMouseInSafePosition())
-			{
-				throw new AutoFarmerException("Intentional emergency stop!");
-			}
-		}
-
-		public void CheckForIntentionalEmergencyStop(Point actionPosition)
-		{
-			if (IsEnabled && !IsMouseInActionPosition(actionPosition))
+			if (Instance.IsEnabled && !IsMouseInSafePosition())
 			{
 				throw new AutoFarmerException("Intentional emergency stop!");
 			}

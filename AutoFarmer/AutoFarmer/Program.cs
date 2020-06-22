@@ -1,5 +1,6 @@
 ﻿using AutoFarmer.Models;
 using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.ImageMatching;
 using System;
 using System.Threading;
 
@@ -14,34 +15,47 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
-			try
+			string input;
+
+			do
 			{
-				Config.FromJsonFile(@".\configs\config.json");
+				try
+				{
+					Config.FromJsonFile(@".\configs\config.json");
 
-				MouseSafetyMeasures.FromConfig();
+					Console.Clear();
 
-				Graph graph = Graph.FromConfig();
+					MouseSafetyMeasures.FromConfig();
 
-				GraphMachine machine = new GraphMachine(graph);
+					ImageMatchFinder.FromConfig();
 
-				Logger.Log($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds");
+					Graph graph = Graph.FromConfig();
 
-				Countdown(Config.Instance.ProcessCountdown);
+					GraphMachine machine = new GraphMachine(graph);
 
-				DateTime startTime = DateTime.Now;
+					Console.WriteLine($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds\n");
 
-				machine.Process();
+					Countdown(Config.Instance.ProcessCountdown);
 
-				Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+					DateTime startTime = DateTime.Now;
+
+					machine.Process();
+
+					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+				}
+				catch (AutoFarmerException ex)
+				{
+					Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
+				}
+
+				Console.WriteLine("Press 'y' for restart. Others will exit.\n");
+
+				Logger.Log("---------------------------------------------------------------------------" +
+						   "---------------------------------------------------------------------------");
+
+				input = Console.ReadLine();
 			}
-			catch (AutoFarmerException ex)
-			{
-				Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
-			}
-
-			Logger.Log("Press any key to exit");
-
-			Console.ReadKey();
+			while (input == "y");
 		}
 
 		private static void Countdown(int milliseconds)
@@ -61,6 +75,8 @@ namespace AutoFarmer
 					Thread.Sleep(1000 / p);
 				}
 			}
+
+			Console.WriteLine("\n");
 
 			Logger.Log("Processing");
 		}

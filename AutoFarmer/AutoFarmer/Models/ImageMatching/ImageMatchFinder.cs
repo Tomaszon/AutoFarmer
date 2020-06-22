@@ -21,21 +21,21 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
-		public static ImageMatchFinder FromConfig()
+		public static ImageMatchFinder Instance { get; set; }
+
+		public static void FromConfig()
 		{
-			var imf = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
+			Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
 			foreach (var template in Directory.GetFiles(Config.Instance.ImageMatchTemplatesDirectory))
 			{
-				imf.Templates.Add(ImageMatchTemplate.FromJsonFile(template, Config.Instance.ImageMatchTemplateResourcesDirectory));
+				Instance.Templates.Add(ImageMatchTemplate.FromJsonFile(template, Config.Instance.ImageMatchTemplateResourcesDirectory));
 			}
-
-			return imf;
 		}
 
-		public List<Point> FindClickPointForTemplate(Bitmap sourceImage, MatchCondition condition, float similiarityThreshold)
+		public static List<Point> FindClickPointForTemplate(Bitmap sourceImage, MatchCondition condition, float similiarityThreshold)
 		{
-			ImageMatchTemplate template = Templates.First(t => t.Name == condition.TemplateName);
+			ImageMatchTemplate template = Instance.Templates.First(t => t.Name == condition.TemplateName);
 
 			Bitmap sourceImageConverted = ConvertAndScaleBitmapTo24bpp(sourceImage);
 			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
@@ -80,9 +80,9 @@ namespace AutoFarmer.Models.ImageMatching
 			return OrderResults(clickPoints, condition.OrderBy);
 		}
 
-		private Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
+		private static Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
 		{
-			Bitmap clone = new Bitmap((int)(original.Width * Scale), (int)(original.Height * Scale), PixelFormat.Format24bppRgb);
+			Bitmap clone = new Bitmap((int)(original.Width * Instance.Scale), (int)(original.Height * Instance.Scale), PixelFormat.Format24bppRgb);
 
 			using (Graphics gr = Graphics.FromImage(clone))
 			{
@@ -94,13 +94,13 @@ namespace AutoFarmer.Models.ImageMatching
 			return clone;
 		}
 
-		private Rectangle ScaleSearchRectangle(SearchRectangle rectangle)
+		private static Rectangle ScaleSearchRectangle(SearchRectangle rectangle)
 		{
-			return new Rectangle((int)(rectangle.X * Scale), (int)(rectangle.Y * Scale),
-				(int)(rectangle.W * Scale), (int)(rectangle.H * Scale));
+			return new Rectangle((int)(rectangle.X * Instance.Scale), (int)(rectangle.Y * Instance.Scale),
+				(int)(rectangle.W * Instance.Scale), (int)(rectangle.H * Instance.Scale));
 		}
 
-		private Bitmap CropTemplateImage(Bitmap bitmap, Rectangle rectangle)
+		private static Bitmap CropTemplateImage(Bitmap bitmap, Rectangle rectangle)
 		{
 			Bitmap searchImage = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format24bppRgb);
 
@@ -114,10 +114,10 @@ namespace AutoFarmer.Models.ImageMatching
 			return searchImage;
 		}
 
-		private Point CalculateClickPoint(ref Rectangle rectangle, Size relativeClickPoint)
+		private static Point CalculateClickPoint(ref Rectangle rectangle, Size relativeClickPoint)
 		{
-			rectangle = new Rectangle((int)(rectangle.X / Scale), (int)(rectangle.Y / Scale),
-				(int)(rectangle.Width / Scale), (int)(rectangle.Height / Scale));
+			rectangle = new Rectangle((int)(rectangle.X / Instance.Scale), (int)(rectangle.Y / Instance.Scale),
+				(int)(rectangle.Width / Instance.Scale), (int)(rectangle.Height / Instance.Scale));
 
 			Point clickPoint = rectangle.Location + relativeClickPoint;
 
@@ -126,7 +126,7 @@ namespace AutoFarmer.Models.ImageMatching
 			return clickPoint;
 		}
 
-		private void LogAmbiguousException(TemplateMatch[] result, Bitmap sourceImage, SearchRectangle searchRectangle, string templateName, string searchRectangleName)
+		private static void LogAmbiguousException(TemplateMatch[] result, Bitmap sourceImage, SearchRectangle searchRectangle, string templateName, string searchRectangleName)
 		{
 			List<Point> falseClickPoints = new List<Point>();
 			List<Rectangle> falseMatchRectangles = new List<Rectangle>();
@@ -143,7 +143,7 @@ namespace AutoFarmer.Models.ImageMatching
 			Logger.GraphicalLog(sourceImage, falseClickPoints.ToArray(), falseMatchRectangles.ToArray(), templateName, searchRectangleName);
 		}
 
-		private List<Point> OrderResults(List<Point> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
+		private static List<Point> OrderResults(List<Point> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
 		{
 			if (orderBy is null) return points;
 

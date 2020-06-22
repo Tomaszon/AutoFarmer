@@ -20,9 +20,11 @@ namespace AutoFarmer.Models.InputHandling
 
 		public void Simulate(string[] inputActionNames, Point actionPosition, int additionalDelay = 0)
 		{
+			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
+
 			foreach (var action in inputActionNames)
 			{
-				MouseSafetyMeasures.Instance.CheckForIntentionalEmergencyStop(actionPosition);
+				MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
 				if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
 				{
@@ -35,7 +37,7 @@ namespace AutoFarmer.Models.InputHandling
 			}
 		}
 
-		public void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
+		private void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
 		{
 			_simulator.Keyboard.KeyPress(virtualKeyCode);
 
@@ -44,7 +46,7 @@ namespace AutoFarmer.Models.InputHandling
 			Thread.Sleep(Delay + additionalDelay);
 		}
 
-		public void MouseEvent(MouseAction mouseAction, int additionalDelay = 0)
+		private void MouseEvent(MouseAction mouseAction, int additionalDelay = 0)
 		{
 			switch (mouseAction)
 			{
@@ -70,22 +72,17 @@ namespace AutoFarmer.Models.InputHandling
 					break;
 				}
 				case MouseAction.LeftHold1sec:
-				{
-					_simulator.Mouse.LeftButtonDown();
-
-					Thread.Sleep(1000);
-
-					_simulator.Mouse.LeftButtonUp();
-
-					break;
-				}
 				case MouseAction.LeftHold5sec:
 				{
 					_simulator.Mouse.LeftButtonDown();
 
-					Thread.Sleep(5000);
+					Logger.Log("Left mouse hold", NotificationType.Click, 1);//TODO use unique sound
+
+					Thread.Sleep((int)mouseAction);
 
 					_simulator.Mouse.LeftButtonUp();
+
+					Logger.Log("Left mouse release", NotificationType.Click, 1);//TODO use unique sound
 
 					break;
 				}
@@ -99,8 +96,10 @@ namespace AutoFarmer.Models.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public void MouseEvent(Point point, int additionalDelay = 0)
+		public void MoveMouseTo(Point point, int additionalDelay = 0)
 		{
+			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
+
 			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.Width) + 1, point.Y * (65536.0 / ScreenSize.Height) + 1);
 
 			Logger.Log($"Mouse move to: {point}");
@@ -114,7 +113,7 @@ namespace AutoFarmer.Models.InputHandling
 			{
 				for (int x = 0; x < ScreenSize.Width; x += 250)
 				{
-					MouseEvent(new Point(x, y), Delay * -1 + delay);
+					MoveMouseTo(new Point(x, y), Delay * -1 + delay);
 				}
 			}
 		}

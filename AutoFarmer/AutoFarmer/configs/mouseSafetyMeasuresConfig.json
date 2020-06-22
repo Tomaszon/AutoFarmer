@@ -1,9 +1,4 @@
 {
 	"IsEnabled": true,
-	"MouseSafePosition": {
-		"X": 50,
-		"Y": 50
-	},
-	"SafeAreaRadius": 50,
-	"ActionPositionToleranceRadius": 2
+	"SafeAreaRadius": 2.5
 }

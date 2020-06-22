@@ -71,7 +71,7 @@ namespace AutoFarmer.Models.GraphNamespace
 
 						var sourceImage = ScreenshotMaker.CreateScreenshot();
 
-						actionPoints = ImageMatchFinder.FindClickPointForTemplate(sourceImage, this, current);
+						actionPoints = ImageMatchFinder.FindClickPointForTemplate(this, sourceImage, current);
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 

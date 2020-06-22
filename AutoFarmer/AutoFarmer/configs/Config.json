@@ -1,6 +1,10 @@
 {
+	"ScreenSize": {
+		"W": 1920,
+		"H": 1080
+	},
 	"ActionSounds": true,
-	"ProcessCountdown": 4000,
+	"ProcessCountdown": 5000,
 	"ImageMatchTemplateResourcesDirectory": ".\\Resources\\images",
 	"GraphicalLogging": true,
 	"FileLogging": true,

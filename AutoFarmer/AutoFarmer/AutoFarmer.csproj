@@ -70,11 +70,13 @@
     <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\Graph\Graph.cs" />
     <Compile Include="Models\Graph\Options.cs" />
+    <Compile Include="Models\SerializableRectangle.cs" />
     <Compile Include="Models\PerformanceMonitor.cs" />
     <Compile Include="Models\InputHandling\InputSimulator.cs" />
     <Compile Include="Models\MouseSafetyMeasures.cs" />
     <Compile Include="Models\InputHandling\NotificationPlayer.cs" />
     <Compile Include="Models\Logger.cs" />
+    <Compile Include="Models\SerializableSize.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchFinder.cs" />
@@ -126,6 +128,5 @@ xcopy "$(ProjectDir)configs" "$(TargetDir)configs\" /s /y</PostBuildEvent>
   </PropertyGroup>
   <Target Name="SpicNSpan" AfterTargets="Clean">
     <RemoveDir Directories="$(TargetDir)" />
-    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
   </Target>
 </Project>

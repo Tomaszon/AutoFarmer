@@ -14,6 +14,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public SerializablePoint ClickPoint { get; set; }
 
+		public SerializableRectangle SearchArea { get; set; }
+
 		public Size RelativeClickPoint
 		{
 			get

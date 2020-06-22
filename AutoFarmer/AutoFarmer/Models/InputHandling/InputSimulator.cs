@@ -9,13 +9,18 @@ namespace AutoFarmer.Models.InputHandling
 	{
 		public int Delay { get; set; } = 250;
 
-		private readonly WindowsInput.InputSimulator _simulator;
+		private readonly WindowsInput.InputSimulator _simulator = new WindowsInput.InputSimulator();
 
-		public Size ScreenSize { get; set; } = new Size(1920, 1080);
+		public Size ScreenSize { get; set; }
 
-		public InputSimulator()
+		public static InputSimulator Instance { get; set; }
+
+		public static void FromConfig()
 		{
-			_simulator = new WindowsInput.InputSimulator();
+			Instance = new InputSimulator
+			{
+				ScreenSize = Config.Instance.ScreenSize
+			};
 		}
 
 		public void Simulate(string[] inputActionNames, Point actionPosition, int additionalDelay = 0)

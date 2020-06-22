@@ -5,6 +5,8 @@ namespace AutoFarmer.Models
 {
 	public class Config
 	{
+		public SerializableSize ScreenSize { get; set; }
+
 		public bool ActionSounds { get; set; }
 
 		public string ConfigDirectory { get; set; }

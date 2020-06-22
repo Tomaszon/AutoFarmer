@@ -2,8 +2,10 @@
 using AutoFarmer.Models.GraphNamespace;
 using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace AutoFarmerTests
 {
@@ -31,10 +33,10 @@ namespace AutoFarmerTests
 				t
 			};
 
-			ImageMatchFinder.FromConfig();
+			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 			ImageMatchFinder.Instance.Templates = ts;
 
-			var points = ImageMatchFinder.FindClickPointForTemplate(Properties.Resources.characterSelector1Source, c, 0.99f);
+			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.characterSelector1Source, 0.99f);
 
 			var expectedPoint = new Point(480, 843);
 
@@ -67,10 +69,10 @@ namespace AutoFarmerTests
 				t
 			};
 
-			ImageMatchFinder.FromConfig();
+			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 			ImageMatchFinder.Instance.Templates = ts;
 
-			var points = ImageMatchFinder.FindClickPointForTemplate(Properties.Resources.assignmentsCompleted, c, 0.99f);
+			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.assignmentsCompleted, 0.99f);
 
 			var expectedPoint1 = new Point(1388, 393);
 			var expectedPoint2 = new Point(1388, 527);

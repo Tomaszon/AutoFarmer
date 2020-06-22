@@ -1,7 +1,9 @@
 ﻿using AutoFarmer.Models.InputHandling;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace AutoFarmer.Models
 {
@@ -31,20 +33,25 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		public static void GraphicalLog(Bitmap source, Point[] clickPoint, Rectangle[] searchRectangle, string templateName, string searchRectangleName)
+		public static void GraphicalLog(Bitmap source, Point[] clickPoints, Rectangle[] searchRectangles, string templateName, string searchRectangleName, List<SerializableRectangle> searchAreas)
 		{
 			try
 			{
 				if (Config.Instance.GraphicalLogging)
 				{
-					Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
-
-					for (int i = 0; i < searchRectangle.Length; i++)
+					using (Graphics g = Graphics.FromImage(source))
 					{
-						HighlightFind(source, searchRectangle[i], clickPoint[i]);
-					}
+						Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
 
-					source.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+						for (int i = 0; i < searchRectangles.Length; i++)
+						{
+							HighlightFind(g, searchRectangles[i], clickPoints[i]);
+						}
+
+						HighlightSearchAreas(g, searchAreas.Select(r => (Rectangle)r).ToList(), searchRectangles);
+
+						source.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+					}
 				}
 			}
 			catch (Exception ex)
@@ -53,14 +60,22 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		private static void HighlightFind(Bitmap bitmap, Rectangle rectangle, Point clickPoint)
+		private static void HighlightSearchAreas(Graphics g, List<Rectangle> searchAreas, Rectangle[] searchRectangles)
 		{
-			using (Graphics g = Graphics.FromImage(bitmap))
-			{
-				g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), rectangle);
+			searchAreas.ForEach(a =>
+				g.DrawRectangle(new Pen(new SolidBrush(Color.Red), searchRectangles.Any(r => a.Contains(r)) ? 3 : 1), a));
 
-				g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 3, 3));
-			}
+			searchAreas.ForEach(a =>
+				searchAreas.Where(b =>
+					a.IntersectsWith(b) && a.Location != b.Location && a.Size != b.Size).ToList().ForEach(r =>
+						g.DrawRectangle(new Pen(new SolidBrush(Color.Purple), 1), r)));
+		}
+
+		private static void HighlightFind(Graphics g, Rectangle rectangle, Point clickPoint)
+		{
+			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), rectangle);
+
+			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 3, 3));
 		}
 	}
 }

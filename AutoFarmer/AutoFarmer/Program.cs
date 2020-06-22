@@ -78,7 +78,7 @@ namespace AutoFarmer
 
 			Console.WriteLine("\n");
 
-			Logger.Log("Processing");
+			Logger.Log("Processing", NotificationType.Info);
 		}
 	}
 }

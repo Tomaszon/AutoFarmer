@@ -4,12 +4,12 @@ namespace AutoFarmer.Models
 {
 	public class ImageMatchNotFoundException : Exception
 	{
-		public ImageMatchNotFoundException() : base("Template not found in source image!") { }
+		public ImageMatchNotFoundException(long ticks) : base($"Template not found in source image! Search time: {ticks} ms.") { }
 	}
 
 	public class ImageMatchAmbiguousException : Exception
 	{
-		public ImageMatchAmbiguousException(int matches) : base($"Template match is ambiguous! Matches: {matches}") { }
+		public ImageMatchAmbiguousException(int matches, long ticks) : base($"Template match is ambiguous! Search time: {ticks} ms. Matches: {matches}") { }
 	}
 
 	public class AutoFarmerException : Exception

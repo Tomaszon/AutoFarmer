@@ -11,6 +11,8 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public class ImageMatchFinder
 	{
+		private static PerformanceMonitor _performanceMonitor = new PerformanceMonitor();
+
 		public double Scale { get; set; }
 
 		public float DefaultMaximumSimiliarityThreshold { get; set; }
@@ -41,25 +43,28 @@ namespace AutoFarmer.Models.ImageMatching
 			Bitmap templateImageConverted = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
 
 			SearchRectangle searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
-
 			Rectangle scaledSearchRectangle = ScaleSearchRectangle(searchRectangle);
 
 			Bitmap searchImage = CropTemplateImage(templateImageConverted, scaledSearchRectangle);
 
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
+			_performanceMonitor.Start();
+
 			TemplateMatch[] matches = matching.ProcessImage(sourceImageConverted, searchImage);
+
+			_performanceMonitor.Stop();
 
 			if (matches.Length < condition.MinimumOccurrence)
 			{
-				throw new ImageMatchNotFoundException();
+				throw new ImageMatchNotFoundException(_performanceMonitor.Elapsed);
 			}
 
 			if (matches.Length > condition.MaximumOccurrence)
 			{
 				LogAmbiguousException(matches, sourceImage, searchRectangle, condition.TemplateName, condition.SearchRectangleName);
 
-				throw new ImageMatchAmbiguousException(matches.Length);
+				throw new ImageMatchAmbiguousException(matches.Length, _performanceMonitor.Elapsed);
 			}
 
 			List<Point> clickPoints = new List<Point>();
@@ -72,7 +77,7 @@ namespace AutoFarmer.Models.ImageMatching
 
 				clickPoints.Add(clickPoint);
 
-				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at X: {clickPoint.X} Y: {clickPoint.Y}");
+				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at X: {clickPoint.X} Y: {clickPoint.Y}. Search time: {_performanceMonitor.Elapsed}");
 
 				Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, condition.TemplateName, condition.SearchRectangleName);
 			}

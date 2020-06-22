@@ -1,11 +1,8 @@
 ﻿using AutoFarmer.Models.GraphNamespace;
-using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AutoFarmer.Models

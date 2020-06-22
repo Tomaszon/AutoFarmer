@@ -55,7 +55,45 @@ namespace AutoFarmerTests
 
 			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20 };
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, AutoSearchAreaMode = AutoSearchAreaMode.Quarter};
+
+			var srs = new Dictionary<string, SearchRectangle>
+			{
+				{ "TestRectangle", sr }
+			};
+
+			var t = new ImageMatchTemplate() { Name = "TestTemplate", Bitmap = Properties.Resources.assignmentsCompleted, SearchRectangles = srs };
+
+			var ts = new List<ImageMatchTemplate>
+			{
+				t
+			};
+
+			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
+			ImageMatchFinder.Instance.Templates = ts;
+
+			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.assignmentsCompleted, 0.99f);
+
+			var expectedPoint1 = new Point(1388, 393);
+			var expectedPoint2 = new Point(1388, 527);
+
+			Assert.AreEqual(expectedPoint1, points[1]);
+			Assert.AreEqual(expectedPoint2, points[0]);
+		}
+
+		[TestMethod]
+		public void TestMethod2d5()
+		{
+			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>()
+			{
+				{ MatchOrderBy.Y, MatchOrderLike.Descending }
+			};
+
+			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
+
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchArea = new SerializableRectangle() { X = 898, Y = 0, H = 1080, W = 1022 } };
 
 			var srs = new Dictionary<string, SearchRectangle>
 			{

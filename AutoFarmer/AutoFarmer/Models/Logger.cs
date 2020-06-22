@@ -62,20 +62,44 @@ namespace AutoFarmer.Models
 
 		private static void HighlightSearchAreas(Graphics g, List<Rectangle> searchAreas, Rectangle[] searchRectangles)
 		{
-			searchAreas.ForEach(a =>
-				g.DrawRectangle(new Pen(new SolidBrush(Color.Red), searchRectangles.Any(r => a.Contains(r)) ? 3 : 1), a));
+			foreach (var area1 in searchAreas)
+			{
+				foreach (var area2 in searchAreas)
+				{
+					if (area1.IntersectsWith(area2) && area1 != area2)
+					{
+						Rectangle r = new Rectangle(area1.Location, area1.Size);
+						r.Intersect(area2);
 
-			searchAreas.ForEach(a =>
-				searchAreas.Where(b =>
-					a.IntersectsWith(b) && a.Location != b.Location && a.Size != b.Size).ToList().ForEach(r =>
-						g.DrawRectangle(new Pen(new SolidBrush(Color.Purple), 1), r)));
+						g.FillRectangle(new SolidBrush(Color.FromArgb(16, 128, 255, 128)), r);
+					}
+				}
+			}
+
+			//searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(s1 =>
+			//{
+			//	Region reg = new Region(s1);
+
+			//	searchAreas.Where(s2 => s2 != s1).ToList().ForEach(s2 => reg.Exclude(s2));
+
+			//	g.FillRegion(new SolidBrush(Color.FromArgb(20, 0, 0, 0)), reg);
+			//});
+
+			//searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(e =>
+			//	g.FillRectangle(new SolidBrush(Color.FromArgb(32, 128, 128, 255)), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
+
+			searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(e =>
+				g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
+
+			searchAreas.Where(a => searchRectangles.All(r => a.Contains(r))).ToList().ForEach(e =>
+				g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
 		}
 
 		private static void HighlightFind(Graphics g, Rectangle rectangle, Point clickPoint)
 		{
-			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), rectangle);
+			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 1, rectangle.Height - 1));
 
-			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 3, 3));
+			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));
 		}
 	}
 }

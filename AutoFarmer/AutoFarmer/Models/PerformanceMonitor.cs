@@ -10,7 +10,7 @@ namespace AutoFarmer.Models
 
 		public long Elapse
 		{
-			get { return _stopwatch.IsRunning ? (long)_stopwatch.Elapsed.TotalMilliseconds : Elapsed; }
+			get { return _stopwatch.IsRunning ? _stopwatch.ElapsedMilliseconds : Elapsed; }
 		}
 
 		public void Start()
@@ -22,7 +22,7 @@ namespace AutoFarmer.Models
 		{
 			_stopwatch.Stop();
 
-			Elapsed = Elapse;
+			Elapsed = _stopwatch.ElapsedMilliseconds;
 
 			_stopwatch.Reset();
 		}

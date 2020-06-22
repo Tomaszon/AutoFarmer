@@ -16,6 +16,10 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public SerializableRectangle SearchArea { get; set; }
 
+		public NamedSearchArea[] NamedSearchAreas { get; set; }
+
+		public AutoSearchAreaMode AutoSearchAreaMode { get; set; } = AutoSearchAreaMode.LeftRight;
+
 		public Size RelativeClickPoint
 		{
 			get

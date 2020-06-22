@@ -28,4 +28,23 @@
 		Ascending,
 		Descending
 	}
+
+	public enum NamedSearchArea
+	{
+		Left,
+		Right,
+		Upper,
+		Lower,
+		UpperLeft,
+		UpperRight,
+		LowerLeft,
+		LowerRight
+	}
+
+	public enum AutoSearchAreaMode
+	{
+		LeftRight,
+		UpperLower,
+		Quarter
+	}
 }

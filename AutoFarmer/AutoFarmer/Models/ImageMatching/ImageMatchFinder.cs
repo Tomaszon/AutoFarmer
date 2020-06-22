@@ -62,7 +62,7 @@ namespace AutoFarmer.Models.ImageMatching
 
 				clickPoints.Add(clickPoint);
 
-				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at X: {clickPoint.X} Y: {clickPoint.Y}. Search time: {_performanceMonitor.Elapsed}");
+				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at {clickPoint}. Search time: {_performanceMonitor.Elapsed}");
 
 				Logger.GraphicalLog(sourceImage, new[] { clickPoint }, new[] { matchRectangle }, condition.TemplateName, condition.SearchRectangleName, searchAreas);
 			}
@@ -104,25 +104,85 @@ namespace AutoFarmer.Models.ImageMatching
 
 		private static List<SerializableRectangle> CalculateSearchArea(SearchRectangle searchRectangle)
 		{
-			if (searchRectangle.SearchArea != null) return new List<SerializableRectangle>() { searchRectangle.SearchArea };
+			var areas = new List<SerializableRectangle>();
 
-			SerializableRectangle searchAreaLeft = new SerializableRectangle()
+			if (searchRectangle.SearchArea != null || searchRectangle.NamedSearchAreas != null)
 			{
-				X = 0,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + searchRectangle.W / 2,
-				H = Config.Instance.ScreenSize.H
-			};
+				if (searchRectangle.SearchArea != null) areas.Add(searchRectangle.SearchArea);
 
-			SerializableRectangle searchAreaRight = new SerializableRectangle()
+				if (searchRectangle.NamedSearchAreas != null)
+				{
+					foreach (var namedSearchArea in searchRectangle.NamedSearchAreas)
+					{
+						switch (namedSearchArea)
+						{
+							case NamedSearchArea.Left:
+								areas.Add(SearchArea.Left(searchRectangle.W));
+
+								break;
+							case NamedSearchArea.Right:
+								areas.Add(SearchArea.Right(searchRectangle.W));
+
+								break;
+							case NamedSearchArea.Upper:
+								areas.Add(SearchArea.Upper(searchRectangle.H));
+
+								break;
+							case NamedSearchArea.Lower:
+								areas.Add(SearchArea.Lower(searchRectangle.H));
+
+								break;
+							case NamedSearchArea.UpperLeft:
+								areas.Add(SearchArea.UpperLeft(searchRectangle.W, searchRectangle.H));
+
+								break;
+							case NamedSearchArea.UpperRight:
+								areas.Add(SearchArea.UpperRight(searchRectangle.W, searchRectangle.H));
+
+								break;
+							case NamedSearchArea.LowerLeft:
+								areas.Add(SearchArea.LowerLeft(searchRectangle.W, searchRectangle.H));
+
+								break;
+							case NamedSearchArea.LowerRight:
+								areas.Add(SearchArea.LowerRight(searchRectangle.W, searchRectangle.H));
+
+								break;
+						}
+					}
+				}
+			}
+			else
 			{
-				X = searchAreaLeft.W - searchRectangle.W / 2,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + searchRectangle.W / 2,
-				H = Config.Instance.ScreenSize.H
-			};
+				switch (searchRectangle.AutoSearchAreaMode)
+				{
+					case AutoSearchAreaMode.LeftRight:
+					{
+						areas.Add(SearchArea.Left(searchRectangle.W));
+						areas.Add(SearchArea.Right(searchRectangle.W));
 
-			return new List<SerializableRectangle>() { searchAreaLeft, searchAreaRight };
+						break;
+					}
+					case AutoSearchAreaMode.UpperLower:
+					{
+						areas.Add(SearchArea.Upper(searchRectangle.H));
+						areas.Add(SearchArea.Lower(searchRectangle.H));
+
+						break;
+					}
+					case AutoSearchAreaMode.Quarter:
+					{
+						areas.Add(SearchArea.UpperLeft(searchRectangle.W, searchRectangle.H));
+						areas.Add(SearchArea.UpperRight(searchRectangle.W, searchRectangle.H));
+						areas.Add(SearchArea.LowerLeft(searchRectangle.W, searchRectangle.H));
+						areas.Add(SearchArea.LowerRight(searchRectangle.W, searchRectangle.H));
+
+						break;
+					}
+				}
+			}
+
+			return areas;
 		}
 
 		private static Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)

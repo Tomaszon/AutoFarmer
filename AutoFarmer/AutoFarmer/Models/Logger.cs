@@ -75,24 +75,18 @@ namespace AutoFarmer.Models
 					}
 				}
 			}
-
-			//searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(s1 =>
-			//{
-			//	Region reg = new Region(s1);
-
-			//	searchAreas.Where(s2 => s2 != s1).ToList().ForEach(s2 => reg.Exclude(s2));
-
-			//	g.FillRegion(new SolidBrush(Color.FromArgb(20, 0, 0, 0)), reg);
-			//});
-
-			//searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(e =>
-			//	g.FillRectangle(new SolidBrush(Color.FromArgb(32, 128, 128, 255)), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
-
+			
 			searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(e =>
 				g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
 
 			searchAreas.Where(a => searchRectangles.All(r => a.Contains(r))).ToList().ForEach(e =>
 				g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
+
+			Region region = new Region(new Rectangle(new Point(0, 0), Config.Instance.ScreenSize));
+
+			searchAreas.Where(a => searchRectangles.All(r => a.Contains(r))).ToList().ForEach(a => region.Exclude(a));
+
+			g.FillRegion(new SolidBrush(Color.FromArgb(64, 0, 0, 0)), region);
 		}
 
 		private static void HighlightFind(Graphics g, Rectangle rectangle, Point clickPoint)

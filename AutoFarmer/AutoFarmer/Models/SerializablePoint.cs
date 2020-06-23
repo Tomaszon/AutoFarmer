@@ -14,6 +14,11 @@ namespace AutoFarmer.Models
 			Y = y;
 		}
 
+		public SerializablePoint Scale(double scale)
+		{
+			return new SerializablePoint((int)(X * scale), (int)(Y * scale));
+		}
+
 		public static Size operator -(SerializablePoint point, SerializablePoint other)
 		{
 			return new Size(point.X - other.X, point.Y - other.Y);

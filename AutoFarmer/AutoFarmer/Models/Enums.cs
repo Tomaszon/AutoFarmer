@@ -31,14 +31,14 @@
 
 	public enum NamedSearchArea
 	{
-		Left,
-		Right,
-		Upper,
-		Lower,
-		UpperLeft,
-		UpperRight,
-		LowerLeft,
-		LowerRight
+		Left = 2,
+		Right = 3,
+		Upper = 5,
+		Lower = 7,
+		UpperLeft = 10,
+		UpperRight = 15,
+		LowerLeft = 14,
+		LowerRight = 21
 	}
 
 	public enum AutoSearchAreaMode

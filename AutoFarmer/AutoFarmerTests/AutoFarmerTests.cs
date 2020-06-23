@@ -20,6 +20,7 @@ namespace AutoFarmerTests
 			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
 
 			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
+			sr.Init();
 
 			var srs = new Dictionary<string, SearchRectangle>
 			{
@@ -55,7 +56,8 @@ namespace AutoFarmerTests
 
 			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, AutoSearchAreaMode = AutoSearchAreaMode.Quarter};
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, AutoSearchAreaMode = AutoSearchAreaMode.Quarter };
+			sr.Init();
 
 			var srs = new Dictionary<string, SearchRectangle>
 			{
@@ -93,7 +95,8 @@ namespace AutoFarmerTests
 
 			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchArea = new SerializableRectangle() { X = 898, Y = 0, H = 1080, W = 1022 } };
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchAreas = new List<SerializableRectangle>() { new SerializableRectangle() { X = 898, Y = 0, H = 1080, W = 1022 } } };
+			sr.Init();
 
 			var srs = new Dictionary<string, SearchRectangle>
 			{

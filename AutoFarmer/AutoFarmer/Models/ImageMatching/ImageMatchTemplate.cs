@@ -14,19 +14,18 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public Dictionary<string, SearchRectangle> SearchRectangles { get; set; }
 
-		public void LoadBitmap(string fileName)
-		{
-			Bitmap = (Bitmap)Image.FromFile(fileName);
-		}
-
 		public static ImageMatchTemplate FromJsonFile(string path, string resourcesDirectory)
 		{
 			var template = JsonConvert.DeserializeObject<ImageMatchTemplate>(File.ReadAllText(path));
 			template.Name = Path.GetFileNameWithoutExtension(path);
 
-			var resourceName = Directory.GetFiles(resourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == template.Name);
+			foreach (var searchRectangle in template.SearchRectangles)
+			{
+				searchRectangle.Value.Init();
+			}
 
-			template.LoadBitmap(resourceName);
+			var resourceName = Directory.GetFiles(resourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == template.Name);
+			template.Bitmap = (Bitmap)Image.FromFile(resourceName);
 
 			return template;
 		}

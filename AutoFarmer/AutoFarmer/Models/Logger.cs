@@ -33,7 +33,7 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		public static void GraphicalLog(Bitmap source, Point[] clickPoints, Rectangle[] searchRectangles, string templateName, string searchRectangleName, List<SerializableRectangle> searchAreas)
+		public static void GraphicalLog(Bitmap source, Point[] clickPoints, Rectangle[] searchRectangles, string templateName, string searchRectangleName, List<Rectangle> searchAreas)
 		{
 			try
 			{

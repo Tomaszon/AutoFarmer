@@ -7,94 +7,36 @@ using System.Threading.Tasks;
 
 namespace AutoFarmer.Models
 {
-	public class SearchArea
+	public class SearchAreas
 	{
-		public static SerializableRectangle Left(int w)
+		public static SerializableRectangle FromEnum(int w, int h, NamedSearchArea searchArea)
 		{
 			return new SerializableRectangle()
 			{
-				X = 0,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H
+				X = Is(searchArea, NamedSearchArea.Left) ? 0 : Config.Instance.ScreenSize.W / 2 + w / 2 - w,
+				Y = Is(searchArea, NamedSearchArea.Upper) ? 0 : Config.Instance.ScreenSize.H / 2 + h / 2 - h,
+				W = Is(searchArea, NamedSearchArea.Upper, NamedSearchArea.Lower) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2 + w / 2,
+				H = Is(searchArea, NamedSearchArea.Left, NamedSearchArea.Right) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2 + h / 2
 			};
 		}
 
-		public static SerializableRectangle Right(int w)
+		public static List<SerializableRectangle> FromEnums(int w, int h, params NamedSearchArea[] searchAreas)
 		{
-			return new SerializableRectangle()
-			{
-				X = Config.Instance.ScreenSize.W / 2 + w / 2 - w,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H
-			};
+			var result = new List<SerializableRectangle>();
+
+			Array.ForEach(searchAreas, a => result.Add(FromEnum(w, h, a)));
+
+			return result;
 		}
 
-		public static SerializableRectangle Upper(int h)
+		private static bool Is(NamedSearchArea na1, NamedSearchArea na2)
 		{
-			return new SerializableRectangle()
-			{
-				X = 0,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
+			return (int)na1 % (int)na2 == 0;
 		}
 
-		public static SerializableRectangle Lower(int h)
+		private static bool Is(NamedSearchArea namedSearchArea, params NamedSearchArea[] namedSearchAreas)
 		{
-			return new SerializableRectangle()
-			{
-				X = 0,
-				Y = Config.Instance.ScreenSize.H / 2 + h / 2 - h,
-				W = Config.Instance.ScreenSize.W,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
-		}
-
-		public static SerializableRectangle UpperLeft(int w, int h)
-		{
-			return new SerializableRectangle()
-			{
-				X = 0,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
-		}
-
-		public static SerializableRectangle UpperRight(int w, int h)
-		{
-			return new SerializableRectangle()
-			{
-				X = Config.Instance.ScreenSize.W / 2 + w / 2 - w,
-				Y = 0,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
-		}
-
-		public static SerializableRectangle LowerLeft(int w, int h)
-		{
-			return new SerializableRectangle()
-			{
-				X = 0,
-				Y = Config.Instance.ScreenSize.H / 2 + h / 2 - h,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
-		}
-
-		public static SerializableRectangle LowerRight(int w, int h)
-		{
-			return new SerializableRectangle()
-			{
-				X = Config.Instance.ScreenSize.W / 2 + w / 2 - w,
-				Y = Config.Instance.ScreenSize.H / 2 + h / 2 - h,
-				W = Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Config.Instance.ScreenSize.H / 2 + h / 2
-			};
+			return namedSearchAreas?.Contains(namedSearchArea) ?? false;
 		}
 	}
 }

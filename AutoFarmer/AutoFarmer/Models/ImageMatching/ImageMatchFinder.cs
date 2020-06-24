@@ -36,57 +36,41 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 		}
 
-		public static List<Point> FindClickPointForTemplate(MatchCondition condition, Bitmap sourceImage, float similiarityThreshold)
+		public static List<SerializablePoint> FindClickPointForTemplate(MatchCondition condition, Bitmap sourceImage, float similiarityThreshold)
 		{
-			//TODO scaling rework in progress 
+			var matchCollection = CalculateMatches(sourceImage, condition, similiarityThreshold);
 
-			var matches = CalculateMatches(sourceImage, condition, similiarityThreshold, out var relativeClickPoint, out var scaledRelativeClickPoint, out var searchAreas, out var scaledSearchAreas, out Bitmap scaledSourceImage);
-
-			if (matches.Length < condition.MinimumOccurrence)
+			if (matchCollection.Matches.Count < condition.MinimumOccurrence)
 			{
 				throw new ImageMatchNotFoundException(_performanceMonitor.Elapsed);
 			}
 
-			if (matches.Length > condition.MaximumOccurrence)
+			if (matchCollection.Matches.Count > condition.MaximumOccurrence)
 			{
-				LogAmbiguousException(matches, scaledSourceImage, scaledRelativeClickPoint, condition.TemplateName, condition.SearchRectangleName, scaledSearchAreas);
+				Logger.GraphicalLog(matchCollection, condition.TemplateName, condition.SearchRectangleName);
 
-				throw new ImageMatchAmbiguousException(matches.Length, _performanceMonitor.Elapsed);
+				throw new ImageMatchAmbiguousException(matchCollection.Matches.Count(), _performanceMonitor.Elapsed);
 			}
 
-			List<Point> clickPoints = new List<Point>();
+			Logger.GraphicalLog(matchCollection, condition.TemplateName, condition.SearchRectangleName);
 
-			foreach (var match in matches)
-			{
-				Rectangle matchRectangle = match.Rectangle;
-
-				Point clickPoint = CalculateClickPoint(ref matchRectangle, relativeClickPoint);
-
-				clickPoints.Add(clickPoint);
-
-				Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at {clickPoint}. Search time: {_performanceMonitor.Elapsed}");
-
-				Logger.GraphicalLog(scaledSourceImage, new[] { clickPoint }, new[] { matchRectangle }, condition.TemplateName, condition.SearchRectangleName, searchAreas);
-			}
-
-			return OrderResults(clickPoints, condition.OrderBy);
+			return OrderResults(matchCollection.Matches.Select(m => m.ClickPoint), condition.OrderBy);
 		}
 
-		private static TemplateMatch[] CalculateMatches(Bitmap sourceImage, MatchCondition condition, float similiarityThreshold, out Size relativeClickPoint, out Size scaledRelativeClickPoint, out List<Rectangle> searchAreas, out List<Rectangle> scaledSearchAreas, out Bitmap scaledSourceImage)
+		private static ImageMatchCollection CalculateMatches(Bitmap sourceImage, MatchCondition condition, float similiarityThreshold)
 		{
-			ImageMatchTemplate template = Instance.Templates.First(t => t.Name == condition.TemplateName);
-
+			var template = Instance.Templates.First(t => t.Name == condition.TemplateName);
+			var scaledTemplate = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
+			var scaledSearchRectangle = searchRectangle.Scale(Instance.Scale);
+			var scaledSearchImage = CropTemplateImage(scaledTemplate, scaledSearchRectangle);
 
-			Bitmap scaledTemplateImage = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
-			SearchRectangle scaledSearchRectangle = searchRectangle.Scale(Instance.Scale);
-			Bitmap scaledSearchImage = CropTemplateImage(scaledTemplateImage, scaledSearchRectangle);
-
-			scaledSourceImage = ConvertAndScaleBitmapTo24bpp(sourceImage);
-			relativeClickPoint = searchRectangle.RelativeClickPoint;
-			scaledRelativeClickPoint = scaledSearchRectangle.RelativeClickPoint;
-			searchAreas = searchRectangle.SearchAreas.Select(r => (Rectangle)r).ToList();
-			scaledSearchAreas = scaledSearchRectangle.SearchAreas.Select(r => (Rectangle)r).ToList();
+			var result = new ImageMatchCollection()
+			{
+				ScaledSearchAreas = scaledSearchRectangle.SearchAreas,
+				SearchAreas = searchRectangle.SearchAreas,
+				ScaledSource = ConvertAndScaleBitmapTo24bpp(sourceImage)
+			};
 
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
@@ -94,16 +78,21 @@ namespace AutoFarmer.Models.ImageMatching
 
 			TemplateMatch[] matches = Array.Empty<TemplateMatch>();
 
-			foreach (var searchArea in scaledSearchRectangle.SearchAreas)
+			foreach (var searchArea in result.SearchAreas)
 			{
-				matches = matching.ProcessImage(scaledSourceImage, scaledSearchImage, searchArea);
+				matches = matching.ProcessImage(result.ScaledSource, scaledSearchImage, (Rectangle)searchArea);
+
+				matches.ToList().ForEach(tm =>
+					result.Matches.Add(new ImageMatch((SerializablePoint)tm.Rectangle.Location + scaledSearchRectangle.RelativeClickPoint, (SerializableRectangle)tm.Rectangle, 1 / Instance.Scale)));
 
 				if (matches.Length != 0) break;
 			}
 
 			_performanceMonitor.Stop();
 
-			return matches;
+			result.Matches.ForEach(m => Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at {m.ClickPoint}. Search time: {_performanceMonitor.Elapsed}"));
+
+			return result;
 		}
 
 		private static Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
@@ -134,38 +123,9 @@ namespace AutoFarmer.Models.ImageMatching
 			return searchImage;
 		}
 
-		private static Point CalculateClickPoint(ref Rectangle rectangle, Size relativeClickPoint)
+		private static List<SerializablePoint> OrderResults(IEnumerable<SerializablePoint> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
 		{
-			rectangle = new Rectangle((int)(rectangle.X / Instance.Scale), (int)(rectangle.Y / Instance.Scale),
-				(int)(rectangle.Width / Instance.Scale), (int)(rectangle.Height / Instance.Scale));
-
-			Point clickPoint = rectangle.Location + relativeClickPoint;
-
-			Logger.Log($"Click point calculated: {clickPoint} for rectangle: {rectangle}");
-
-			return clickPoint;
-		}
-
-		private static void LogAmbiguousException(TemplateMatch[] result, Bitmap sourceImage, Size relativeClickPoint, string templateName, string searchRectangleName, List<Rectangle> searchAreas)
-		{
-			List<Point> falseClickPoints = new List<Point>();
-			List<Rectangle> falseMatchRectangles = new List<Rectangle>();
-
-			foreach (var falseMatch in result)
-			{
-				var falseMatchRectangle = falseMatch.Rectangle;
-				var falseClickPoint = CalculateClickPoint(ref falseMatchRectangle, relativeClickPoint);
-
-				falseClickPoints.Add(falseClickPoint);
-				falseMatchRectangles.Add(falseMatchRectangle);
-			}
-
-			Logger.GraphicalLog(sourceImage, falseClickPoints.ToArray(), falseMatchRectangles.ToArray(), templateName, searchRectangleName, searchAreas);
-		}
-
-		private static List<Point> OrderResults(List<Point> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
-		{
-			if (orderBy is null) return points;
+			if (orderBy is null) return points.ToList();
 
 			var result = orderBy.TryGetValue(MatchOrderBy.X, out var orderLike) && orderLike == MatchOrderLike.Descending
 				? points.OrderByDescending(e => e.X) : points.OrderBy(e => e.X);

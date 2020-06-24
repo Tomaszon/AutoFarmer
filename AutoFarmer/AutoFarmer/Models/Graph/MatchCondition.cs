@@ -45,9 +45,9 @@ namespace AutoFarmer.Models.GraphNamespace
 			return JsonConvert.DeserializeObject<MatchCondition>(JsonConvert.SerializeObject(this));
 		}
 
-		public bool Process(out List<Point> actionPoints)
+		public bool Process(out List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
 
 			float maximum = MaximumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMaximumSimiliarityThreshold : MaximumSimiliarityThreshold;
 			float minimum = MinimumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMiniumuSimiliarityThreshold : MinimumSimiliarityThreshold;

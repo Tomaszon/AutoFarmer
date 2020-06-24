@@ -24,7 +24,7 @@ namespace AutoFarmer.Models
 			{
 				MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
 
-				List<Point> actionPoints = new List<Point>() { MouseSafetyMeasures.GetCursorCurrentPosition() };
+				List<SerializablePoint> actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.GetCursorCurrentPosition() };
 
 				do
 				{
@@ -76,7 +76,7 @@ namespace AutoFarmer.Models
 			return node != null;
 		}
 
-		private void ProcessNode(ActionNode node, params Point[] actionPositions)
+		private void ProcessNode(ActionNode node, params SerializablePoint[] actionPositions)
 		{
 			node.IsVisited = true;
 
@@ -92,9 +92,9 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		private bool ProcessEdge(ConditionEdge edge, out List<Point> actionPoints)
+		private bool ProcessEdge(ConditionEdge edge, out List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
 
 			if (edge.Conditions is null) return true;
 

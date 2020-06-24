@@ -13,30 +13,21 @@ namespace AutoFarmer.Models
 		{
 			return new SerializableRectangle()
 			{
-				X = Is(searchArea, NamedSearchArea.Left) ? 0 : Config.Instance.ScreenSize.W / 2 + w / 2 - w,
-				Y = Is(searchArea, NamedSearchArea.Upper) ? 0 : Config.Instance.ScreenSize.H / 2 + h / 2 - h,
-				W = Is(searchArea, NamedSearchArea.Upper, NamedSearchArea.Lower) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Is(searchArea, NamedSearchArea.Left, NamedSearchArea.Right) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2 + h / 2
+				X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2 + w / 2 - w,
+				Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2 + h / 2 - h,
+				W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2 + w / 2,
+				H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2 + h / 2
 			};
 		}
 
 		public static List<SerializableRectangle> FromEnums(int w, int h, params NamedSearchArea[] searchAreas)
 		{
-			var result = new List<SerializableRectangle>();
-
-			Array.ForEach(searchAreas, a => result.Add(FromEnum(w, h, a)));
-
-			return result;
+			return searchAreas.Select(a => FromEnum(w, h, a)).ToList();
 		}
 
-		private static bool Is(NamedSearchArea na1, NamedSearchArea na2)
+		private static bool Is(NamedSearchArea searchArea, int flag)
 		{
-			return (int)na1 % (int)na2 == 0;
-		}
-
-		private static bool Is(NamedSearchArea namedSearchArea, params NamedSearchArea[] namedSearchAreas)
-		{
-			return namedSearchAreas?.Contains(namedSearchArea) ?? false;
+			return ((int)searchArea & flag) == flag;
 		}
 	}
 }

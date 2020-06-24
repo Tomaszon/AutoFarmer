@@ -37,7 +37,7 @@ namespace AutoFarmer.Models.GraphNamespace
 			CurrentCrossing = 0;
 		}
 
-		public bool Process(out List<Point> actionPoints)
+		public bool Process(out List<SerializablePoint> actionPoints)
 		{
 			var preRes = ProcessConditon(Conditions.PreCondition, out actionPoints);
 
@@ -70,9 +70,9 @@ namespace AutoFarmer.Models.GraphNamespace
 			}
 		}
 
-		private bool ProcessConditon(MatchCondition condition, out List<Point> actionPoints)
+		private bool ProcessConditon(MatchCondition condition, out List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<Point>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
 
 			if (condition is null) return true;
 

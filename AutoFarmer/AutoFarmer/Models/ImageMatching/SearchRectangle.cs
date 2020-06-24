@@ -24,11 +24,11 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public AutoSearchAreaMode AutoSearchAreaMode { get; set; } = AutoSearchAreaMode.LeftRight;
 
-		public Size RelativeClickPoint
+		public SerializableSize RelativeClickPoint
 		{
 			get
 			{
-				return ClickPoint == null ? new Size(W / 2, H / 2) : new Size(ClickPoint.X - X, ClickPoint.Y - Y);
+				return ClickPoint == null ? new SerializableSize() { W = W / 2, H = H / 2 } : new SerializableSize() { W = ClickPoint.X - X, H = ClickPoint.Y - Y };
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace AutoFarmer.Models.ImageMatching
 				W = (int)(W * scale),
 				H = (int)(H * scale),
 				AutoSearchAreaMode = AutoSearchAreaMode,
-				ClickPoint = ClickPoint.Scale(scale),
+				ClickPoint = ClickPoint?.Scale(scale),
 				NamedSearchAreas = NamedSearchAreas,
 				SearchAreas = SearchAreas.Select(a => a.Scale(scale)).ToList()
 			};
@@ -59,6 +59,11 @@ namespace AutoFarmer.Models.ImageMatching
 			{
 				switch (AutoSearchAreaMode)
 				{
+					case AutoSearchAreaMode.Full:
+					{
+						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.Full));
+						break;
+					}
 					case AutoSearchAreaMode.LeftRight:
 					{
 						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.Left, NamedSearchArea.Right));

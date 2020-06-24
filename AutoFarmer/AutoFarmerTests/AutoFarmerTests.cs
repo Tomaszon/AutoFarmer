@@ -17,106 +17,81 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate" };
+			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle1", TemplateName = "TestTemplate1" };
 
 			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
 			sr.Init();
 
-			var srs = new Dictionary<string, SearchRectangle>
-			{
-				{ "TestRectangle", sr }
-			};
+			var srs = new Dictionary<string, SearchRectangle> { { "TestRectangle1", sr } };
 
-			var t = new ImageMatchTemplate() { Name = "TestTemplate", Bitmap = Properties.Resources.characterSelector1, SearchRectangles = srs };
+			var t = new ImageMatchTemplate() { Name = "TestTemplate1", Bitmap = Properties.Resources.characterSelector1, SearchRectangles = srs };
 
-			var ts = new List<ImageMatchTemplate>
-			{
-				t
-			};
+			var ts = new List<ImageMatchTemplate> { t };
 
 			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 			ImageMatchFinder.Instance.Templates = ts;
 
 			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.characterSelector1Source, 0.99f);
 
-			var expectedPoint = new Point(480, 843);
+			var expectedPoint = new SerializablePoint() { X = 480, Y = 843 };
 
 			Assert.AreEqual(expectedPoint, points[0]);
 		}
 
 		[TestMethod]
-		public void TestMethod2()
+		public void TestMethod2v1()
 		{
-			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
-
-			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>()
-			{
-				{ MatchOrderBy.Y, MatchOrderLike.Descending }
-			};
-
-			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
-
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, AutoSearchAreaMode = AutoSearchAreaMode.Quarter };
-			sr.Init();
-
-			var srs = new Dictionary<string, SearchRectangle>
-			{
-				{ "TestRectangle", sr }
-			};
-
-			var t = new ImageMatchTemplate() { Name = "TestTemplate", Bitmap = Properties.Resources.assignmentsCompleted, SearchRectangles = srs };
-
-			var ts = new List<ImageMatchTemplate>
-			{
-				t
-			};
-
-			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
-			ImageMatchFinder.Instance.Templates = ts;
-
-			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.assignmentsCompleted, 0.99f);
-
-			var expectedPoint1 = new Point(1388, 393);
-			var expectedPoint2 = new Point(1388, 527);
-
-			Assert.AreEqual(expectedPoint1, points[1]);
-			Assert.AreEqual(expectedPoint2, points[0]);
+			TestMethod2Core("TestTemplate2v1", "TestRectangle2v1", AutoSearchAreaMode.Full);
 		}
 
 		[TestMethod]
-		public void TestMethod2d5()
+		public void TestMethod2v2()
+		{
+			TestMethod2Core("TestTemplate2v2", "TestRectangle2v2", AutoSearchAreaMode.LeftRight);
+		}
+
+		[TestMethod]
+		public void TestMethod2v3()
+		{
+			TestMethod2Core("TestTemplate2v3", "TestRectangle2v3", AutoSearchAreaMode.UpperLower);
+		}
+
+		[TestMethod]
+		public void TestMethod2v4()
+		{
+			TestMethod2Core("TestTemplate2v4", "TestRectangle2v4", AutoSearchAreaMode.Quarter);
+		}
+
+		[TestMethod]
+		public void TestMethod2v5()
+		{
+			TestMethod2Core("TestTemplate2v5", "TestRectangle2v5", customSearchAreas: new SerializableRectangle() { X = 898, Y = 0, H = 1080, W = 1022 });
+		}
+
+		private void TestMethod2Core(string templateName, string searchRectangleName, AutoSearchAreaMode autoSearchAreaMode = default, params SerializableRectangle[] customSearchAreas)
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>()
-			{
-				{ MatchOrderBy.Y, MatchOrderLike.Descending }
-			};
+			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>() { { MatchOrderBy.Y, MatchOrderLike.Descending } };
 
-			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle", TemplateName = "TestTemplate", MaximumOccurrence = 2, OrderBy = o };
+			MatchCondition c = new MatchCondition() { SearchRectangleName = searchRectangleName, TemplateName = templateName, MaximumOccurrence = 2, OrderBy = o };
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchAreas = new List<SerializableRectangle>() { new SerializableRectangle() { X = 898, Y = 0, H = 1080, W = 1022 } } };
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, AutoSearchAreaMode = autoSearchAreaMode, SearchAreas = new List<SerializableRectangle>(customSearchAreas) };
 			sr.Init();
 
-			var srs = new Dictionary<string, SearchRectangle>
-			{
-				{ "TestRectangle", sr }
-			};
+			var srs = new Dictionary<string, SearchRectangle> { { searchRectangleName, sr } };
 
-			var t = new ImageMatchTemplate() { Name = "TestTemplate", Bitmap = Properties.Resources.assignmentsCompleted, SearchRectangles = srs };
+			var t = new ImageMatchTemplate() { Name = templateName, Bitmap = Properties.Resources.assignmentsCompleted, SearchRectangles = srs };
 
-			var ts = new List<ImageMatchTemplate>
-			{
-				t
-			};
+			var ts = new List<ImageMatchTemplate> { t };
 
 			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 			ImageMatchFinder.Instance.Templates = ts;
 
 			var points = ImageMatchFinder.FindClickPointForTemplate(c, Properties.Resources.assignmentsCompleted, 0.99f);
 
-			var expectedPoint1 = new Point(1388, 393);
-			var expectedPoint2 = new Point(1388, 527);
+			var expectedPoint1 = new SerializablePoint() { X = 1388, Y = 393 };
+			var expectedPoint2 = new SerializablePoint() { X = 1388, Y = 527 };
 
 			Assert.AreEqual(expectedPoint1, points[1]);
 			Assert.AreEqual(expectedPoint2, points[0]);
@@ -145,6 +120,29 @@ namespace AutoFarmerTests
 			Assert.AreEqual($"startScrollDownButton05", a[5].StartNodeName);
 
 			Assert.AreEqual($"startScrollUpButton06", a[16].StartNodeName);
+		}
+
+		[TestMethod]
+		public void TestMethod5()
+		{
+			SerializablePoint p1 = new SerializablePoint() { X = 10, Y = 20 };
+			SerializablePoint p2 = new SerializablePoint() { X = 10, Y = 20 };
+			SerializablePoint p3 = new SerializablePoint() { X = 5, Y = 20 };
+			SerializablePoint p4 = null;
+
+			Assert.AreEqual(p1, p2);
+			Assert.AreNotEqual(p1, p3);
+			Assert.AreNotEqual(p1, p4);
+		}
+
+		[TestMethod]
+		public void TestMethod6()
+		{
+			var e = (int)NamedSearchArea.Left;
+
+			Assert.AreEqual(0b1101, e | 0b0000);
+			Assert.AreEqual(0b1101, e & 0b1111);
+			Assert.AreEqual(0b1100, e & 0b1100);
 		}
 	}
 }

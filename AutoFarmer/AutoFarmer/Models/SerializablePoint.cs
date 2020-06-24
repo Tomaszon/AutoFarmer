@@ -8,30 +8,60 @@ namespace AutoFarmer.Models
 
 		public int Y { get; set; }
 
-		public SerializablePoint(int x, int y)
-		{
-			X = x;
-			Y = y;
-		}
-
 		public SerializablePoint Scale(double scale)
 		{
-			return new SerializablePoint((int)(X * scale), (int)(Y * scale));
+			return new SerializablePoint()
+			{
+				X = (int)(X * scale),
+				Y = (int)(Y * scale)
+			};
 		}
 
-		public static Size operator -(SerializablePoint point, SerializablePoint other)
+		public override bool Equals(object obj)
 		{
-			return new Size(point.X - other.X, point.Y - other.Y);
+			if (obj is SerializablePoint p)
+			{
+				return X == p.X && Y == p.Y;
+			}
+
+			return false;
 		}
 
-		public static implicit operator Point(SerializablePoint point)
+		public override string ToString()
+		{
+			return ((Point)this).ToString();
+		}
+
+		public static SerializableSize operator -(SerializablePoint point, SerializablePoint other)
+		{
+			return new SerializableSize()
+			{
+				W = point.X - other.X,
+				H = point.Y - other.Y
+			};
+		}
+
+		public static SerializablePoint operator +(SerializablePoint point, SerializableSize other)
+		{
+			return new SerializablePoint()
+			{
+				X = point.X + other.W,
+				Y = point.Y + other.H
+			};
+		}
+
+		public static explicit operator Point(SerializablePoint point)
 		{
 			return new Point(point.X, point.Y);
 		}
 
-		public static implicit operator SerializablePoint(Point point)
+		public static explicit operator SerializablePoint(Point point)
 		{
-			return new SerializablePoint(point.X, point.Y);
+			return new SerializablePoint()
+			{
+				X = point.X,
+				Y = point.Y
+			};
 		}
 	}
 }

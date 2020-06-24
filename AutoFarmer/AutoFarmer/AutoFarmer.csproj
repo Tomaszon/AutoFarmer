@@ -70,6 +70,8 @@
     <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\Graph\Graph.cs" />
     <Compile Include="Models\Graph\Options.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatch.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatchCollection.cs" />
     <Compile Include="Models\SearchArea.cs" />
     <Compile Include="Models\SerializableRectangle.cs" />
     <Compile Include="Models\PerformanceMonitor.cs" />

@@ -12,9 +12,35 @@ namespace AutoFarmer.Models
 
 		public int H { get; set; }
 
-		public static implicit operator Rectangle(SerializableRectangle rec)
+		public static explicit operator Rectangle(SerializableRectangle rec)
 		{
 			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
+		}
+
+		public static explicit operator SerializableRectangle(Rectangle rec)
+		{
+			return new SerializableRectangle()
+			{
+				X = rec.X,
+				Y = rec.Y,
+				W = rec.Width,
+				H = rec.Height
+			};
+		}
+
+		public override string ToString()
+		{
+			return ((Rectangle)this).ToString();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is SerializableRectangle r)
+			{
+				return X == r.X && Y == r.Y && W == r.W && H == r.H;
+			}
+
+			return false;
 		}
 
 		public SerializableRectangle Scale(double scale)

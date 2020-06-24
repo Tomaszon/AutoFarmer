@@ -29,16 +29,16 @@ namespace AutoFarmer.Models
 		{
 			GetCursorPos(out Point currentPosition);
 
-			return currentPosition;
+			return (SerializablePoint)currentPosition;
 		}
 
 		public static bool IsMouseInSafePosition()
 		{
 			var currentPosition = GetCursorCurrentPosition();
 
-			Size difference = Instance.LastActionPosition - currentPosition;
+			SerializableSize difference = Instance.LastActionPosition - currentPosition;
 
-			double distance = Math.Sqrt(Math.Pow(difference.Width, 2) + Math.Pow(difference.Height, 2));
+			double distance = Math.Sqrt(Math.Pow(difference.W, 2) + Math.Pow(difference.H, 2));
 
 			Logger.Log($"Safe position check: current mouse position: {currentPosition}, last action position: {Instance.LastActionPosition}, distance: {distance}");
 

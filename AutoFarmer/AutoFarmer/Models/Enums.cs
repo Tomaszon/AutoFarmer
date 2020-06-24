@@ -1,4 +1,6 @@
-﻿namespace AutoFarmer.Models
+﻿using System;
+
+namespace AutoFarmer.Models
 {
 	public enum NotificationType
 	{
@@ -31,18 +33,20 @@
 
 	public enum NamedSearchArea
 	{
-		Left = 2,
-		Right = 3,
-		Upper = 5,
-		Lower = 7,
-		UpperLeft = 10,
-		UpperRight = 15,
-		LowerLeft = 14,
-		LowerRight = 21
+		Full = 0b1111,
+		Left = 0b1101,
+		Right = 0b0101,
+		Upper = 0b1110,
+		Lower = 0b1010,
+		UpperLeft = 0b1100,
+		UpperRight = 0b0100,
+		LowerLeft = 0b1000,
+		LowerRight = 0b0000
 	}
 
 	public enum AutoSearchAreaMode
 	{
+		Full,
 		LeftRight,
 		UpperLower,
 		Quarter

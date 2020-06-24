@@ -1,4 +1,5 @@
-﻿using AutoFarmer.Models.InputHandling;
+﻿using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Models.InputHandling;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,24 +34,21 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		public static void GraphicalLog(Bitmap source, Point[] clickPoints, Rectangle[] searchRectangles, string templateName, string searchRectangleName, List<Rectangle> searchAreas)
+		public static void GraphicalLog(ImageMatchCollection matchCollection, string templateName, string searchRectangleName)
 		{
 			try
 			{
 				if (Config.Instance.GraphicalLogging)
 				{
-					using (Graphics g = Graphics.FromImage(source))
+					using (Graphics g = Graphics.FromImage(matchCollection.ScaledSource))
 					{
 						Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
 
-						for (int i = 0; i < searchRectangles.Length; i++)
-						{
-							HighlightFind(g, searchRectangles[i], clickPoints[i]);
-						}
+						matchCollection.Matches.ForEach(m => HighlightFind(g, m.ScaledMatchRectangle, m.ScaledClickPoint));
 
-						HighlightSearchAreas(g, searchAreas.Select(r => (Rectangle)r).ToList(), searchRectangles);
+						HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.ScaledMatchRectangle));
 
-						source.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+						matchCollection.ScaledSource.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
 					}
 				}
 			}
@@ -60,38 +58,45 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		private static void HighlightSearchAreas(Graphics g, List<Rectangle> searchAreas, Rectangle[] searchRectangles)
+		private static void HighlightSearchAreas(Graphics g, List<SerializableRectangle> searchAreas, IEnumerable<SerializableRectangle> searchRectangles)
 		{
 			foreach (var area1 in searchAreas)
 			{
 				foreach (var area2 in searchAreas)
 				{
-					if (area1.IntersectsWith(area2) && area1 != area2)
+					if (((Rectangle)area1).IntersectsWith((Rectangle)area2) && area1 != area2)
 					{
-						Rectangle r = new Rectangle(area1.Location, area1.Size);
-						r.Intersect(area2);
+						Rectangle r = new Rectangle(area1.X, area1.Y, area1.W, area1.H);
+						r.Intersect((Rectangle)area2);
 
 						g.FillRectangle(new SolidBrush(Color.FromArgb(16, 128, 255, 128)), r);
 					}
 				}
 			}
-			
-			searchAreas.Where(a => searchRectangles.All(r => !a.Contains(r))).ToList().ForEach(e =>
-				g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
 
-			searchAreas.Where(a => searchRectangles.All(r => a.Contains(r))).ToList().ForEach(e =>
-				g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.Width - 1, e.Height - 1)));
+			searchAreas.Where(a =>
+				searchRectangles.All(r =>
+					!((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
+						g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), new Rectangle(e.X, e.Y, e.W - 1, e.H - 1)));
 
-			Region region = new Region(new Rectangle(new Point(0, 0), Config.Instance.ScreenSize));
+			searchAreas.Where(a =>
+				searchRectangles.All(r =>
+					((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
+						g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.W - 1, e.H - 1)));
 
-			searchAreas.Where(a => searchRectangles.All(r => a.Contains(r))).ToList().ForEach(a => region.Exclude(a));
+			Region region = new Region(new Rectangle(new Point(0, 0), (Size)Config.Instance.ScreenSize));
 
-			g.FillRegion(new SolidBrush(Color.FromArgb(64, 0, 0, 0)), region);
+			searchAreas.Where(a =>
+				searchRectangles.All(r =>
+					((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(a =>
+						region.Exclude((Rectangle)a));
+
+			g.FillRegion(new SolidBrush(Color.FromArgb(128, 0, 0, 0)), region);
 		}
 
-		private static void HighlightFind(Graphics g, Rectangle rectangle, Point clickPoint)
+		private static void HighlightFind(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
 		{
-			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 1, rectangle.Height - 1));
+			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.X, rectangle.Y, rectangle.W - 1, rectangle.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));
 		}

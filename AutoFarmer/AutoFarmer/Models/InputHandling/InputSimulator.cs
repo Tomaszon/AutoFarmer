@@ -11,7 +11,7 @@ namespace AutoFarmer.Models.InputHandling
 
 		private readonly WindowsInput.InputSimulator _simulator = new WindowsInput.InputSimulator();
 
-		public Size ScreenSize { get; set; }
+		public SerializableSize ScreenSize { get; set; }
 
 		public static InputSimulator Instance { get; set; }
 
@@ -23,7 +23,7 @@ namespace AutoFarmer.Models.InputHandling
 			};
 		}
 
-		public void Simulate(string[] inputActionNames, Point actionPosition, int additionalDelay = 0)
+		public void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
 		{
 			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
 
@@ -101,11 +101,11 @@ namespace AutoFarmer.Models.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public void MoveMouseTo(Point point, int additionalDelay = 0)
+		public void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
 		{
 			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.Width) + 1, point.Y * (65536.0 / ScreenSize.Height) + 1);
+			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.W) + 1, point.Y * (65536.0 / ScreenSize.H) + 1);
 
 			Logger.Log($"Mouse move to: {point}");
 
@@ -114,11 +114,11 @@ namespace AutoFarmer.Models.InputHandling
 
 		public void ScanScreenForFadedUI(int delay = 100)
 		{
-			for (int y = 0; y < ScreenSize.Height; y += 50)
+			for (int y = 0; y < ScreenSize.H; y += 50)
 			{
-				for (int x = 0; x < ScreenSize.Width; x += 250)
+				for (int x = 0; x < ScreenSize.W; x += 250)
 				{
-					MoveMouseTo(new Point(x, y), Delay * -1 + delay);
+					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, Delay * -1 + delay);
 				}
 			}
 		}

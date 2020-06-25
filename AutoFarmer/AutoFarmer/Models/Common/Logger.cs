@@ -46,7 +46,7 @@ namespace AutoFarmer.Models
 
 						matchCollection.Matches.ForEach(m => HighlightFind(g, m.ScaledMatchRectangle, m.ScaledClickPoint));
 
-						HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.ScaledMatchRectangle));
+						HighlightSearchAreas(g, matchCollection.ScaledSearchAreas, matchCollection.Matches.Select(m => m.ScaledMatchRectangle));
 
 						matchCollection.ScaledSource.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
 					}
@@ -77,21 +77,16 @@ namespace AutoFarmer.Models
 			searchAreas.Where(a =>
 				searchRectangles.All(r =>
 					!((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
-						g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), new Rectangle(e.X, e.Y, e.W - 1, e.H - 1)));
+					{
+						var rectangle = new Rectangle(e.X, e.Y, e.W - 1, e.H - 1);
+						g.FillRectangle(new SolidBrush(Color.FromArgb(128, 0, 0, 0)), rectangle);
+						g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), rectangle);
+					});
 
 			searchAreas.Where(a =>
 				searchRectangles.All(r =>
 					((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
 						g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.W - 1, e.H - 1)));
-
-			Region region = new Region(new Rectangle(new Point(0, 0), (Size)Config.Instance.ScreenSize));
-
-			searchAreas.Where(a =>
-				searchRectangles.All(r =>
-					((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(a =>
-						region.Exclude((Rectangle)a));
-
-			g.FillRegion(new SolidBrush(Color.FromArgb(128, 0, 0, 0)), region);
 		}
 
 		private static void HighlightFind(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)

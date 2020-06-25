@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.ImageMatching
 {
-	public class SearchAreas
+	public class SearchAreaFactory
 	{
 		public static SerializableRectangle FromEnum(int w, int h, NamedSearchArea searchArea)
 		{

@@ -65,21 +65,21 @@
     <Compile Include="Models\Graph\MatchCondition.cs" />
     <Compile Include="Models\Graph\ConditionEdge.cs" />
     <Compile Include="Models\Graph\Conditions.cs" />
-    <Compile Include="Models\Config.cs" />
-    <Compile Include="Models\Enums.cs" />
-    <Compile Include="Models\Exceptions.cs" />
+    <Compile Include="Models\Common\Config.cs" />
+    <Compile Include="Models\Common\Enums.cs" />
+    <Compile Include="Models\Common\Exceptions.cs" />
     <Compile Include="Models\Graph\Graph.cs" />
     <Compile Include="Models\Graph\Options.cs" />
     <Compile Include="Models\ImageMatching\ImageMatch.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchCollection.cs" />
-    <Compile Include="Models\SearchArea.cs" />
-    <Compile Include="Models\SerializableRectangle.cs" />
-    <Compile Include="Models\PerformanceMonitor.cs" />
+    <Compile Include="Models\ImageMatching\SearchAreaFactory.cs" />
+    <Compile Include="Models\Common\SerializableRectangle.cs" />
+    <Compile Include="Models\Common\PerformanceMonitor.cs" />
     <Compile Include="Models\InputHandling\InputSimulator.cs" />
-    <Compile Include="Models\MouseSafetyMeasures.cs" />
+    <Compile Include="Models\Common\MouseSafetyMeasures.cs" />
     <Compile Include="Models\InputHandling\NotificationPlayer.cs" />
-    <Compile Include="Models\Logger.cs" />
-    <Compile Include="Models\SerializableSize.cs" />
+    <Compile Include="Models\Common\Logger.cs" />
+    <Compile Include="Models\Common\SerializableSize.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchFinder.cs" />
@@ -90,9 +90,9 @@
     </Compile>
     <Compile Include="Models\Graph\ActionNode.cs" />
     <Compile Include="Models\GraphMachine.cs" />
-    <Compile Include="Models\ImageMatching\ScreenshotMaker.cs" />
+    <Compile Include="Models\ImageMatching\ImageFactory.cs" />
     <Compile Include="Models\ImageMatching\SearchRectangle.cs" />
-    <Compile Include="Models\SerializablePoint.cs" />
+    <Compile Include="Models\Common\SerializablePoint.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

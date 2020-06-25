@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AutoFarmer.Models.ImageMatching
 {
@@ -36,9 +37,9 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 		}
 
-		public static List<SerializablePoint> FindClickPointForTemplate(MatchCondition condition, Bitmap sourceImage, float similiarityThreshold)
+		public static List<SerializablePoint> FindClickPointForTemplate(MatchCondition condition, Bitmap scaledSource, float similiarityThreshold)
 		{
-			var matchCollection = CalculateMatches(sourceImage, condition, similiarityThreshold);
+			var matchCollection = CalculateMatches(scaledSource, condition, similiarityThreshold);
 
 			if (matchCollection.Matches.Count < condition.MinimumOccurrence)
 			{
@@ -57,10 +58,10 @@ namespace AutoFarmer.Models.ImageMatching
 			return OrderResults(matchCollection.Matches.Select(m => m.ClickPoint), condition.OrderBy);
 		}
 
-		private static ImageMatchCollection CalculateMatches(Bitmap sourceImage, MatchCondition condition, float similiarityThreshold)
+		private static ImageMatchCollection CalculateMatches(Bitmap scaledSource, MatchCondition condition, float similiarityThreshold)
 		{
 			var template = Instance.Templates.First(t => t.Name == condition.TemplateName);
-			var scaledTemplate = ConvertAndScaleBitmapTo24bpp(template.Bitmap);
+			var scaledTemplate = ImageFactory.ConvertAndScaleBitmap(template.Bitmap, Instance.Scale);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 			var scaledSearchRectangle = searchRectangle.Scale(Instance.Scale);
 			var scaledSearchImage = CropTemplateImage(scaledTemplate, scaledSearchRectangle);
@@ -69,44 +70,40 @@ namespace AutoFarmer.Models.ImageMatching
 			{
 				ScaledSearchAreas = scaledSearchRectangle.SearchAreas,
 				SearchAreas = searchRectangle.SearchAreas,
-				ScaledSource = ConvertAndScaleBitmapTo24bpp(sourceImage)
+				ScaledSource = scaledSource
 			};
-
-			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
 			_performanceMonitor.Start();
 
-			TemplateMatch[] matches = Array.Empty<TemplateMatch>();
-
 			foreach (var searchArea in result.SearchAreas)
 			{
-				matches = matching.ProcessImage(result.ScaledSource, scaledSearchImage, (Rectangle)searchArea);
+				result.Matches.AddRange(CollectMatches(scaledSource, scaledSearchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
 
-				matches.ToList().ForEach(tm =>
-					result.Matches.Add(new ImageMatch((SerializablePoint)tm.Rectangle.Location + scaledSearchRectangle.RelativeClickPoint, (SerializableRectangle)tm.Rectangle, 1 / Instance.Scale)));
+				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
+			}
 
-				if (matches.Length != 0) break;
+			if (result.Matches.Count < condition.MinimumOccurrence)
+			{
+				result.Matches = CollectMatches(scaledSource, scaledSearchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
 			}
 
 			_performanceMonitor.Stop();
 
-			result.Matches.ForEach(m => Logger.Log($"Match found for {condition.SearchRectangleName} of {condition.TemplateName} at {m.ClickPoint}. Search time: {_performanceMonitor.Elapsed}"));
-
 			return result;
 		}
 
-		private static Bitmap ConvertAndScaleBitmapTo24bpp(Bitmap original)
+		private static List<ImageMatch> CollectMatches(Bitmap scaledSource, Bitmap scaledSearchImage, SerializableSize relativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, SerializableRectangle area = null)
 		{
-			Bitmap clone = new Bitmap((int)(original.Width * Instance.Scale), (int)(original.Height * Instance.Scale), PixelFormat.Format24bppRgb);
+			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
-			using (Graphics gr = Graphics.FromImage(clone))
-			{
-				gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				gr.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-				gr.DrawImage(original, new Rectangle(0, 0, clone.Width, clone.Height));
-			}
+			var findResult = area is null ? matching.ProcessImage(scaledSource, scaledSearchImage) : matching.ProcessImage(scaledSource, scaledSearchImage, (Rectangle)area);
 
-			return clone;
+			var result = findResult.Select(tm =>
+				new ImageMatch((SerializablePoint)tm.Rectangle.Location + relativeClickPoint, (SerializableRectangle)tm.Rectangle, 1 / Instance.Scale)).ToList();
+
+			result.ForEach(m => Logger.Log($"Match found for {searchRectangleName} of {templateName} {(area is null ? "" : $"in {area} search area") } at {m.ClickPoint}. Search time: {_performanceMonitor.Elapsed}"));
+
+			return result;
 		}
 
 		private static Bitmap CropTemplateImage(Bitmap bitmap, Rectangle rectangle)

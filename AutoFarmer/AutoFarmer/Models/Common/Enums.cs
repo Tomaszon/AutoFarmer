@@ -43,12 +43,4 @@ namespace AutoFarmer.Models
 		LowerLeft = 0b1000,
 		LowerRight = 0b0000
 	}
-
-	public enum AutoSearchAreaMode
-	{
-		Full,
-		LeftRight,
-		UpperLower,
-		Quarter
-	}
 }

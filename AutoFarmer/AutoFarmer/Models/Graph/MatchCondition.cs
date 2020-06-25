@@ -69,9 +69,9 @@ namespace AutoFarmer.Models.GraphNamespace
 					{
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-						var sourceImage = ScreenshotMaker.CreateScreenshot();
+						var scaledSourceImage = ImageFactory.CreateScreenshot(ImageMatchFinder.Instance.Scale);
 
-						actionPoints = ImageMatchFinder.FindClickPointForTemplate(this, sourceImage, current);
+						actionPoints = ImageMatchFinder.FindClickPointForTemplate(this, scaledSourceImage, current);
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AutoFarmer.Models.ImageMatching
 {
@@ -22,8 +22,6 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public NamedSearchArea[] NamedSearchAreas { get; set; }
 
-		public AutoSearchAreaMode AutoSearchAreaMode { get; set; } = AutoSearchAreaMode.LeftRight;
-
 		public SerializableSize RelativeClickPoint
 		{
 			get
@@ -40,7 +38,6 @@ namespace AutoFarmer.Models.ImageMatching
 				Y = (int)(Y * scale),
 				W = (int)(W * scale),
 				H = (int)(H * scale),
-				AutoSearchAreaMode = AutoSearchAreaMode,
 				ClickPoint = ClickPoint?.Scale(scale),
 				NamedSearchAreas = NamedSearchAreas,
 				SearchAreas = SearchAreas.Select(a => a.Scale(scale)).ToList()
@@ -49,46 +46,46 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public void Init()
 		{
-			if (SearchAreas.Count != 0) return;
-
-			if (NamedSearchAreas != null)
+			if (SearchAreas.Count != 0)
 			{
-				Array.ForEach(NamedSearchAreas, a => SearchAreas.Add(Models.SearchAreas.FromEnum(W, H, a)));
-			}
-			else
-			{
-				switch (AutoSearchAreaMode)
+				if (IsOverlaping(out var intersectingRectangles))
 				{
-					case AutoSearchAreaMode.Full:
-					{
-						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.Full));
-						break;
-					}
-					case AutoSearchAreaMode.LeftRight:
-					{
-						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.Left, NamedSearchArea.Right));
-						break;
-					}
-					case AutoSearchAreaMode.UpperLower:
-					{
-						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.Upper, NamedSearchArea.Lower));
-
-						break;
-					}
-					case AutoSearchAreaMode.Quarter:
-					{
-						SearchAreas.AddRange(Models.SearchAreas.FromEnums(W, H, NamedSearchArea.UpperLeft,
-							NamedSearchArea.UpperRight, NamedSearchArea.LowerLeft, NamedSearchArea.LowerRight));
-
-						break;
-					}
+					throw new AutoFarmerException($"Custom search areas overlapping: {JsonConvert.SerializeObject(intersectingRectangles, Formatting.Indented)}");
 				}
 			}
+			else if (NamedSearchAreas != null)
+			{
+				SearchAreas.AddRange(SearchAreaFactory.FromEnums(W, H, NamedSearchAreas));
+			}
 		}
-
 		public static implicit operator Rectangle(SearchRectangle rec)
 		{
 			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
+		}
+
+		private bool IsOverlaping(out List<Tuple<SerializableRectangle, List<SerializableRectangle>>> intersectingRectangles)
+		{
+			intersectingRectangles = new List<Tuple<SerializableRectangle, List<SerializableRectangle>>>();
+
+			foreach (var a1 in SearchAreas)
+			{
+				foreach (var a2 in SearchAreas)
+				{
+					if (!a1.Equals(a2))
+					{
+						if (intersectingRectangles.FirstOrDefault(e => e.Item1.Equals(a1)) is var a && a != null)
+						{
+							a.Item2.Add(a2);
+						}
+						else
+						{
+							intersectingRectangles.Add(new Tuple<SerializableRectangle, List<SerializableRectangle>>(a1, new List<SerializableRectangle>() { a2 }));
+						}
+					}
+				}
+			}
+
+			return intersectingRectangles.Count > 0;
 		}
 	}
 }

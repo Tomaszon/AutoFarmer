@@ -16,6 +16,11 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public int H { get; set; }
 
+		public int SizeInSquarePixel
+		{
+			get { return W * H; }
+		}
+
 		public SerializablePoint ClickPoint { get; set; }
 
 		public List<SerializableRectangle> SearchAreas { get; set; } = new List<SerializableRectangle>();

@@ -5,7 +5,7 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public static class ImageFactory
 	{
-		public static Bitmap CreateScreenshot(double scale = 1)
+		public static Bitmap CreateScreenshot()
 		{
 			var bmp = new Bitmap(Config.Instance.ScreenSize.W, Config.Instance.ScreenSize.H, PixelFormat.Format24bppRgb);
 
@@ -14,7 +14,7 @@ namespace AutoFarmer.Models.ImageMatching
 				g.CopyFromScreen(0, 0, 0, 0, (Size)Config.Instance.ScreenSize, CopyPixelOperation.SourceCopy);
 			}
 
-			return ConvertAndScaleBitmap(bmp, scale);
+			return bmp;
 		}
 
 		public static Bitmap ConvertAndScaleBitmap(Bitmap original, double scale = 1)

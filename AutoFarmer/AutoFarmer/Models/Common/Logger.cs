@@ -34,7 +34,7 @@ namespace AutoFarmer.Models
 			}
 		}
 
-		public static void GraphicalLog(ImageMatchCollection matchCollection, string templateName, string searchRectangleName)
+		public static void GraphicalLog(ImageMatchResult matchCollection, string templateName, string searchRectangleName)
 		{
 			try
 			{
@@ -48,7 +48,10 @@ namespace AutoFarmer.Models
 
 						HighlightSearchAreas(g, matchCollection.ScaledSearchAreas, matchCollection.Matches.Select(m => m.ScaledMatchRectangle));
 
-						matchCollection.ScaledSource.Save(Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}.png"));
+						var fileName = Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}");
+
+						matchCollection.ScaledSource.Save($"{fileName}.png");
+						matchCollection.ScaledSearchImage.Save($"{fileName}-SearchImage.png");
 					}
 				}
 			}

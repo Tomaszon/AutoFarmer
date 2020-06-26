@@ -71,7 +71,7 @@
     <Compile Include="Models\Graph\Graph.cs" />
     <Compile Include="Models\Graph\Options.cs" />
     <Compile Include="Models\ImageMatching\ImageMatch.cs" />
-    <Compile Include="Models\ImageMatching\ImageMatchCollection.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatchResult.cs" />
     <Compile Include="Models\ImageMatching\SearchAreaFactory.cs" />
     <Compile Include="Models\Common\SerializableRectangle.cs" />
     <Compile Include="Models\Common\PerformanceMonitor.cs" />

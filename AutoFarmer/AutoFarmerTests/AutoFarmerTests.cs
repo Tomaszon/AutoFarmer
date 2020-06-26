@@ -3,7 +3,9 @@ using AutoFarmer.Models.GraphNamespace;
 using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -19,19 +21,22 @@ namespace AutoFarmerTests
 
 			MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle1", TemplateName = "TestTemplate1" };
 
-			var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };
+			//var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };// 392 ~ 3.5 = 232.24kk
+			//var sr = new SearchRectangle() { X = 210, Y = 712, W = 280, H = 140 };// 39200 ~ 246= 330.42kk
+			var sr = new SearchRectangle() { X = 10, Y = 10, W = 100, H = 100 };// 39200 ~ 246= 330.42kk
+
 			sr.Init();
 
 			var srs = new Dictionary<string, SearchRectangle> { { "TestRectangle1", sr } };
 
 			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
-			var t = new ImageMatchTemplate() { Name = "TestTemplate1", Bitmap = ImageFactory.ConvertAndScaleBitmap(Properties.Resources.characterSelector1), SearchRectangles = srs };
+			var t = new ImageMatchTemplate() { Name = "TestTemplate1", Bitmap = ImageFactory.ConvertAndScaleBitmap(Properties.Resources.characterSelector1Source), SearchRectangles = srs };
 			var ts = new List<ImageMatchTemplate> { t };
 
 			ImageMatchFinder.Instance.Templates = ts;
 
-			var points = ImageMatchFinder.FindClickPointForTemplate(c, ImageFactory.ConvertAndScaleBitmap(Properties.Resources.characterSelector1Source, ImageMatchFinder.Instance.Scale), 0.99f);
+			var points = ImageMatchFinder.FindClickPointForTemplate(c, ImageFactory.ConvertAndScaleBitmap(Properties.Resources.characterSelector1Source, ImageMatchFinder.Instance.Scale), 0.98f);
 
 			var expectedPoint = new SerializablePoint() { X = 480, Y = 843 };
 
@@ -66,7 +71,7 @@ namespace AutoFarmerTests
 
 			MatchCondition c = new MatchCondition() { SearchRectangleName = searchRectangleName, TemplateName = templateName, MaximumOccurrence = 2, OrderBy = o };
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, NamedSearchAreas = namedSearchAreas };
+			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, NamedSearchAreas = namedSearchAreas }; // 2640 ~ 21.1 = 259.44kk
 			sr.Init();
 
 			var srs = new Dictionary<string, SearchRectangle> { { searchRectangleName, sr } };
@@ -78,16 +83,21 @@ namespace AutoFarmerTests
 
 			ImageMatchFinder.Instance.Templates = ts;
 
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
 			var points = ImageMatchFinder.FindClickPointForTemplate(c, ImageFactory.ConvertAndScaleBitmap(Properties.Resources.assignmentsCompleted, ImageMatchFinder.Instance.Scale), similiarityThreshold);
+			stopwatch.Stop();
+
+			Console.WriteLine($"Elapsed: {stopwatch.ElapsedMilliseconds}");
 
 			var expectedPoint1 = new SerializablePoint() { X = 1388, Y = 393 };
 			var expectedPoint2 = new SerializablePoint() { X = 1388, Y = 527 };
 
 			Assert.AreEqual(2, points.Count);
-			Assert.AreEqual(expectedPoint1.X, points[1].X, 3);
-			Assert.AreEqual(expectedPoint1.Y, points[1].Y, 3);
-			Assert.AreEqual(expectedPoint2.X, points[0].X, 3);
-			Assert.AreEqual(expectedPoint2.Y, points[0].Y, 3);
+			Assert.AreEqual(expectedPoint1.X, points[1].X, 2 / ImageMatchFinder.Instance.Scale);
+			Assert.AreEqual(expectedPoint1.Y, points[1].Y, 2 / ImageMatchFinder.Instance.Scale);
+			Assert.AreEqual(expectedPoint2.X, points[0].X, 2 / ImageMatchFinder.Instance.Scale);
+			Assert.AreEqual(expectedPoint2.Y, points[0].Y, 2 / ImageMatchFinder.Instance.Scale);
 		}
 
 		[TestMethod]

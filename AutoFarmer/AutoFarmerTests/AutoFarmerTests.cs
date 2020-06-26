@@ -21,14 +21,15 @@ namespace AutoFarmerTests
 
 		//	MatchCondition c = new MatchCondition() { SearchRectangleName = "TestRectangle1", TemplateName = "TestTemplate1", MaximumOccurrence = 2 };
 
-			var sr = new SearchRectangle() { X = 10, Y = 10, W = 100, H = 100 };// 39200 ~ 246= 330.42kk
+		//	//var sr = new SearchRectangle() { X = 210, Y = 712, W = 28, H = 14 };// 392 ~ 3.5 = 232.24kk
 		//	//var sr = new SearchRectangle() { X = 210, Y = 712, W = 280, H = 140 };// 39200 ~ 246= 330.42kk
 		//	var sr = new SearchRectangle() { X = 1325, Y = 383, W = 100, H = 20 };// 39200 ~ 246= 330.42kk
 
+		//	sr.Init();
 
 		//	var srs = new Dictionary<string, SearchRectangle> { { "TestRectangle1", sr } };
 
-			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
+		//	ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
 		//	var t = new ImageMatchTemplate() { Name = "TestTemplate1", Bitmap = ImageFactory.ConvertAndScaleBitmap(Properties.Resources.assignmentsCompleted), SearchRectangles = srs };
 		//	var ts = new List<ImageMatchTemplate> { t };

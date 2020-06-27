@@ -1,5 +1,5 @@
 {
-	"TemplateParameters": {
+	"TemplateVariables": {
 		"i": [
 			0,
 			1,
@@ -20,6 +20,8 @@
 		"personalTab",
 		"assignmentsCloseButton",
 		"collectButtons",
+		"beginButton",
+		"closeButton",
 		"selectCharacter0{i}"
 	],
 	"Actions": {

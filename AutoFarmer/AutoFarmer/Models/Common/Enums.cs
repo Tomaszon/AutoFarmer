@@ -34,11 +34,11 @@
 		Full = 0b1111,
 		Left = 0b1101,
 		Right = 0b0101,
-		Upper = 0b1110,
-		Lower = 0b1010,
-		UpperLeft = 0b1100,
-		UpperRight = 0b0100,
-		LowerLeft = 0b1000,
-		LowerRight = 0b0000
+		Top = 0b1110,
+		Bottom = 0b1010,
+		TopLeft = 0b1100,
+		TopRight = 0b0100,
+		BottomLeft = 0b1000,
+		BottomRight = 0b0000
 	}
 }

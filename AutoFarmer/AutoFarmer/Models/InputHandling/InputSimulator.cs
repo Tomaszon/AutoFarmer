@@ -9,8 +9,6 @@ namespace AutoFarmer.Models.InputHandling
 	{
 		public int Delay { get; set; } = 250;
 
-		private readonly WindowsInput.InputSimulator _simulator = new WindowsInput.InputSimulator();
-
 		public SerializableSize ScreenSize { get; set; }
 
 		public static InputSimulator Instance { get; set; }
@@ -23,7 +21,7 @@ namespace AutoFarmer.Models.InputHandling
 			};
 		}
 
-		public void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
+		public static void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
 		{
 			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
 
@@ -42,29 +40,31 @@ namespace AutoFarmer.Models.InputHandling
 			}
 		}
 
-		private void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
+		private static void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
 		{
-			_simulator.Keyboard.KeyPress(virtualKeyCode);
+			new WindowsInput.InputSimulator().Keyboard.KeyPress(virtualKeyCode);
 
 			Logger.Log($"Virtual key pressed: {virtualKeyCode}", NotificationType.Click);
 
-			Thread.Sleep(Delay + additionalDelay);
+			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		private void MouseEvent(MouseAction mouseAction, int additionalDelay = 0)
+		private static void MouseEvent(MouseAction mouseAction, int additionalDelay = 0)
 		{
+			var simulator = new WindowsInput.InputSimulator();
+
 			switch (mouseAction)
 			{
 				case MouseAction.LeftClick:
 				{
-					_simulator.Mouse.LeftButtonClick();
+					simulator.Mouse.LeftButtonClick();
 
 					Logger.Log("Left mouse click", NotificationType.Click);
 					break;
 				}
 				case MouseAction.LeftDoubleClick:
 				{
-					_simulator.Mouse.LeftButtonDoubleClick();
+					simulator.Mouse.LeftButtonDoubleClick();
 
 					Logger.Log("Left mouse double click", NotificationType.Click, 1);//TODO use unique sound
 					break;
@@ -79,13 +79,13 @@ namespace AutoFarmer.Models.InputHandling
 				case MouseAction.LeftHold1sec:
 				case MouseAction.LeftHold5sec:
 				{
-					_simulator.Mouse.LeftButtonDown();
+					simulator.Mouse.LeftButtonDown();
 
 					Logger.Log("Left mouse hold", NotificationType.Click, 1);//TODO use unique sound
 
 					Thread.Sleep((int)mouseAction);
 
-					_simulator.Mouse.LeftButtonUp();
+					simulator.Mouse.LeftButtonUp();
 
 					Logger.Log("Left mouse release", NotificationType.Click, 1);//TODO use unique sound
 
@@ -93,7 +93,7 @@ namespace AutoFarmer.Models.InputHandling
 				}
 			}
 
-			Thread.Sleep(Delay + additionalDelay);
+			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
 		/// <summary>
@@ -101,24 +101,24 @@ namespace AutoFarmer.Models.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
+		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
 		{
 			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-			_simulator.Mouse.MoveMouseTo(point.X * (65536.0 / ScreenSize.W) + 1, point.Y * (65536.0 / ScreenSize.H) + 1);
+			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
 
 			Logger.Log($"Mouse move to: {point}");
 
-			Thread.Sleep(Delay + additionalDelay);
+			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		public void ScanScreenForFadedUI(int delay = 100)
+		public static void ScanScreenForFadedUI(int delay = 100)
 		{
-			for (int y = 0; y < ScreenSize.H; y += 50)
+			for (int y = 0; y < Instance.ScreenSize.H; y += 50)
 			{
-				for (int x = 0; x < ScreenSize.W; x += 250)
+				for (int x = 0; x < Instance.ScreenSize.W; x += 250)
 				{
-					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, Delay * -1 + delay);
+					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, Instance.Delay * -1 + delay);
 				}
 			}
 		}

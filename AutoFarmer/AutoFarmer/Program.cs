@@ -1,6 +1,8 @@
 ﻿using AutoFarmer.Models;
+using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Models.InputHandling;
 using System;
 using System.Threading;
 
@@ -21,9 +23,11 @@ namespace AutoFarmer
 			{
 				try
 				{
+					Console.Clear();
+
 					Config.FromJsonFile(@".\configs\config.json");
 
-					Console.Clear();
+					InputSimulator.FromConfig();
 
 					MouseSafetyMeasures.FromConfig();
 
@@ -40,6 +44,8 @@ namespace AutoFarmer
 					DateTime startTime = DateTime.Now;
 
 					machine.Process();
+
+					Thread.Sleep(2000);
 
 					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 				}

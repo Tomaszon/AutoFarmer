@@ -14,8 +14,6 @@ namespace AutoFarmer.Models.ImageMatching
 	{
 		private static readonly PerformanceMonitor _performanceMonitor = new PerformanceMonitor();
 
-		public float SimiliarityThresholdCorrectionOnScaling { get; set; }
-
 		public float DefaultMaximumSimiliarityThreshold { get; set; }
 
 		public float DefaultMiniumuSimiliarityThreshold { get; set; }
@@ -74,6 +72,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 			foreach (var searchArea in result.SearchAreas)
 			{
+				Logger.Log($"Calculating matches for search area: {searchArea}");
+
 				result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
 
 				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
@@ -81,7 +81,10 @@ namespace AutoFarmer.Models.ImageMatching
 
 			if (result.Matches.Count < condition.MinimumOccurrence)
 			{
-				Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+				if (result.SearchAreas.Count > 0)
+				{
+					Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+				}
 
 				result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
 			}

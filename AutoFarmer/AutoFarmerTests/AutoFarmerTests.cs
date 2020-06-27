@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models;
+using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

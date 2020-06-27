@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoFarmer.Models.ImageMatching.ImageMatchFinder">
+    <Position X="3.5" Y="7.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAUAACACAAgAAAAAAAAAAAhAAQQAABAAAAAA=</HashCode>
+      <FileName>Models\ImageMatching\ImageMatchFinder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_performanceMonitor" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Templates" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AutoFarmer.Models.ImageMatching.ImageMatchTemplate">
+    <Position X="7" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAgAAAQAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Models\ImageMatching\ImageMatchTemplate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="SearchRectangles" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AutoFarmer.Models.ImageMatching.SearchRectangle">
+    <Position X="10.25" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAgICAAAAAAAAAAAAAAACAAAAACAEAIcAA=</HashCode>
+      <FileName>Models\ImageMatching\SearchRectangle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClickPoint" />
+      <Property Name="RelativeClickPoint" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="NamedSearchAreas" />
+      <Property Name="SearchAreas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AutoFarmer.Models.Common.SerializablePoint">
+    <Position X="9.75" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAEwgEAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Models\Common\SerializablePoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoFarmer.Models.Common.SerializableSize">
+    <Position X="14" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAAAAAAAAAEAoAAA=</HashCode>
+      <FileName>Models\Common\SerializableSize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoFarmer.Models.Common.SerializableRectangle">
+    <Position X="6.5" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAEgAAAAAAAABAAAAAAAAAAAEAIYAA=</HashCode>
+      <FileName>Models\Common\SerializableRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoFarmer.Models.Common.PerformanceMonitor">
+    <Position X="0.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAAAAAAAAAAAARAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Models\Common\PerformanceMonitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="AutoFarmer.Models.Common.NamedSearchArea">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAIAAAAABAAAAAQAAAAAAAIAAAACgCAAAAAAEA=</HashCode>
+      <FileName>Models\Common\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

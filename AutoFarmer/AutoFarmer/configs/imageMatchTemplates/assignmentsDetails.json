@@ -4,13 +4,19 @@
 			"X": 376,
 			"Y": 336,
 			"W": 90,
-			"H": 28
+			"H": 28,
+			"NamedSearchAreas":[
+				"Left"
+			]
 		},
 		"beginButton": {
 			"X": 1261,
 			"Y": 877,
 			"W": 132,
-			"H": 18
+			"H": 18,
+			"NamedSearchAreas":[
+				"BottomRight"
+			]
 		}
 	}
 }

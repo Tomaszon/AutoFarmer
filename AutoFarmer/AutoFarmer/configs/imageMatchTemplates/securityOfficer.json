@@ -8,7 +8,10 @@
 			"ClickPoint": {
 				"X": 1792,
 				"Y": 278
-			}
+			},
+			"NamedSearchAreas":[
+				"TopRight"
+			]
 		}
 	}
 }

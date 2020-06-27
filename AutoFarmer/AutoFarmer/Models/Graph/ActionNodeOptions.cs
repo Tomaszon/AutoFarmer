@@ -7,7 +7,7 @@ namespace AutoFarmer.Models.Graph
 {
 	public class ActionNodeOptions : Options
 	{
-		public Dictionary<string, List<object>> TemplateParameters { get; set; }
+		public Dictionary<string, List<object>> TemplateVariables { get; set; }
 
 		public string[] Names { get; set; }
 
@@ -32,11 +32,11 @@ namespace AutoFarmer.Models.Graph
 
 			foreach (var name in nodeOptions.Names)
 			{
-				if (nodeOptions.TemplateParameters != null && IsContainsTemplate(nodeOptions.TemplateParameters.Keys.ToList(), name))
+				if (nodeOptions.TemplateVariables != null && IsContainsTemplate(nodeOptions.TemplateVariables.Keys.ToList(), name))
 				{
-					for (int j = 0; j < nodeOptions.TemplateParameters.First().Value.Count; j++)
+					for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
 					{
-						var modifiedName = ReplaceTemplates(name, nodeOptions.TemplateParameters, j);
+						var modifiedName = ReplaceTemplates(name, nodeOptions.TemplateVariables, j);
 
 						result.Add(CreateActionNode(modifiedName, nodeOptions.Actions, nodeOptions.IsStartNode, nodeOptions.IsEndNode));
 					}

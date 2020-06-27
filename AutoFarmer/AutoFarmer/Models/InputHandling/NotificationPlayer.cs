@@ -8,17 +8,17 @@ namespace AutoFarmer.Models.InputHandling
 	{
 		private static void PlayError()
 		{
-			new SoundPlayer(Resources.sounderror).PlaySync();
+			new SoundPlayer(Resources.sounderror).Play();
 		}
 
 		private static void PlayClick()
 		{
-			new SoundPlayer(Resources.soundnavigate).PlaySync();
+			new SoundPlayer(Resources.soundnavigate).Play();
 		}
 
 		private static void PlayInfo()
 		{
-			new SoundPlayer(Resources.soundexclamation).PlaySync();
+			new SoundPlayer(Resources.soundexclamation).Play();
 		}
 
 		public static void Play(NotificationType type, int count = 1)

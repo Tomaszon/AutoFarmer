@@ -7,7 +7,7 @@ namespace AutoFarmer.Models.Graph
 {
 	public class ConditionEdgeOptions : Options
 	{
-		public Dictionary<string, List<object>> TemplateParameters { get; set; }
+		public Dictionary<string, List<object>> TemplateVariables { get; set; }
 
 		public string Name { get; set; }
 
@@ -37,26 +37,26 @@ namespace AutoFarmer.Models.Graph
 
 			foreach (var tuple in edgeOptions.Nodes)
 			{
-				if (edgeOptions.TemplateParameters != null && IsContainsTemplate(edgeOptions.TemplateParameters.Keys.ToList(), tuple.Key, tuple.Value))
+				if (edgeOptions.TemplateVariables != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
 				{
-					for (int i = 0; i < edgeOptions.TemplateParameters.First().Value.Count; i++)
+					for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 					{
-						var startNodeName = ReplaceTemplates(tuple.Key, edgeOptions.TemplateParameters, i);
-						var endNodeName = ReplaceTemplates(tuple.Value, edgeOptions.TemplateParameters, i);
+						var startNodeName = ReplaceTemplates(tuple.Key, edgeOptions.TemplateVariables, i);
+						var endNodeName = ReplaceTemplates(tuple.Value, edgeOptions.TemplateVariables, i);
 
 						var preCondition = edgeOptions.Conditions?.PreCondition?.Clone();
 						var postCondition = edgeOptions.Conditions?.PostCondition?.Clone();
 
-						if (preCondition != null && IsContainsTemplate(edgeOptions.TemplateParameters.Keys.ToList(), preCondition.TemplateName))
+						if (preCondition != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), preCondition.TemplateName))
 						{
-							preCondition.TemplateName = ReplaceTemplates(preCondition.TemplateName, edgeOptions.TemplateParameters, i);
-							preCondition.SearchRectangleName = ReplaceTemplates(preCondition.SearchRectangleName, edgeOptions.TemplateParameters, i);
+							preCondition.TemplateName = ReplaceTemplates(preCondition.TemplateName, edgeOptions.TemplateVariables, i);
+							preCondition.SearchRectangleName = ReplaceTemplates(preCondition.SearchRectangleName, edgeOptions.TemplateVariables, i);
 						}
 
-						if (postCondition != null && preCondition != postCondition && IsContainsTemplate(edgeOptions.TemplateParameters.Keys.ToList(), postCondition.TemplateName))
+						if (postCondition != null && preCondition != postCondition && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), postCondition.TemplateName))
 						{
-							postCondition.TemplateName = ReplaceTemplates(postCondition.TemplateName, edgeOptions.TemplateParameters, i);
-							postCondition.SearchRectangleName = ReplaceTemplates(postCondition.SearchRectangleName, edgeOptions.TemplateParameters, i);
+							postCondition.TemplateName = ReplaceTemplates(postCondition.TemplateName, edgeOptions.TemplateVariables, i);
+							postCondition.SearchRectangleName = ReplaceTemplates(postCondition.SearchRectangleName, edgeOptions.TemplateVariables, i);
 						}
 
 						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, preCondition is null && postCondition is null ? null : new Conditions() { PreCondition = preCondition, PostCondition = postCondition }));

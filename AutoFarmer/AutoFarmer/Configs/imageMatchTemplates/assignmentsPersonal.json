@@ -1,10 +1,17 @@
 {
 	"SearchRectangles": {
 		"confiscateAssignment": {
-			"X": 511,
-			"Y": 373,
-			"W": 88,
-			"H": 15
+			"X": 568,
+			"Y": 569,
+			"W": 39,
+			"H": 20,
+			"ClickPoint": {
+				"X": 650,
+				"Y": 569
+			},
+			"NamedSearchAreas":[
+				"Left"
+			]
 		}
 	}
 }

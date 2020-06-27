@@ -1,17 +1,12 @@
 ﻿using System.Drawing;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public class SerializableSize
 	{
 		public int W { get; set; }
 
 		public int H { get; set; }
-
-		public static explicit operator Size(SerializableSize size)
-		{
-			return new Size(size.W, size.H);
-		}
 
 		public override string ToString()
 		{
@@ -26,6 +21,11 @@ namespace AutoFarmer.Models
 			}
 
 			return false;
+		}
+
+		public static explicit operator Size(SerializableSize size)
+		{
+			return new Size(size.W, size.H);
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoFarmer.Models
+﻿namespace AutoFarmer.Models.Common
 {
 	public enum NotificationType
 	{

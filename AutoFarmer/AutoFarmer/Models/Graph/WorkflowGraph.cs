@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using AutoFarmer.Models.Common;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AutoFarmer.Models.GraphNamespace
+namespace AutoFarmer.Models.Graph
 {
-	public class Graph
+	public class WorkflowGraph
 	{
 		public List<ActionNode> ActiveStartNodes
 		{
@@ -25,9 +26,9 @@ namespace AutoFarmer.Models.GraphNamespace
 
 		public List<ConditionEdge> ConditionEdges { get; set; } = new List<ConditionEdge>();
 
-		public static Graph FromConfig()
+		public static WorkflowGraph FromConfig()
 		{
-			var graph = new Graph();
+			var graph = new WorkflowGraph();
 
 			foreach (var file in Directory.GetFiles(Config.Instance.ActionNodesDirectory))
 			{

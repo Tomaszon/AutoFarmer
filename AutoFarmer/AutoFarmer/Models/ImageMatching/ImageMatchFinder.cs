@@ -1,5 +1,6 @@
 ﻿using AForge.Imaging;
-using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;
@@ -60,7 +61,7 @@ namespace AutoFarmer.Models.ImageMatching
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
 			var templateImage = ImageFactory.ConvertBitmap(template.Bitmap);
-			var searchImage = CropTemplateImage(templateImage, searchRectangle);
+			var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle);
 
 			var result = new ImageMatchResult()
 			{

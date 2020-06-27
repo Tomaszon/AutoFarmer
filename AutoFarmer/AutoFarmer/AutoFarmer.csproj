@@ -68,7 +68,7 @@
     <Compile Include="Models\Common\Config.cs" />
     <Compile Include="Models\Common\Enums.cs" />
     <Compile Include="Models\Common\Exceptions.cs" />
-    <Compile Include="Models\Graph\Graph.cs" />
+    <Compile Include="Models\Graph\WorkflowGraph.cs" />
     <Compile Include="Models\Graph\Options.cs" />
     <Compile Include="Models\ImageMatching\ImageMatch.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchResult.cs" />

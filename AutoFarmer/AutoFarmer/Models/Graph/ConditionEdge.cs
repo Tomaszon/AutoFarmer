@@ -1,8 +1,7 @@
-﻿using AutoFarmer.Models.ImageMatching;
+﻿using AutoFarmer.Models.Common;
 using System.Collections.Generic;
-using System.Drawing;
 
-namespace AutoFarmer.Models.GraphNamespace
+namespace AutoFarmer.Models.Graph
 {
 	public class ConditionEdge
 	{

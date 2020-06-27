@@ -1,5 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using AutoFarmer.Models.Common;
+using System;
 using System.Threading;
 using WindowsInput.Native;
 

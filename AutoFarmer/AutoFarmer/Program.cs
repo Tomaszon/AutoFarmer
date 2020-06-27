@@ -1,5 +1,5 @@
 ﻿using AutoFarmer.Models;
-using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using System;
 using System.Threading;
@@ -29,7 +29,7 @@ namespace AutoFarmer
 
 					ImageMatchFinder.FromConfig();
 
-					Graph graph = Graph.FromConfig();
+					WorkflowGraph graph = WorkflowGraph.FromConfig();
 
 					GraphMachine machine = new GraphMachine(graph);
 

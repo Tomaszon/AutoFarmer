@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public static class Logger
 	{

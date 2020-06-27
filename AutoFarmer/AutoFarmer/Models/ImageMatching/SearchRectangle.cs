@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -49,10 +50,6 @@ namespace AutoFarmer.Models.ImageMatching
 				SearchAreas.AddRange(SearchAreaFactory.FromEnums(W, H, NamedSearchAreas));
 			}
 		}
-		public static implicit operator Rectangle(SearchRectangle rec)
-		{
-			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
-		}
 
 		private bool IsOverlaping(out List<Tuple<SerializableRectangle, List<SerializableRectangle>>> intersectingRectangles)
 		{
@@ -77,6 +74,11 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 
 			return intersectingRectangles.Count > 0;
+		}
+
+		public static explicit operator Rectangle(SearchRectangle rec)
+		{
+			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
 		}
 	}
 }

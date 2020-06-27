@@ -1,7 +1,7 @@
-﻿using AutoFarmer.Models.GraphNamespace;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.InputHandling;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
 
@@ -9,11 +9,11 @@ namespace AutoFarmer.Models
 {
 	public class GraphMachine
 	{
-		public Graph Graph { get; set; }
+		public WorkflowGraph Graph { get; set; }
 
 		public InputSimulator InputSimulator { get; set; } = new InputSimulator();
 
-		public GraphMachine(Graph graph)
+		public GraphMachine(WorkflowGraph graph)
 		{
 			Graph = graph;
 		}

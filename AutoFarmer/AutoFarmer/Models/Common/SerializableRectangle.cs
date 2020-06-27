@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public class SerializableRectangle
 	{
@@ -11,6 +11,21 @@ namespace AutoFarmer.Models
 		public int W { get; set; }
 
 		public int H { get; set; }
+
+		public override string ToString()
+		{
+			return ((Rectangle)this).ToString();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is SerializableRectangle r)
+			{
+				return X == r.X && Y == r.Y && W == r.W && H == r.H;
+			}
+
+			return false;
+		}
 
 		public static explicit operator Rectangle(SerializableRectangle rec)
 		{
@@ -26,21 +41,6 @@ namespace AutoFarmer.Models
 				W = rec.Width,
 				H = rec.Height
 			};
-		}
-
-		public override string ToString()
-		{
-			return ((Rectangle)this).ToString();
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (obj is SerializableRectangle r)
-			{
-				return X == r.X && Y == r.Y && W == r.W && H == r.H;
-			}
-
-			return false;
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using AutoFarmer.Models.ImageMatching;
-
-namespace AutoFarmer.Models.GraphNamespace
+﻿namespace AutoFarmer.Models.Graph
 {
 	public class Conditions
 	{

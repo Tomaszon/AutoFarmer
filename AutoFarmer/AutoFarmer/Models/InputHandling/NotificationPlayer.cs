@@ -1,4 +1,5 @@
-﻿using AutoFarmer.Properties;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Properties;
 using System.Media;
 
 namespace AutoFarmer.Models.InputHandling

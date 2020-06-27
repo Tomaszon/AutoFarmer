@@ -1,11 +1,10 @@
-﻿using AutoFarmer.Models.InputHandling;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public class MouseSafetyMeasures
 	{

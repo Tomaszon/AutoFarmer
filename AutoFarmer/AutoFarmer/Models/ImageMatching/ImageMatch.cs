@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using AutoFarmer.Models.Common;
 
 namespace AutoFarmer.Models.ImageMatching
 {

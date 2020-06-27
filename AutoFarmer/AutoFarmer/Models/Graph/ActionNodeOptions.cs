@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AutoFarmer.Models.GraphNamespace
+namespace AutoFarmer.Models.Graph
 {
 	public class ActionNodeOptions : Options
 	{

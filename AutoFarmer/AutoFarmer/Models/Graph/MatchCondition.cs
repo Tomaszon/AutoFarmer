@@ -1,10 +1,10 @@
-﻿using AutoFarmer.Models.ImageMatching;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.ImageMatching;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 
-namespace AutoFarmer.Models.GraphNamespace
+namespace AutoFarmer.Models.Graph
 {
 	public class MatchCondition
 	{

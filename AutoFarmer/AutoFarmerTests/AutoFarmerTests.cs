@@ -1,5 +1,5 @@
 ﻿using AutoFarmer.Models;
-using AutoFarmer.Models.GraphNamespace;
+using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;

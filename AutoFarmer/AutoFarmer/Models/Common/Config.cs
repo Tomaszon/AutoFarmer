@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public class Config
 	{

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using AutoFarmer.Models.Common;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace AutoFarmer.Models.ImageMatching

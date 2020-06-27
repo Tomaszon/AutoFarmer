@@ -40,18 +40,18 @@ namespace AutoFarmer.Models
 			{
 				if (Config.Instance.GraphicalLogging)
 				{
-					using (Graphics g = Graphics.FromImage(matchCollection.ScaledSource))
+					using (Graphics g = Graphics.FromImage(matchCollection.Source))
 					{
 						Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
 
-						matchCollection.Matches.ForEach(m => HighlightFind(g, m.ScaledMatchRectangle, m.ScaledClickPoint));
+						matchCollection.Matches.ForEach(m => HighlightFind(g, m.MatchRectangle, m.ClickPoint));
 
-						HighlightSearchAreas(g, matchCollection.ScaledSearchAreas, matchCollection.Matches.Select(m => m.ScaledMatchRectangle));
+						HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
 						var fileName = Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}");
 
-						matchCollection.ScaledSource.Save($"{fileName}.png");
-						matchCollection.ScaledSearchImage.Save($"{fileName}-SearchImage.png");
+						matchCollection.Source.Save($"{fileName}.png");
+						matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");
 					}
 				}
 			}

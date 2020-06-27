@@ -9,10 +9,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public List<SerializableRectangle> SearchAreas { get; set; } = new List<SerializableRectangle>();
 
-		public List<SerializableRectangle> ScaledSearchAreas { get; set; } = new List<SerializableRectangle>();
+		public Bitmap Source { get; set; }
 
-		public Bitmap ScaledSource { get; set; }
-
-		public Bitmap ScaledSearchImage { get; set; }
+		public Bitmap SearchImage { get; set; }
 	}
 }

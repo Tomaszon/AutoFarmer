@@ -17,9 +17,9 @@ namespace AutoFarmer.Models.ImageMatching
 			return bmp;
 		}
 
-		public static Bitmap ConvertAndScaleBitmap(Bitmap original, double scale = 1)
+		public static Bitmap ConvertBitmap(Bitmap original)
 		{
-			Bitmap clone = new Bitmap((int)(original.Width * scale), (int)(original.Height * scale), PixelFormat.Format24bppRgb);
+			Bitmap clone = new Bitmap(original.Width, original.Height, PixelFormat.Format24bppRgb);
 
 			using (Graphics g = Graphics.FromImage(clone))
 			{

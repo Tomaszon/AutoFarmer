@@ -8,15 +8,6 @@ namespace AutoFarmer.Models
 
 		public int Y { get; set; }
 
-		public SerializablePoint Scale(double scale)
-		{
-			return new SerializablePoint()
-			{
-				X = (int)(X * scale),
-				Y = (int)(Y * scale)
-			};
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (obj is SerializablePoint p)

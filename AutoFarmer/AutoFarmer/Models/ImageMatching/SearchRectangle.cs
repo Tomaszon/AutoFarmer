@@ -35,20 +35,6 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 		}
 
-		public SearchRectangle Scale(double scale)
-		{
-			return new SearchRectangle()
-			{
-				X = (int)(X * scale),
-				Y = (int)(Y * scale),
-				W = (int)(W * scale),
-				H = (int)(H * scale),
-				ClickPoint = ClickPoint?.Scale(scale),
-				NamedSearchAreas = NamedSearchAreas,
-				SearchAreas = SearchAreas.Select(a => a.Scale(scale)).ToList()
-			};
-		}
-
 		public void Init()
 		{
 			if (SearchAreas.Count != 0)

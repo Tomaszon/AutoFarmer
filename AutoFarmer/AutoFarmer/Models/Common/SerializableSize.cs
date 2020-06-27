@@ -27,14 +27,5 @@ namespace AutoFarmer.Models
 
 			return false;
 		}
-
-		public SerializableSize Scale(double scale)
-		{
-			return new SerializableSize()
-			{
-				H = (int)(H * scale),
-				W = (int)(W * scale)
-			};
-		}
 	}
 }

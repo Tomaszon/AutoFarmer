@@ -13,8 +13,6 @@ namespace AutoFarmer.Models.ImageMatching
 	{
 		private static readonly PerformanceMonitor _performanceMonitor = new PerformanceMonitor();
 
-		public int MaximumSearchRectangleSizeForUnscaledSearch { get; set; }
-
 		public float SimiliarityThresholdCorrectionOnScaling { get; set; }
 
 		public float DefaultMaximumSimiliarityThreshold { get; set; }
@@ -61,28 +59,21 @@ namespace AutoFarmer.Models.ImageMatching
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
-			var scale = searchRectangle.SizeInSquarePixel > Instance.MaximumSearchRectangleSizeForUnscaledSearch ? 0.5 : 1;
-			var correctedSimiliarityThreshold = scale == 0.5 ? similiarityThreshold - Instance.SimiliarityThresholdCorrectionOnScaling : similiarityThreshold;
-
-			var scaledSource = ImageFactory.ConvertAndScaleBitmap(source, scale);
-
-			var scaledTemplate = ImageFactory.ConvertAndScaleBitmap(template.Bitmap, scale);
-			var scaledSearchRectangle = searchRectangle.Scale(scale);
-			var scaledSearchImage = CropTemplateImage(scaledTemplate, scaledSearchRectangle);
+			var templateImage = ImageFactory.ConvertBitmap(template.Bitmap);
+			var searchImage = CropTemplateImage(templateImage, searchRectangle);
 
 			var result = new ImageMatchResult()
 			{
-				ScaledSearchAreas = scaledSearchRectangle.SearchAreas,
 				SearchAreas = searchRectangle.SearchAreas,
-				ScaledSource = scaledSource,
-				ScaledSearchImage = scaledSearchImage
+				Source = source,
+				SearchImage = searchImage
 			};
 
 			_performanceMonitor.Start();
 
 			foreach (var searchArea in result.SearchAreas)
 			{
-				result.Matches.AddRange(CollectMatches(scaledSource, scaledSearchImage, scaledSearchRectangle.RelativeClickPoint, correctedSimiliarityThreshold, condition.SearchRectangleName, condition.TemplateName, scale, searchArea));
+				result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
 
 				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
 			}
@@ -91,7 +82,7 @@ namespace AutoFarmer.Models.ImageMatching
 			{
 				Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
 
-				result.Matches = CollectMatches(scaledSource, scaledSearchImage, scaledSearchRectangle.RelativeClickPoint, correctedSimiliarityThreshold, condition.SearchRectangleName, condition.TemplateName, scale);
+				result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
 			}
 
 			_performanceMonitor.Stop();
@@ -101,16 +92,16 @@ namespace AutoFarmer.Models.ImageMatching
 			return result;
 		}
 
-		private static List<ImageMatch> CollectMatches(Bitmap scaledSource, Bitmap scaledSearchImage, SerializableSize scaledRelativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, double scale, SerializableRectangle area = null)
+		private static List<ImageMatch> CollectMatches(Bitmap source, Bitmap searchImage, SerializableSize relativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, SerializableRectangle area = null)
 		{
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
-			var findResult = area is null ? matching.ProcessImage(scaledSource, scaledSearchImage) : matching.ProcessImage(scaledSource, scaledSearchImage, (Rectangle)area);
+			var findResult = area is null ? matching.ProcessImage(source, searchImage) : matching.ProcessImage(source, searchImage, (Rectangle)area);
 
 			var result = findResult.Select(tm =>
-				new ImageMatch((SerializablePoint)tm.Rectangle.Location + scaledRelativeClickPoint, (SerializableRectangle)tm.Rectangle, 1 / scale)).ToList();
+				new ImageMatch((SerializablePoint)tm.Rectangle.Location + relativeClickPoint, (SerializableRectangle)tm.Rectangle)).ToList();
 
-			result.ForEach(m => Logger.Log($"Match found for {searchRectangleName} of {templateName}{(area is null ? "" : $" in {area} search area") } at {m.ClickPoint} with {scale} scale. At search time: {_performanceMonitor.Elapse}"));
+			result.ForEach(m => Logger.Log($"Match found for {searchRectangleName} of {templateName}{(area is null ? "" : $" in {area} search area") } at {m.ClickPoint}. At search time: {_performanceMonitor.Elapse}"));
 
 			return result;
 		}

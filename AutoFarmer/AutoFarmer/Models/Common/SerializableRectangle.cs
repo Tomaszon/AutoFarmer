@@ -42,16 +42,5 @@ namespace AutoFarmer.Models
 
 			return false;
 		}
-
-		public SerializableRectangle Scale(double scale)
-		{
-			return new SerializableRectangle()
-			{
-				X = (int)(X * scale),
-				Y = (int)(Y * scale),
-				W = (int)(W * scale),
-				H = (int)(H * scale)
-			};
-		}
 	}
 }

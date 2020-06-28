@@ -34,7 +34,7 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 		}
 
-		public static List<SerializablePoint> FindClickPointForTemplate(MatchCondition condition, Bitmap source, float similiarityThreshold)
+		public static List<SerializablePoint> FindClickPointForTemplate(Condition condition, Bitmap source, float similiarityThreshold)
 		{
 			var matchResult = CalculateMatches(source, condition, similiarityThreshold);
 
@@ -53,7 +53,7 @@ namespace AutoFarmer.Models.ImageMatching
 			return OrderResults(matchResult.Matches.Select(m => m.ClickPoint), condition.OrderBy);
 		}
 
-		private static ImageMatchResult CalculateMatches(Bitmap source, MatchCondition condition, float similiarityThreshold)
+		private static ImageMatchResult CalculateMatches(Bitmap source, Condition condition, float similiarityThreshold)
 		{
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];

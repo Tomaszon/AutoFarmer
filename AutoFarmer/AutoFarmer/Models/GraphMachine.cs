@@ -98,7 +98,7 @@ namespace AutoFarmer.Models
 
 			if (edge.Conditions is null) return true;
 
-			return edge.Process(out actionPoints);
+			return edge.ProcessConditions(out actionPoints);
 		}
 	}
 }

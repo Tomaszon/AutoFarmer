@@ -2,11 +2,11 @@
 	"Nodes": {
 		"personalTab": "personalTabScrollDownButton"
 	},
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "assignmentsScroll",
 			"SearchRectangleName": "scrollDownButton"
 		}
-	},
+	],
 	"Order": 2
 }

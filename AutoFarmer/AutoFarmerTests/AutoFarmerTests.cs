@@ -39,7 +39,7 @@ namespace AutoFarmerTests
 
 			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>() { { MatchOrderBy.Y, MatchOrderLike.Descending } };
 
-			MatchCondition c = new MatchCondition() { SearchRectangleName = searchRectangleName, TemplateName = templateName, MaximumOccurrence = 4, OrderBy = o };
+			Condition c = new Condition() { SearchRectangleName = searchRectangleName, TemplateName = templateName, MaximumOccurrence = 4, OrderBy = o };
 
 			var sr = new SearchRectangle() { X = 1323, Y = 382, W = 130, H = 20, NamedSearchAreas = namedSearchAreas };
 

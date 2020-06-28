@@ -70,10 +70,10 @@
 	"Nodes": {
 		"startScroll{destination}Button0{i}": "selectCharacter0{i}"
 	},
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "characterSelector{j}",
 			"SearchRectangleName": "contraband0{i}"
 		}
-	}
+	]
 }

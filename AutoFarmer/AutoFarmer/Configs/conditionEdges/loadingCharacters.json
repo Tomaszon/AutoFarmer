@@ -15,6 +15,5 @@
 	},
 	"Nodes": {
 		"loadingCharacter0{i}": "selectCharacter0{i}"
-	},
-	"Conditions": null
+	}
 }

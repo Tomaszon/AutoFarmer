@@ -1,8 +1,8 @@
 {
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "securityOfficer",
 			"SearchRectangleName": "assignmentsButton"
 		}
-	}
+	]
 }

@@ -16,12 +16,12 @@
 	"Nodes": {
 		"loginCharacter0{i}": "assignmentsButton"
 	},
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "securityOfficer",
 			"SearchRectangleName": "assignmentsButton",
 			"MaxRetryPerSimiliarityThreshold": 3,
 			"RetryDelay": 5000
 		}
-	}
+	]
 }

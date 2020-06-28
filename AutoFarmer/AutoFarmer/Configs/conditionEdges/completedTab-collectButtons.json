@@ -1,6 +1,6 @@
 {
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "assignmentsCompleted",
 			"SearchRectangleName": "collectButton",
 			"MaximumOccurrence": 3,
@@ -9,5 +9,5 @@
 				"Y": "Descending"
 			}
 		}
-	}
+	]
 }

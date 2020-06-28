@@ -16,6 +16,5 @@
 	"Nodes": {
 		"selectCharacter0{i}": "loginCharacter0{i}"
 	},
-	"Conditions": null,
 	"Order": 2
 }

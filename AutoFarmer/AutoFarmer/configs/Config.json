@@ -4,7 +4,7 @@
 		"H": 1080
 	},
 	"ActionSounds": true,
-	"ProcessCountdown": 7500,
+	"ProcessCountdown": 10000,
 	"ImageMatchTemplateResourcesDirectory": ".\\Resources\\images",
 	"GraphicalLogging": true,
 	"FileLogging": true,

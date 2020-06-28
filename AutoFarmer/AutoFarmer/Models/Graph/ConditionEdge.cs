@@ -1,5 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AutoFarmer.Models.Graph
 {
@@ -11,7 +13,7 @@ namespace AutoFarmer.Models.Graph
 
 		public string EndNodeName { get; set; }
 
-		public Conditions Conditions { get; set; }
+		public List<Condition> Conditions { get; set; }
 
 		public int MaxCrossing { get; set; } = 1;
 
@@ -36,46 +38,34 @@ namespace AutoFarmer.Models.Graph
 			CurrentCrossing = 0;
 		}
 
-		public bool Process(out List<SerializablePoint> actionPoints)
-		{
-			var preRes = ProcessConditon(Conditions.PreCondition, out actionPoints);
-
-			Logger.Log($"Precondition processed: {preRes}");
-
-			if (Conditions.PreCondition?.Equals(Conditions.PostCondition) == true)
-			{
-				if (preRes) CurrentCrossing++;
-
-				return preRes;
-			}
-			else
-			{
-				if (preRes is false) return false;
-
-				var postRes = ProcessConditon(Conditions.PostCondition, out actionPoints);
-
-				Logger.Log($"Postcondition processed: {postRes}");
-
-				if (postRes)
-				{
-					CurrentCrossing++;
-
-					return true;
-				}
-				else
-				{
-					throw new AutoFarmerException($"Stuck in {Name} condition edge!");
-				}
-			}
-		}
-
-		private bool ProcessConditon(MatchCondition condition, out List<SerializablePoint> actionPoints)
+		public bool ProcessConditions(out List<SerializablePoint> actionPoints)
 		{
 			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
 
-			if (condition is null) return true;
+			Logger.Log("Processing conditions");
 
-			return condition.Process(out actionPoints);
+			for (int i = 0; i < Conditions.Count; i++)
+			{
+				var result = Conditions[i].Process(out actionPoints);
+
+				Logger.Log($"Condition processed: {result}");
+
+				if (result == false)
+				{
+					if (i == 0)
+					{
+						return false;
+					}
+					else
+					{
+						throw new AutoFarmerException($"Stuck in {Name} condition edge!");
+					}
+				}
+			}
+
+			CurrentCrossing++;
+
+			return true;
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace AutoFarmer.Models.Graph
 
 		public Dictionary<string, string> Nodes { get; set; }
 
-		public Conditions Conditions { get; set; }
+		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
 		public int MaxCrossing { get; set; } = 1;
 
@@ -44,22 +44,22 @@ namespace AutoFarmer.Models.Graph
 						var startNodeName = ReplaceTemplates(tuple.Key, edgeOptions.TemplateVariables, i);
 						var endNodeName = ReplaceTemplates(tuple.Value, edgeOptions.TemplateVariables, i);
 
-						var preCondition = edgeOptions.Conditions?.PreCondition?.Clone();
-						var postCondition = edgeOptions.Conditions?.PostCondition?.Clone();
+						var conditions = new List<Condition>();
 
-						if (preCondition != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), preCondition.TemplateName))
+						foreach (var c in edgeOptions.Conditions)
 						{
-							preCondition.TemplateName = ReplaceTemplates(preCondition.TemplateName, edgeOptions.TemplateVariables, i);
-							preCondition.SearchRectangleName = ReplaceTemplates(preCondition.SearchRectangleName, edgeOptions.TemplateVariables, i);
+							var condition = c.Clone();
+
+							if (condition != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
+							{
+								condition.TemplateName = ReplaceTemplates(condition.TemplateName, edgeOptions.TemplateVariables, i);
+								condition.SearchRectangleName = ReplaceTemplates(condition.SearchRectangleName, edgeOptions.TemplateVariables, i);
+							}
+
+							conditions.Add(condition);
 						}
 
-						if (postCondition != null && preCondition != postCondition && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), postCondition.TemplateName))
-						{
-							postCondition.TemplateName = ReplaceTemplates(postCondition.TemplateName, edgeOptions.TemplateVariables, i);
-							postCondition.SearchRectangleName = ReplaceTemplates(postCondition.SearchRectangleName, edgeOptions.TemplateVariables, i);
-						}
-
-						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, preCondition is null && postCondition is null ? null : new Conditions() { PreCondition = preCondition, PostCondition = postCondition }));
+						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, conditions));
 					}
 				}
 				else
@@ -71,7 +71,7 @@ namespace AutoFarmer.Models.Graph
 			return result;
 		}
 
-		private static ConditionEdge CreateConditionEdge(string startNodeName, string endNodeName, int order, int maxCrossing, Conditions conditions)
+		private static ConditionEdge CreateConditionEdge(string startNodeName, string endNodeName, int order, int maxCrossing, List<Condition> conditions)
 		{
 			return new ConditionEdge()
 			{

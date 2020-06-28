@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class MatchCondition
+	public class Condition
 	{
 		public string TemplateName { get; set; }
 
@@ -32,7 +32,7 @@ namespace AutoFarmer.Models.Graph
 		{
 			if (obj is null) return false;
 
-			if (obj is MatchCondition c)
+			if (obj is Condition c)
 			{
 				return TemplateName == c.TemplateName && SearchRectangleName == c.SearchRectangleName;
 			}
@@ -40,9 +40,9 @@ namespace AutoFarmer.Models.Graph
 			return false;
 		}
 
-		public MatchCondition Clone()
+		public Condition Clone()
 		{
-			return JsonConvert.DeserializeObject<MatchCondition>(JsonConvert.SerializeObject(this));
+			return JsonConvert.DeserializeObject<Condition>(JsonConvert.SerializeObject(this));
 		}
 
 		public bool Process(out List<SerializablePoint> actionPoints)

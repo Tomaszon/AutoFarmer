@@ -1,8 +1,8 @@
 {
-	"Conditions": {
-		"Condition": {
+	"Conditions": [
+		{
 			"TemplateName": "assignmentsCompleted",
 			"SearchRectangleName": "personalTab"
 		}
-	}
+	]
 }

@@ -112,9 +112,9 @@ namespace AutoFarmer.Models.InputHandling
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		public static void ScanScreenForFadedUI(int delay = 100)
+		public static void ScanScreenForFadedUI(int delay = 15)
 		{
-			for (int y = 0; y < Instance.ScreenSize.H; y += 50)
+			for (int y = 0; y < Instance.ScreenSize.H; y += 75)
 			{
 				for (int x = 0; x < Instance.ScreenSize.W; x += 250)
 				{

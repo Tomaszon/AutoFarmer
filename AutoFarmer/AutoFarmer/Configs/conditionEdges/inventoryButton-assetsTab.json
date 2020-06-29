@@ -1,0 +1,8 @@
+{
+	"Conditions": [
+		{
+			"TemplateName": "inventory",
+			"SearchRectangleName": "assetsTab"
+		}
+	]
+}

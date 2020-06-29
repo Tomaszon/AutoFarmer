@@ -21,7 +21,9 @@
 		"assignmentsCloseButton",
 		"collectButtons",
 		"beginButton",
-		"closeButton",
+		"assignmentsCloseButton",
+		"inventoryButton",
+		"assetsTab",
 		"selectCharacter0{i}"
 	],
 	"Actions": {

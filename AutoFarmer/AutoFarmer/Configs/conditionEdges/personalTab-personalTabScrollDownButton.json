@@ -1,7 +1,4 @@
 {
-	"Nodes": {
-		"personalTab": "personalTabScrollDownButton"
-	},
 	"Conditions": [
 		{
 			"TemplateName": "assignmentsScroll",

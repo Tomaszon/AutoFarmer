@@ -14,7 +14,10 @@
 		]
 	},
 	"Names": [
-		"start0{i}"
+		"start0{i}",
+		"startPartAssignments",
+		"startPartInventory",
+		"startPartScanScreen"
 	],
 	"IsStartNode": true
 }

@@ -1,7 +1,7 @@
 {
 	"Names": [
 		"personalTabScrollDownButton",
-		"inventoryScroll"
+		"inventoryScrollDownButton"
 	],
 	"Actions": {
 		"InputActionNames": [

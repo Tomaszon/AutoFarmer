@@ -1,0 +1,36 @@
+{
+	"SearchRectangles": {
+		"dilithiumPerZenField": {
+			"X": 698,
+			"Y": 621,
+			"W": 67,
+			"H": 13,
+			"ClickPoint": {
+				"X": 732,
+				"Y": 651
+			}
+		},
+		"dilithiumToSellField": {
+			"X": 744,
+			"Y": 674,
+			"W": 53,
+			"H": 13,
+			"ClickPoint": {
+				"X": 771,
+				"Y": 704
+			}
+		},
+		"submitButton": {
+			"X": 698,
+			"Y": 765,
+			"W": 51,
+			"H": 13
+		},
+		"cancelButton": {
+			"X": 1080,
+			"Y": 512,
+			"W": 46,
+			"H": 13
+		}
+	}
+}

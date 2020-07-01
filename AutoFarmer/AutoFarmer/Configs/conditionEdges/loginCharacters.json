@@ -20,7 +20,7 @@
 		{
 			"TemplateName": "securityOfficer",
 			"SearchRectangleName": "assignmentsButton",
-			"MaxRetryPerSimiliarityThreshold": 3,
+			"MaxRetryPerSimiliarityThreshold": 10,
 			"RetryDelay": 5000
 		}
 	]

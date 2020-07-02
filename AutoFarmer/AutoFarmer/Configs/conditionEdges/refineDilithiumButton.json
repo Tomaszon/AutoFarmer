@@ -3,10 +3,8 @@
 		"refineDilithiumButton": "exchangeButton",
 		"startPartExchangeButton": "exchangeButton"
 	},
-	"Conditions": [
-		{
-			"TemplateName": "inventory",
-			"SearchRectangleName": "exchangeButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "exchangeButton"
+	}
 }

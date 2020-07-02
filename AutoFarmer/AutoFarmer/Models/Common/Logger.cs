@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AutoFarmer.Models.Common
 {
@@ -12,10 +13,12 @@ namespace AutoFarmer.Models.Common
 	{
 		private static readonly Guid _GUID = Guid.NewGuid();
 
-		public static void Log(string message = "", NotificationType notificationType = NotificationType.None, int count = 1)
+		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
 		{
 			try
 			{
+				message = $"{Path.GetFileName(file)} - {method} - {line}:\n\t{message}";
+
 				Console.WriteLine(message);
 				Console.WriteLine();
 

@@ -16,10 +16,8 @@
 	"Nodes": {
 		"start0{i}": "startScrollDownButton0{i}"
 	},
-	"Conditions": [
-		{
-			"TemplateName": "characterSelector1",
-			"SearchRectangleName": "scrollDownButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "characterSelector1",
+		"SearchRectangleName": "scrollDownButton"
+	}
 }

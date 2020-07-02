@@ -1,0 +1,9 @@
+{
+	"Actions": {
+		"InputActionNames": [
+			"ScanScreenForFadedUI"
+		],
+		"AdditionalDelayBetweenActions": 0,
+		"AdditionalDelayAfterLastAction": 0
+	}
+}

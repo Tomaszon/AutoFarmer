@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "assignmentsCompleted",
-			"SearchRectangleName": "closeButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "assignmentsCompleted",
+		"SearchRectangleName": "closeButton"
+	}
 }

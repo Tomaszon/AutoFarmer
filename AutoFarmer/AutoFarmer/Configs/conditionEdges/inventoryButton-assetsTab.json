@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "inventory",
-			"SearchRectangleName": "assetsTab"
-		}
-	]
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "assetsTab"
+	}
 }

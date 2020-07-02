@@ -1,12 +1,14 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
-			"SearchRectangleName": "tooManyOutstandingOffersLabel"
-		},
-		{
-			"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
-			"SearchRectangleName": "cancelButton"
-		}
-	]
+	"Condition": {
+		"And": [
+			{
+				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+				"SearchRectangleName": "tooManyOutstandingOffersLabel"
+			},
+			{
+				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+				"SearchRectangleName": "cancelButton"
+			}
+		]
+	}
 }

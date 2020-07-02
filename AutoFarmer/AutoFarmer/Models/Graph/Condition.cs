@@ -1,6 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.ImageMatching;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -8,17 +7,36 @@ namespace AutoFarmer.Models.Graph
 {
 	public class Condition
 	{
+		public ResultAppendMode AppendMode { get; set; }
+
+		public List<Condition> AndConditions { get; set; }
+
+		public List<Condition> OrConditions { get; set; }
+
+		public ConditionMode ConditionMode
+		{
+			get
+			{
+				if (AndConditions != null || OrConditions != null)
+				{
+					return AndConditions != null ? ConditionMode.And : ConditionMode.Or;
+				}
+
+				return ConditionMode.Primitive;
+			}
+		}
+
 		public string TemplateName { get; set; }
 
 		public string SearchRectangleName { get; set; }
 
-		public int MaximumOccurrence { get; set; } = 1;
+		public int MaximumOccurrence { get; set; }
 
-		public int MinimumOccurrence { get; set; } = 1;
+		public int MinimumOccurrence { get; set; }
 
-		public int MaxRetryPerSimiliarityThreshold { get; set; } = 1;
+		public int MaxRetryPerSimiliarityThreshold { get; set; }
 
-		public int RetryDelay { get; set; } = 1000;
+		public int RetryDelay { get; set; }
 
 		public float MaximumSimiliarityThreshold { get; set; }
 
@@ -40,26 +58,45 @@ namespace AutoFarmer.Models.Graph
 			return false;
 		}
 
-		public Condition Clone()
+		public bool Process(List<SerializablePoint> actionPoints)
 		{
-			return JsonConvert.DeserializeObject<Condition>(JsonConvert.SerializeObject(this));
+			if (ConditionMode == ConditionMode.Primitive)
+			{
+				return ProcessPrimitiveCondition(actionPoints);
+			}
+			else
+			{
+				return ProcessComplexCondition(actionPoints);
+			}
 		}
 
-		public bool Process(out List<SerializablePoint> actionPoints)
+		private bool ProcessComplexCondition(List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			var startState = ConditionMode == ConditionMode.And;
 
-			float maximum = MaximumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMaximumSimiliarityThreshold : MaximumSimiliarityThreshold;
-			float minimum = MinimumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMiniumuSimiliarityThreshold : MinimumSimiliarityThreshold;
-			float step = SimiliarityThresholdStep == default ? ImageMatchFinder.Instance.DefaultSimiliarityThresholdStep : SimiliarityThresholdStep;
+			foreach (var condition in OrConditions)
+			{
+				var lastProcessState = condition.Process(actionPoints);
 
-			float current = maximum;
+				if (lastProcessState != startState) break;
+			}
+
+			return ConditionMode == ConditionMode.Or;
+		}
+
+		private bool ProcessPrimitiveCondition(List<SerializablePoint> actionPoints)
+		{
+			float maximumThreshold = MaximumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMaximumSimiliarityThreshold : MaximumSimiliarityThreshold;
+			float minimumThreshold = MinimumSimiliarityThreshold == default ? ImageMatchFinder.Instance.DefaultMiniumuSimiliarityThreshold : MinimumSimiliarityThreshold;
+			float thresholdStep = SimiliarityThresholdStep == default ? ImageMatchFinder.Instance.DefaultSimiliarityThresholdStep : SimiliarityThresholdStep;
+
+			float current = maximumThreshold;
 
 			Logger.Log($"Attempting to find {SearchRectangleName} search rectangle of {TemplateName} " +
 				$"template max {MaxRetryPerSimiliarityThreshold + 1} times per similiarity threshold from: " +
-				$"{maximum} to {minimum} with -{step} steps");
+				$"{maximumThreshold} to {minimumThreshold} with -{thresholdStep} steps");
 
-			while (current >= minimum)
+			while (current >= minimumThreshold)
 			{
 				int retry = 0;
 
@@ -71,7 +108,24 @@ namespace AutoFarmer.Models.Graph
 
 						var sourceImage = ImageFactory.CreateScreenshot();
 
-						actionPoints = ImageMatchFinder.FindClickPointForTemplate(this, sourceImage, current);
+						var foundActionPoints = ImageMatchFinder.FindClickPointForTemplate(this, sourceImage, current);
+
+						switch (AppendMode)
+						{
+							case ResultAppendMode.Override:
+							{
+								actionPoints.Clear();
+
+								actionPoints.AddRange(foundActionPoints);
+							}
+							break;
+
+							case ResultAppendMode.Append:
+							{
+								actionPoints.AddRange(foundActionPoints);
+							}
+							break;
+						}
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
@@ -91,7 +145,7 @@ namespace AutoFarmer.Models.Graph
 					}
 				}
 
-				current -= step;
+				current -= thresholdStep;
 			}
 
 			return false;

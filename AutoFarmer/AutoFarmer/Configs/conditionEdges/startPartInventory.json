@@ -3,10 +3,8 @@
 		"startPartInventory": "inventoryButton",
 		"assignmentsCloseButton": "inventoryButton"
 	},
-	"Conditions": [
-		{
-			"TemplateName": "inventory",
-			"SearchRectangleName": "inventoryButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "inventoryButton"
+	}
 }

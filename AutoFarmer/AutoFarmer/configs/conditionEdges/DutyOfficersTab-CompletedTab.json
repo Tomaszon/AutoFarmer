@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "assignmentsDetails",
-			"SearchRectangleName": "completedTab"
-		}
-	]
+	"Condition": {
+		"TemplateName": "assignmentsDetails",
+		"SearchRectangleName": "completedTab"
+	}
 }

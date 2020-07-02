@@ -4,11 +4,11 @@
 		"H": 1080
 	},
 	"ActionSounds": true,
-	"ProcessCountdown": 10000,
+	"ProcessCountdown": 7500,
 	"ImageMatchTemplateResourcesDirectory": ".\\Resources\\images",
 	"GraphicalLogging": true,
 	"FileLogging": true,
 	"ActiveStartNodes": [
-		"startPartExchangeButton"
+		"startPartScanScreen"
 	]
 }

@@ -3,10 +3,8 @@
 		"personalTab": "confiscateAssignment",
 		"personalTabScrollDownButton": "confiscateAssignment"
 	},
-	"Conditions": [
-		{
-			"TemplateName": "assignmentsPersonal",
-			"SearchRectangleName": "confiscateAssignment"
-		}
-	]
+	"Condition": {
+		"TemplateName": "assignmentsPersonal",
+		"SearchRectangleName": "confiscateAssignment"
+	}
 }

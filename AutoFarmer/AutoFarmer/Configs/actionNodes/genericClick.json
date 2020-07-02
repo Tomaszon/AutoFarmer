@@ -31,7 +31,8 @@
 		"withdrawOkButton",
 		"submitOrderButton",
 		"inventoryTab",
-		"closeButtons"
+		"closeButtons",
+		"turnOverButton"
 	],
 	"Actions": {
 		"InputActionNames": [

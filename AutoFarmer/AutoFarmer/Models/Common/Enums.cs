@@ -43,4 +43,18 @@
 		BottomLeft = 0b1000,
 		BottomRight = 0b0000
 	}
+
+	public enum ResultAppendMode
+	{
+		Override,
+		Append,
+		None
+	}
+
+	public enum ConditionMode
+	{
+		Primitive,
+		Or,
+		And
+	}
 }

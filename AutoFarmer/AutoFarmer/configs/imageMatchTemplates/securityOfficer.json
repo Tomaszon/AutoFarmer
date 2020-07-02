@@ -12,6 +12,12 @@
 			"NamedSearchAreas":[
 				"TopRight"
 			]
+		},
+		"speakButton":{
+			"X": 862,
+			"Y": 682,
+			"W": 22,
+			"H": 22
 		}
 	}
 }

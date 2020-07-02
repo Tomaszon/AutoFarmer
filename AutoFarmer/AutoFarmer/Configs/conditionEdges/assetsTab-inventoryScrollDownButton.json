@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "inventory",
-			"SearchRectangleName": "inventoryScrollDownButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "inventoryScrollDownButton"
+	}
 }

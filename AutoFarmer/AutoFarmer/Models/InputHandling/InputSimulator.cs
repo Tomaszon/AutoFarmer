@@ -85,38 +85,41 @@ namespace AutoFarmer.Models.InputHandling
 			{
 				case MouseAction.LeftClick:
 				{
+					Logger.Log("Left mouse click", NotificationType.Click);
+
 					simulator.Mouse.LeftButtonClick();
 
-					Logger.Log("Left mouse click", NotificationType.Click);
 					break;
 				}
 				case MouseAction.LeftDoubleClick:
 				{
+					Logger.Log("Left mouse double click", NotificationType.Click, 1);//TODO use unique sound
+
 					simulator.Mouse.LeftButtonDoubleClick();
 
-					Logger.Log("Left mouse double click", NotificationType.Click, 1);//TODO use unique sound
 					break;
 				}
 				case MouseAction.ScanScreenForFadedUI:
 				{
+					Logger.Log("Scanning for faded UI");
+
 					ScanScreenForFadedUI();
 
-					Logger.Log("Scanning for faded UI");
 					break;
 				}
 				case MouseAction.LeftHold5of10sec:
 				case MouseAction.LeftHold1sec:
 				case MouseAction.LeftHold5sec:
 				{
-					simulator.Mouse.LeftButtonDown();
-
 					Logger.Log("Left mouse hold", NotificationType.Click, 1);//TODO use unique sound
+
+					simulator.Mouse.LeftButtonDown();
 
 					Thread.Sleep((int)mouseAction);
 
-					simulator.Mouse.LeftButtonUp();
-
 					Logger.Log("Left mouse release", NotificationType.Click, 1);//TODO use unique sound
+
+					simulator.Mouse.LeftButtonUp();
 
 					break;
 				}
@@ -130,13 +133,11 @@ namespace AutoFarmer.Models.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
+		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0, bool log = true)
 		{
-			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
-
 			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
 
-			Logger.Log($"Mouse move to: {point}");
+			if (log) Logger.Log($"Mouse move to: {point}");
 
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
@@ -147,9 +148,11 @@ namespace AutoFarmer.Models.InputHandling
 			{
 				for (int x = 0; x < Instance.ScreenSize.W; x += 250)
 				{
-					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, Instance.Delay * -1 + delay);
+					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, Instance.Delay * -1 + delay, false);
 				}
 			}
+
+			MoveMouseTo(MouseSafetyMeasures.Instance.LastActionPosition, log: false);
 		}
 	}
 }

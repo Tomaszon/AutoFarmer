@@ -16,14 +16,10 @@
 	"Nodes": {
 		"selectCharacter0{i}": "loadingCharacter0{i}"
 	},
-	"Conditions": [
-		{
-			"TemplateName": "characterLoading",
-			"SearchRectangleName": "loadingLabel",
-			"MaximumSimiliarityThreshold": 0.99,
-			"MinimumSimiliarityThreshold": 0.99,
-			"RetryDelay": 0
-		}
-	],
+	"Condition": {
+		"TemplateName": "characterLoading",
+		"SearchRectangleName": "loadingLabel",
+		"RetryDelay": 0
+	},
 	"MaxCrossing": 3
 }

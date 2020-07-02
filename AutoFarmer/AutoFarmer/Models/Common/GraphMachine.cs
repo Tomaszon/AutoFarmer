@@ -23,7 +23,7 @@ namespace AutoFarmer.Models.Common
 			{
 				MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
 
-				List<SerializablePoint> actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.GetCursorCurrentPosition() };
+				List<SerializablePoint> actionPoints = new List<SerializablePoint>();
 
 				do
 				{
@@ -33,7 +33,7 @@ namespace AutoFarmer.Models.Common
 
 					while (GetNextOutgoingEdge(currentNode, out currentEdge))
 					{
-						if (ProcessEdge(currentEdge, out actionPoints))
+						if (ProcessEdge(currentEdge, actionPoints))
 						{
 							currentNode = Graph.GetNextNode(currentEdge);
 
@@ -51,7 +51,7 @@ namespace AutoFarmer.Models.Common
 				}
 				while (!currentNode.IsEndNode);
 
-				ProcessNode(currentNode, MouseSafetyMeasures.Instance.LastActionPosition);
+				ProcessNode(currentNode);
 
 				Graph.ResetStates();
 			}
@@ -81,6 +81,11 @@ namespace AutoFarmer.Models.Common
 
 			if (node.Actions is null) return;
 
+			if (actionPositions.Length == 0)
+			{
+				actionPositions = new[] { MouseSafetyMeasures.GetCursorCurrentPosition() };
+			}
+
 			foreach (var actionPosition in actionPositions)
 			{
 				InputSimulator.MoveMouseTo(actionPosition);
@@ -91,13 +96,11 @@ namespace AutoFarmer.Models.Common
 			}
 		}
 
-		private bool ProcessEdge(ConditionEdge edge, out List<SerializablePoint> actionPoints)
+		private bool ProcessEdge(ConditionEdge edge, List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			if (edge.Condition is null) return true;
 
-			if (edge.Conditions is null) return true;
-
-			return edge.ProcessConditions(out actionPoints);
+			return edge.ProcessCondition(actionPoints);
 		}
 	}
 }

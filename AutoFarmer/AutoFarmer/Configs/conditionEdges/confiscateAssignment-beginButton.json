@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "assignmentsDetails",
-			"SearchRectangleName": "beginButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "assignmentsDetails",
+		"SearchRectangleName": "beginButton"
+	}
 }

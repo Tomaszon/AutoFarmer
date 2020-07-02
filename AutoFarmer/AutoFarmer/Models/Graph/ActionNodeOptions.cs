@@ -21,43 +21,46 @@ namespace AutoFarmer.Models.Graph
 
 		public static List<ActionNode> FromJsonFile(string path)
 		{
-			var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
-
-			if (nodeOptions.Names is null)
+			return FromJsonFileWrapper(() =>
 			{
-				nodeOptions.Names = new[] { Path.GetFileNameWithoutExtension(path) };
-			}
+				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
-			List<ActionNode> result = new List<ActionNode>();
-
-			foreach (var name in nodeOptions.Names)
-			{
-				if (nodeOptions.TemplateVariables != null && IsContainsTemplate(nodeOptions.TemplateVariables.Keys.ToList(), name))
+				if (nodeOptions.Names is null)
 				{
-					for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
-					{
-						var modifiedName = ReplaceTemplates(name, nodeOptions.TemplateVariables, j);
+					nodeOptions.Names = new[] { Path.GetFileNameWithoutExtension(path) };
+				}
 
-						result.Add(CreateActionNode(modifiedName, nodeOptions.Actions, nodeOptions.IsStartNode, nodeOptions.IsEndNode));
+				List<ActionNode> result = new List<ActionNode>();
+
+				foreach (var name in nodeOptions.Names)
+				{
+					if (nodeOptions.TemplateVariables != null && IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
+					{
+						for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
+						{
+							var modifiedName = ReplaceVariables(name, nodeOptions.TemplateVariables, j);
+
+							result.Add(nodeOptions.ToActionNode(modifiedName));
+						}
+					}
+					else
+					{
+						result.Add(nodeOptions.ToActionNode(name));
 					}
 				}
-				else
-				{
-					result.Add(CreateActionNode(name, nodeOptions.Actions, nodeOptions.IsStartNode, nodeOptions.IsEndNode));
-				}
-			}
 
-			return result;
+				return result;
+			});
 		}
 
-		private static ActionNode CreateActionNode(string name, NodeActions actions, bool isStartNode, bool isEndNode)
+		private ActionNode ToActionNode(string name)
 		{
 			return new ActionNode()
 			{
 				Name = name,
-				Actions = actions,
-				IsStartNode = isStartNode,
-				IsEndNode = isEndNode
+				Actions = Actions,
+				IsStartNode = IsStartNode,
+				IsEndNode = IsEndNode
 			};
 		}
 	}

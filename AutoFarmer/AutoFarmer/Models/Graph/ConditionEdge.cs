@@ -1,7 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace AutoFarmer.Models.Graph
 {
@@ -13,13 +11,13 @@ namespace AutoFarmer.Models.Graph
 
 		public string EndNodeName { get; set; }
 
-		public List<Condition> Conditions { get; set; }
+		public Condition Condition { get; set; }
 
-		public int MaxCrossing { get; set; } = 1;
+		public int MaxCrossing { get; set; }
 
 		public int CurrentCrossing { get; set; }
 
-		public int Order { get; set; } = 1;
+		public int Order { get; set; }
 
 		public bool IsEnabled
 		{
@@ -38,34 +36,22 @@ namespace AutoFarmer.Models.Graph
 			CurrentCrossing = 0;
 		}
 
-		public bool ProcessConditions(out List<SerializablePoint> actionPoints)
+		public bool ProcessCondition(List<SerializablePoint> actionPoints)
 		{
-			actionPoints = new List<SerializablePoint>() { MouseSafetyMeasures.Instance.LastActionPosition };
+			Logger.Log($"Processing condition of {Name}");
 
-			Logger.Log("Processing conditions");
+			var result = Condition.Process(actionPoints);
 
-			for (int i = 0; i < Conditions.Count; i++)
+			Logger.Log($"Condition processed: {result}");
+
+			if (result)
 			{
-				var result = Conditions[i].Process(out actionPoints);
+				CurrentCrossing++;
 
-				Logger.Log($"Condition processed: {result}");
-
-				if (result == false)
-				{
-					if (i == 0)
-					{
-						return false;
-					}
-					else
-					{
-						throw new AutoFarmerException($"Stuck in {Name} condition edge!");
-					}
-				}
+				return true;
 			}
 
-			CurrentCrossing++;
-
-			return true;
+			return false;
 		}
 	}
 }

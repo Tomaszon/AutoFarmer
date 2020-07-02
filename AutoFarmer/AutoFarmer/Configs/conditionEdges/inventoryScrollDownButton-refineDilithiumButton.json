@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "inventory",
-			"SearchRectangleName": "refineButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "refineButton"
+	}
 }

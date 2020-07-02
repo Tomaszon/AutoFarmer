@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.Common;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AutoFarmer.Models.Graph
 
 		public Dictionary<string, string> Nodes { get; set; }
 
-		public List<Condition> Conditions { get; set; } = new List<Condition>();
+		public ConditionOptions Condition { get; set; }
 
 		public int MaxCrossing { get; set; } = 1;
 
@@ -23,59 +24,54 @@ namespace AutoFarmer.Models.Graph
 
 		public static List<ConditionEdge> FromJsonFile(string path)
 		{
-			var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
-			edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
-
-			if (edgeOptions.Nodes is null)
+			return FromJsonFileWrapper(() =>
 			{
-				var arr = edgeOptions.Name.Split('-');
+				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
+				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
 
-				edgeOptions.Nodes = new Dictionary<string, string>() { { arr[0], arr[1] } };
-			}
-
-			List<ConditionEdge> result = new List<ConditionEdge>();
-
-			foreach (var tuple in edgeOptions.Nodes)
-			{
-				if (edgeOptions.TemplateVariables != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
+				if (edgeOptions.Nodes is null)
 				{
-					for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
+					var arr = edgeOptions.Name.Split('-');
+
+					edgeOptions.Nodes = new Dictionary<string, string>() { { arr[0], arr[1] } };
+				}
+
+				List<ConditionEdge> result = new List<ConditionEdge>();
+
+				foreach (var tuple in edgeOptions.Nodes)
+				{
+					if (edgeOptions.TemplateVariables != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
 					{
-						var startNodeName = ReplaceTemplates(tuple.Key, edgeOptions.TemplateVariables, i);
-						var endNodeName = ReplaceTemplates(tuple.Value, edgeOptions.TemplateVariables, i);
-
-						var conditions = new List<Condition>();
-
-						foreach (var c in edgeOptions.Conditions)
+						for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 						{
-							var condition = c.Clone();
+							var startNodeName = ReplaceVariables(tuple.Key, edgeOptions.TemplateVariables, i);
+							var endNodeName = ReplaceVariables(tuple.Value, edgeOptions.TemplateVariables, i);
 
-							if (condition != null && IsContainsTemplate(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
+							var condition = edgeOptions.Condition?.Clone();
+
+							if (condition != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
 							{
-								condition.TemplateName = ReplaceTemplates(condition.TemplateName, edgeOptions.TemplateVariables, i);
-								condition.SearchRectangleName = ReplaceTemplates(condition.SearchRectangleName, edgeOptions.TemplateVariables, i);
+								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}
 
-							conditions.Add(condition);
+							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, edgeOptions.Condition));
 						}
-
-						result.Add(CreateConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, conditions));
+					}
+					else
+					{
+						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Order, edgeOptions.MaxCrossing, edgeOptions.Condition));
 					}
 				}
-				else
-				{
-					result.Add(CreateConditionEdge(tuple.Key, tuple.Value, edgeOptions.Order, edgeOptions.MaxCrossing, edgeOptions.Conditions));
-				}
-			}
 
-			return result;
+				return result;
+			});
 		}
 
-		private static ConditionEdge CreateConditionEdge(string startNodeName, string endNodeName, int order, int maxCrossing, List<Condition> conditions)
+		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, int order, int maxCrossing, ConditionOptions conditionOptions)
 		{
 			return new ConditionEdge()
 			{
-				Conditions = conditions,
+				Condition = conditionOptions?.ToCondition(),
 				MaxCrossing = maxCrossing,
 				Order = order,
 				StartNodeName = startNodeName,

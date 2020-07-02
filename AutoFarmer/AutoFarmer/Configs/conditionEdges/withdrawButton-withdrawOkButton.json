@@ -1,8 +1,6 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "dilithiumExchangeWithdraw",
-			"SearchRectangleName": "okButton"
-		}
-	]
+	"Condition": {
+		"TemplateName": "dilithiumExchangeWithdraw",
+		"SearchRectangleName": "okButton"
+	}
 }

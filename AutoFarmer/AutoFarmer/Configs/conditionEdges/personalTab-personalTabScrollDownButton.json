@@ -1,9 +1,7 @@
 {
-	"Conditions": [
-		{
-			"TemplateName": "assignmentsScroll",
-			"SearchRectangleName": "scrollDownButton"
-		}
-	],
+	"Condition": {
+		"TemplateName": "assignmentsScroll",
+		"SearchRectangleName": "scrollDownButton"
+	},
 	"Order": 2
 }

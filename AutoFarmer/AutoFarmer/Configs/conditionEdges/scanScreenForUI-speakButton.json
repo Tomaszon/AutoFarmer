@@ -1,6 +1,6 @@
 {
 	"Condition": {
 		"TemplateName": "securityOfficer",
-		"SearchRectangleName": "assignmentsButton"
+		"SearchRectangleName": "speakButton"
 	}
 }

@@ -1,44 +1,49 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Properties;
+using System.IO;
 using System.Media;
+using System.Threading.Tasks;
 
 namespace AutoFarmer.Models.InputHandling
 {
 	public static class NotificationPlayer
 	{
-		private static void PlayError()
+		private static async void Play(Stream sound, int count)
 		{
-			new SoundPlayer(Resources.sounderror).Play();
-		}
+			await Task.Run(() =>
+			{
+				var player = new SoundPlayer(sound);
 
-		private static void PlayClick()
-		{
-			new SoundPlayer(Resources.soundnavigate).Play();
-		}
-
-		private static void PlayInfo()
-		{
-			new SoundPlayer(Resources.soundexclamation).Play();
+				for (int i = 0; i < count; i++)
+				{
+					player.PlaySync();
+				}
+			});
 		}
 
 		public static void Play(NotificationType type, int count = 1)
 		{
 			if (type == NotificationType.None) return;
 
-			for (int i = 0; i < count; i++)
+			switch (type)
 			{
-				switch (type)
+				case NotificationType.Click:
 				{
-					case NotificationType.Click:
-						PlayClick();
-						break;
-					case NotificationType.Error:
-						PlayError();
-						break;
-					case NotificationType.Info:
-						PlayInfo();
-						break;
+					Play(Resources.soundnavigate, count);
 				}
+				break;
+
+				case NotificationType.Error:
+				{
+					Play(Resources.sounderror, count);
+				}
+				break;
+
+				case NotificationType.Info:
+				{
+					Play(Resources.soundexclamation, count);
+				}
+				break;
 			}
 		}
 	}

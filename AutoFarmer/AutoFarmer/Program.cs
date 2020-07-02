@@ -9,7 +9,7 @@ namespace AutoFarmer
 {
 	internal class Program
 	{
-		private static void Main(string[] args)
+		private static void Main()
 		{
 			WorkMethod();
 		}
@@ -55,7 +55,7 @@ namespace AutoFarmer
 
 				Console.WriteLine("Press 'y' for restart. Others will exit.\n");
 
-				Logger.Log("---------------------------------------------------------------------------" +
+				Logger.Log("\n---------------------------------------------------------------------------" +
 						   "---------------------------------------------------------------------------");
 
 				input = Console.ReadLine();

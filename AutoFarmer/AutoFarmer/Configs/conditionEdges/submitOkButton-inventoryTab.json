@@ -2,7 +2,7 @@
 	"Conditions": [
 		{
 			"TemplateName": "inventory",
-			"SearchRectangleName": "exchangeButton"
+			"SearchRectangleName": "inventoryTab"
 		}
 	]
 }

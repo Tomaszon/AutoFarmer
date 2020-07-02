@@ -13,6 +13,8 @@
 		LeftClick,
 		LeftDoubleClick,
 		ScanScreenForFadedUI,
+		Move,
+		LeftHold5of10sec = 500,
 		LeftHold1sec = 1000,
 		LeftHold5sec = 5000
 	}

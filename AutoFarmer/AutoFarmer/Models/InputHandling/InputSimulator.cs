@@ -1,5 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
 using System;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Threading;
 using WindowsInput.Native;
 
@@ -31,13 +33,39 @@ namespace AutoFarmer.Models.InputHandling
 
 				if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
 				{
-					MouseEvent(mouseAction, additionalDelay);
+					ClickEvent(mouseAction, additionalDelay);
 				}
 				else if (Enum.TryParse<VirtualKeyCode>(action, true, out var keyboardAction))
 				{
 					KeyboardEvent(keyboardAction, additionalDelay);
 				}
+				else if (TryParse(action, out SerializablePoint p))
+				{
+					MoveMouseTo(p);
+				}
+				else
+				{
+					throw new AutoFarmerException($"Unknown input action: {action}");
+				}
 			}
+		}
+
+		private static bool TryParse(string value, out SerializablePoint point)
+		{
+			point = null;
+
+			Regex regex = new Regex($"{MouseAction.Move}:(?<x>(\\d)+),(?<y>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
+			var match = regex.Match(value);
+
+			if (match.Success && int.TryParse(match.Groups["x"].Value, out var x) && int.TryParse(match.Groups["y"].Value, out var y))
+			{
+				point = new SerializablePoint { X = x, Y = y };
+
+				return true;
+			}
+
+			return false;
 		}
 
 		private static void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
@@ -49,7 +77,7 @@ namespace AutoFarmer.Models.InputHandling
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		private static void MouseEvent(MouseAction mouseAction, int additionalDelay = 0)
+		private static void ClickEvent(MouseAction mouseAction, int additionalDelay = 0)
 		{
 			var simulator = new WindowsInput.InputSimulator();
 
@@ -76,6 +104,7 @@ namespace AutoFarmer.Models.InputHandling
 					Logger.Log("Scanning for faded UI");
 					break;
 				}
+				case MouseAction.LeftHold5of10sec:
 				case MouseAction.LeftHold1sec:
 				case MouseAction.LeftHold5sec:
 				{

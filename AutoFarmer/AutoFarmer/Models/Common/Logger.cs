@@ -10,7 +10,7 @@ namespace AutoFarmer.Models.Common
 {
 	public static class Logger
 	{
-		private static Guid _guid = Guid.NewGuid();
+		private static readonly Guid _GUID = Guid.NewGuid();
 
 		public static void Log(string message = "", NotificationType notificationType = NotificationType.None, int count = 1)
 		{
@@ -23,7 +23,7 @@ namespace AutoFarmer.Models.Common
 				{
 					Directory.CreateDirectory(Config.Instance.LogDirectory);
 
-					File.AppendAllText(Path.Combine(Config.Instance.LogDirectory, $"{_guid}.log"), message + "\n\n");
+					File.AppendAllText(Path.Combine(Config.Instance.LogDirectory, $"{_GUID}.log"), message + "\n\n");
 				}
 
 				NotificationPlayer.Play(notificationType, count);
@@ -42,13 +42,13 @@ namespace AutoFarmer.Models.Common
 				{
 					using (Graphics g = Graphics.FromImage(matchCollection.Source))
 					{
-						Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _guid.ToString()));
+						Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _GUID.ToString()));
 
 						matchCollection.Matches.ForEach(m => HighlightFind(g, m.MatchRectangle, m.ClickPoint));
 
 						HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
-						var fileName = Path.Combine(Config.Instance.LogDirectory, _guid.ToString(), $"{templateName}-{searchRectangleName}");
+						var fileName = Path.Combine(Config.Instance.LogDirectory, _GUID.ToString(), $"{templateName}-{searchRectangleName}");
 
 						matchCollection.Source.Save($"{fileName}.png");
 						matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");

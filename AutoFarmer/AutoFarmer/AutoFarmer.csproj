@@ -88,7 +88,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\Graph\ActionNode.cs" />
-    <Compile Include="Models\GraphMachine.cs" />
+    <Compile Include="Models\Common\GraphMachine.cs" />
     <Compile Include="Models\ImageMatching\ImageFactory.cs" />
     <Compile Include="Models\ImageMatching\SearchRectangle.cs" />
     <Compile Include="Models\Common\SerializablePoint.cs" />

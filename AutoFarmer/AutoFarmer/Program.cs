@@ -1,11 +1,9 @@
-﻿using AutoFarmer.Models;
-using AutoFarmer.Models.Common;
+﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
 using System;
 using System.Threading;
-using WindowsInput.Native;
 
 namespace AutoFarmer
 {

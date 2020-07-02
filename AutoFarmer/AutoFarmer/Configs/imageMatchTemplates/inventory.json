@@ -24,7 +24,7 @@
 			"W":34,
 			"H":16,
 			"NamedSearchAreas":[
-				"TopRight"
+				"BottomRight"
 			]
 		},
 		"refineButton":{
@@ -33,7 +33,7 @@
 			"W":48,
 			"H":19,
 			"NamedSearchAreas":[
-				"TopRight"
+				"BottomRight"
 			]
 		},
 		"inventoryTab":{

@@ -1,0 +1,12 @@
+{
+	"Nodes":{
+		"dilithiumToSellField12000" : "submitOrderButton",
+		"dilithiumToSellField2000" : "submitOrderButton"
+	},
+	"Conditions": [
+		{
+			"TemplateName": "dilithiumExchange",
+			"SearchRectangleName": "submitButton"
+		}
+	]
+}

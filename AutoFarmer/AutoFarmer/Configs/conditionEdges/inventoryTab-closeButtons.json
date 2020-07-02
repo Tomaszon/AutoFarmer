@@ -1,0 +1,10 @@
+{
+	"Conditions": [
+		{
+			"TemplateName": "assignmentsCompleted",
+			"SearchRectangleName": "closeButton",
+			"MaximumOccurrence": 2,
+			"MinimumOccurrence": 2
+		}
+	]
+}

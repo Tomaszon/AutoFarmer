@@ -2,6 +2,7 @@
 using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Models.InputHandling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -9,12 +10,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace AutoFarmerTests
 {
 	[TestClass]
 	public class AutoFarmerTests
 	{
+		[DllImport("user32.dll")]
+		private static extern bool GetCursorPos(out Point lpPoint);
+
 		[TestMethod]
 		public void TestMethod2v1()
 		{
@@ -143,6 +148,25 @@ namespace AutoFarmerTests
 			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchAreas = new List<SerializableRectangle>(customSearchAreas) };
 
 			Assert.ThrowsException<AutoFarmerException>(() => sr.Init());
+		}
+
+		[TestMethod]
+		public void TestMethod8()
+		{
+			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			MouseSafetyMeasures.FromConfig();
+			MouseSafetyMeasures.Instance.IsEnabled = false;
+
+			InputSimulator.FromConfig();
+
+			InputSimulator.Simulate(new[] { "Move:960,540" }, null);
+
+			GetCursorPos(out var refP);
+
+			Assert.AreEqual(refP, new Point(960, 540));
+			Assert.ThrowsException<AutoFarmerException>(() => InputSimulator.Simulate(new[] { "Move:12asd3,321" }, null));
+			Assert.ThrowsException<AutoFarmerException>(() => InputSimulator.Simulate(new[] { "Alma:123,321" }, null));
 		}
 	}
 }

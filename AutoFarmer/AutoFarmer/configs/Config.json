@@ -9,6 +9,6 @@
 	"GraphicalLogging": true,
 	"FileLogging": true,
 	"ActiveStartNodes": [
-		"startPartAssignments"
+		"startPartExchangeButton"
 	]
 }

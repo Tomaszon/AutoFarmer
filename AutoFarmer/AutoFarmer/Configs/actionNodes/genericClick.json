@@ -27,13 +27,11 @@
 		"assetsTab",
 		"refineDilithiumButton",
 		"exchangeButton",
-		"cancelOfferButton",
 		"withdrawButton",
 		"withdrawOkButton",
-		"dilithiumToSellField12000",
-		"dilithiumPerZenField",
-		"dilithiumToSellField2000",
-		"submitOrderButton"
+		"submitOrderButton",
+		"inventoryTab",
+		"closeButtons"
 	],
 	"Actions": {
 		"InputActionNames": [

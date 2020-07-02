@@ -1,0 +1,13 @@
+{
+	"Actions": {
+		"InputActionNames": [
+			"LeftHold5of10sec",
+			"NUMPAD2",
+			"NUMPAD0",
+			"NUMPAD0",
+			"NUMPAD0"
+		],
+		"AdditionalDelayBetweenActions": 0,
+		"AdditionalDelayAfterLastAction": 0
+	}
+}

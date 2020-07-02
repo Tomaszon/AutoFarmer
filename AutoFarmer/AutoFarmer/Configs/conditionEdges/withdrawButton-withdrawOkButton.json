@@ -1,0 +1,8 @@
+{
+	"Conditions": [
+		{
+			"TemplateName": "dilithiumExchangeWithdraw",
+			"SearchRectangleName": "okButton"
+		}
+	]
+}

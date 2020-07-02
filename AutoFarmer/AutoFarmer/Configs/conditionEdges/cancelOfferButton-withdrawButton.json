@@ -1,0 +1,8 @@
+{
+	"Conditions": [
+		{
+			"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+			"SearchRectangleName": "withdrawButton"
+		}
+	]
+}

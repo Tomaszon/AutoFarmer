@@ -1,11 +1,10 @@
-﻿using AutoFarmer.Models.Common;
-using AutoFarmer.Models.Graph;
+﻿using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.InputHandling;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace AutoFarmer.Models
+namespace AutoFarmer.Models.Common
 {
 	public class GraphMachine
 	{

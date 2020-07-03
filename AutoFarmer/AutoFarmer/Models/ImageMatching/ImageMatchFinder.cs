@@ -12,7 +12,7 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public class ImageMatchFinder
 	{
-		private static readonly PerformanceMonitor _performanceMonitor = new PerformanceMonitor();
+		private static readonly PerformanceMonitor _PERFORMANCE_MONITOR = new PerformanceMonitor();
 
 		public float DefaultMaximumSimiliarityThreshold { get; set; }
 
@@ -42,12 +42,12 @@ namespace AutoFarmer.Models.ImageMatching
 
 			if (matchResult.Matches.Count < condition.MinimumOccurrence)
 			{
-				throw new ImageMatchNotFoundException(_performanceMonitor.Elapsed);
+				throw new ImageMatchNotFoundException(_PERFORMANCE_MONITOR.Elapsed);
 			}
 
 			if (matchResult.Matches.Count > condition.MaximumOccurrence)
 			{
-				throw new ImageMatchAmbiguousException(matchResult.Matches.Count(), _performanceMonitor.Elapsed);
+				throw new ImageMatchAmbiguousException(matchResult.Matches.Count(), _PERFORMANCE_MONITOR.Elapsed);
 			}
 
 			return OrderResults(matchResult.Matches.Select(m => m.ClickPoint), condition.OrderBy);
@@ -68,7 +68,7 @@ namespace AutoFarmer.Models.ImageMatching
 					SearchImage = searchImage
 				};
 
-				_performanceMonitor.Start();
+				_PERFORMANCE_MONITOR.Start();
 
 				foreach (var searchArea in result.SearchAreas)
 				{
@@ -86,9 +86,9 @@ namespace AutoFarmer.Models.ImageMatching
 					result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
 				}
 
-				_performanceMonitor.Stop();
+				_PERFORMANCE_MONITOR.Stop();
 
-				Logger.Log($"Mathes calculated. Full search time: {_performanceMonitor.Elapsed}");
+				Logger.Log($"Mathes calculated. Full search time: {_PERFORMANCE_MONITOR.Elapsed}");
 
 				Logger.GraphicalLog(result, condition.TemplateName, condition.SearchRectangleName);
 
@@ -107,7 +107,7 @@ namespace AutoFarmer.Models.ImageMatching
 			var result = findResult.Select(tm =>
 				new ImageMatch((SerializablePoint)tm.Rectangle.Location + relativeClickPoint, (SerializableRectangle)tm.Rectangle)).ToList();
 
-			result.ForEach(m => Logger.Log($"Match found for {searchRectangleName} of {templateName}{(area is null ? "" : $" in {area} search area") } at {m.ClickPoint}. At search time: {_performanceMonitor.Elapse}"));
+			result.ForEach(m => Logger.Log($"Match found for {searchRectangleName} of {templateName}{(area is null ? "" : $" in {area} search area") } at {m.ClickPoint}. At search time: {_PERFORMANCE_MONITOR.Elapse}"));
 
 			return result;
 		}

@@ -6,7 +6,7 @@
 			"W": 67,
 			"H": 13,
 			"ClickPoint": {
-				"X": 732,
+				"X": 832,
 				"Y": 651
 			}
 		},
@@ -24,7 +24,19 @@
 			"X": 698,
 			"Y": 765,
 			"W": 51,
-			"H": 13
+			"H": 13,
+			"NamedSearchAreas":[
+				"Bottom"
+			]
+		},
+		"closeButton": {
+			"X": 1302,
+			"Y": 250,
+			"W": 23,
+			"H": 23,
+			"NamedSearchAreas":[
+				"TopRight"
+			]
 		}
 	}
 }

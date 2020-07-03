@@ -1,6 +1,6 @@
 {
 	"Condition": {
 		"TemplateName": "dilithiumExchange",
-		"SearchRectangleName": "dilithiumToSellField"
+		"SearchRectangleName": "dilithiumPerZenField"
 	}
 }

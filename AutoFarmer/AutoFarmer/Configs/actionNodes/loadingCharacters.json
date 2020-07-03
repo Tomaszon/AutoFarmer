@@ -16,7 +16,5 @@
 	"Names": [
 		"loadingCharacter0{i}"
 	],
-	"Actions": {
-		"AdditionalDelayAfterLastAction": 5000
-	}
+	"AdditionalDelayAfterLastAction": 5000
 }

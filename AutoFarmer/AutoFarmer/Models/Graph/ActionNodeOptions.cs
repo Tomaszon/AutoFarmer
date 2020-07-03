@@ -11,7 +11,11 @@ namespace AutoFarmer.Models.Graph
 
 		public string[] Names { get; set; }
 
-		public NodeActions Actions { get; set; }
+		public string[] ActionNames { get; set; }
+
+		public int AdditionalDelayBetweenActions { get; set; }
+
+		public int AdditionalDelayAfterLastAction { get; set; }
 
 		public bool IsStartNode { get; set; }
 
@@ -58,7 +62,9 @@ namespace AutoFarmer.Models.Graph
 			return new ActionNode()
 			{
 				Name = name,
-				Actions = Actions,
+				ActionNames = ActionNames,
+				AdditionalDelayAfterLastAction = AdditionalDelayAfterLastAction,
+				AdditionalDelayBetweenActions = AdditionalDelayBetweenActions,
 				IsStartNode = IsStartNode,
 				IsEndNode = IsEndNode
 			};

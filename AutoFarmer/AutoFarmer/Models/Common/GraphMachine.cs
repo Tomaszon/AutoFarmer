@@ -79,7 +79,12 @@ namespace AutoFarmer.Models.Common
 		{
 			node.IsVisited = true;
 
-			if (node.Actions is null) return;
+			if (node.ActionNames is null)
+			{
+				Thread.Sleep(node.AdditionalDelayAfterLastAction);
+
+				return;
+			}
 
 			if (actionPositions.Length == 0)
 			{
@@ -90,15 +95,20 @@ namespace AutoFarmer.Models.Common
 			{
 				InputSimulator.MoveMouseTo(actionPosition);
 
-				InputSimulator.Simulate(node.Actions.InputActionNames, actionPosition, node.Actions.AdditionalDelayBetweenActions);
+				InputSimulator.Simulate(node.ActionNames, actionPosition, node.AdditionalDelayBetweenActions);
 
-				Thread.Sleep(node.Actions.AdditionalDelayAfterLastAction);
+				Thread.Sleep(node.AdditionalDelayAfterLastAction);
 			}
 		}
 
 		private bool ProcessEdge(ConditionEdge edge, List<SerializablePoint> actionPoints)
 		{
-			if (edge.Condition is null) return true;
+			if (edge.Condition is null)
+			{
+				actionPoints.Clear();
+
+				return true;
+			}
 
 			return edge.ProcessCondition(actionPoints);
 		}

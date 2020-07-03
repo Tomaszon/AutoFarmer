@@ -8,6 +8,6 @@
 	"GraphicalLogging": true,
 	"FileLogging": true,
 	"ActiveStartNodes": [
-		"startPartDialogClose"
+		"startPartExchangeButton"
 	]
 }

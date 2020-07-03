@@ -24,6 +24,8 @@ namespace AutoFarmer.Models.InputHandling
 
 		public static void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
 		{
+			if (inputActionNames is null) return;
+
 			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
 
 			foreach (var action in inputActionNames)
@@ -175,6 +177,8 @@ namespace AutoFarmer.Models.InputHandling
 
 			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
 
+			MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
+
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
@@ -198,7 +202,7 @@ namespace AutoFarmer.Models.InputHandling
 				y = y + s.H > Instance.ScreenSize.H ? Instance.ScreenSize.H - s.H : y;
 			}
 
-			MoveMouseTo(MouseSafetyMeasures.Instance.LastActionPosition, additionalDelay, false);
+			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 	}
 }

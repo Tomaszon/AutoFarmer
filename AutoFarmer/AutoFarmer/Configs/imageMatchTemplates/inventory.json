@@ -53,6 +53,15 @@
 			"NamedSearchAreas":[
 				"Right"
 			]
+		},
+		"assetsTabSelected":{
+			"X":1599,
+			"Y":391,
+			"W":53,
+			"H":15,
+			"NamedSearchAreas":[
+				"Right"
+			]
 		}
 	}
 }

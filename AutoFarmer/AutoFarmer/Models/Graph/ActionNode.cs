@@ -4,7 +4,11 @@
 	{
 		public string Name { get; set; }
 
-		public NodeActions Actions { get; set; }
+		public string[] ActionNames { get; set; }
+
+		public int AdditionalDelayBetweenActions { get; set; }
+
+		public int AdditionalDelayAfterLastAction { get; set; }
 
 		public bool IsStartNode { get; set; }
 

@@ -29,18 +29,18 @@
 		"withdrawButton",
 		"withdrawOkButton",
 		"submitOrderButton",
-		"inventoryTab",
+		"submitOkButton",
 		"closeButtons",
 		"beginTurnOverAssignmentButton",
 		"assignmentsCloseButton2",
 		"dialogCloseButton",
-		"gameMenuButton"
+		"gameMenuButton",
+		"changeCharacterButton",
+		"changeCharacterOkButton"
 	],
-	"Actions": {
-		"InputActionNames": [
-			"LeftClick"
-		],
-		"AdditionalDelayBetweenActions": 0,
-		"AdditionalDelayAfterLastAction": 0
-	}
+	"ActionNames": [
+		"LeftClick"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
 }

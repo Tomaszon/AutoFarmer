@@ -1,10 +1,12 @@
 {
 	"Names": [
-		"personalTabScrollDownButton",
-		"inventoryScrollDownButton"
+		"dilithiumPerZenField2000",
+		"dilithiumPerZenField12000"
 	],
 	"ActionNames": [
-		"LeftHold1sec"
+		"LeftHold:500",
+		"NUMPAD2",
+		"NUMPAD5"
 	],
 	"AdditionalDelayBetweenActions": 0,
 	"AdditionalDelayAfterLastAction": 0

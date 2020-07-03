@@ -16,11 +16,9 @@
 	"Names": [
 		"loginCharacter0{i}"
 	],
-	"Actions": {
-		"InputActionNames": [
-			"LeftDoubleClick"
-		],
-		"AdditionalDelayBetweenActions": 1000,
-		"AdditionalDelayAfterLastAction": 5000
-	}
+	"ActionNames": [
+		"LeftDoubleClick"
+	],
+	"AdditionalDelayBetweenActions": 1000,
+	"AdditionalDelayAfterLastAction": 5000
 }

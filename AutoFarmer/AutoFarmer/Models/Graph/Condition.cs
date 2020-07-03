@@ -74,7 +74,7 @@ namespace AutoFarmer.Models.Graph
 		{
 			var startState = ConditionMode == ConditionMode.And;
 
-			foreach (var condition in OrConditions)
+			foreach (var condition in AndConditions ?? OrConditions)
 			{
 				var lastProcessState = condition.Process(actionPoints);
 

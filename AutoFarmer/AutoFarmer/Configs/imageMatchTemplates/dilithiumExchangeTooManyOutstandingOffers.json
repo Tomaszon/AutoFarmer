@@ -4,7 +4,10 @@
 			"X": 618,
 			"Y": 726,
 			"W": 71,
-			"H": 15
+			"H": 15,
+			"NamedSearchAreas":[
+				"Full"
+			]
 		},
 		"cancelButton": {
 			"X": 1080,

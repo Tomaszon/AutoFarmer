@@ -2,11 +2,9 @@
 	"Names": [
 		"confiscateAssignment"
 	],
-	"Actions": {
-		"InputActionNames": [
-			"LeftDoubleClick"
-		],
-		"AdditionalDelayBetweenActions": 0,
-		"AdditionalDelayAfterLastAction": 0
-	}
+	"ActionNames": [
+		"LeftDoubleClick"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
 }

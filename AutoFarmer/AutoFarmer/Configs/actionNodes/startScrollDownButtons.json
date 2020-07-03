@@ -16,11 +16,9 @@
 	"Names": [
 		"startScrollDownButton0{i}"
 	],
-	"Actions": {
-		"InputActionNames": [
-			"LeftHold:1000"
-		],
-		"AdditionalDelayBetweenActions": 0,
-		"AdditionalDelayAfterLastAction": 0
-	}
+	"ActionNames": [
+		"LeftHold:1000"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
 }

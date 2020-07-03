@@ -1,6 +1,6 @@
 {
 	"Condition": {
-		"Or": [
+		"OR": [
 			{
 				"TemplateName": "dialog",
 				"SearchRectangleName": "turnOverButtonSelected"

@@ -1,3 +1,4 @@
 {
-	"IsEndNode": true
+	"IsEndNode": true,
+	"AdditionalDelayAfterLastAction": 5000
 }

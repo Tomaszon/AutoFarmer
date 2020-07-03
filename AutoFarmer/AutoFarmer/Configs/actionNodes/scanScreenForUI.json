@@ -1,7 +1,5 @@
 {
-	"Actions": {
-		"InputActionNames": [
-			"ScanScreenForFadedUI:195,75,25"
-		]
-	}
+	"ActionNames": [
+		"ScanScreenForFadedUI:195,75,25"
+	]
 }

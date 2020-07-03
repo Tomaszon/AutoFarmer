@@ -1,13 +1,11 @@
 {
-	"Actions": {
-		"InputActionNames": [
-			"LeftHold:500",
-			"NUMPAD2",
-			"NUMPAD0",
-			"NUMPAD0",
-			"NUMPAD0"
-		],
-		"AdditionalDelayBetweenActions": 0,
-		"AdditionalDelayAfterLastAction": 0
-	}
+	"ActionNames": [
+		"LeftHold:500",
+		"NUMPAD2",
+		"NUMPAD0",
+		"NUMPAD0",
+		"NUMPAD0"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
 }

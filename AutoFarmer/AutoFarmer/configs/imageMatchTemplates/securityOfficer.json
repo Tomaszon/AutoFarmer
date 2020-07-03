@@ -9,11 +9,11 @@
 				"X": 1792,
 				"Y": 278
 			},
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopRight"
 			]
 		},
-		"speakButton":{
+		"speakButton": {
 			"X": 862,
 			"Y": 682,
 			"W": 22,

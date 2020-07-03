@@ -1,7 +1,7 @@
 {
 	"Actions": {
 		"InputActionNames": [
-			"LeftHold5of10sec",
+			"LeftHold:500",
 			"NUMPAD2",
 			"NUMPAD5",
 			"Move:100,100"

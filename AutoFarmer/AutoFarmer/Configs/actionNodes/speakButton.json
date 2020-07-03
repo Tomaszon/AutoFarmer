@@ -1,7 +1,8 @@
 {
 	"Actions": {
 		"InputActionNames": [
-			"LeftHold5of10sec"
-		]
+			"LeftHold:200"
+		],
+		"AdditionalDelayAfterLastAction": 2000
 	}
 }

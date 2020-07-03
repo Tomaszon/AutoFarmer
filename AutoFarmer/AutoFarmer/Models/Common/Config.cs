@@ -51,7 +51,13 @@ namespace AutoFarmer.Models.Common
 			}
 		}
 
-		public string ImageMatchTemplateResourcesDirectory { get; set; }
+		public string ImageMatchTemplateResourcesDirectory
+		{
+			get
+			{
+				return Path.Combine(Directory.GetParent(ConfigDirectory).FullName, @"Resources\images");
+			}
+		}
 
 		public int ProcessCountdown { get; set; }
 

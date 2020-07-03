@@ -59,25 +59,5 @@ namespace AutoFarmerTests.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap assignmentsCompleted {
-            get {
-                object obj = ResourceManager.GetObject("assignmentsCompleted", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap characterSelector1Source {
-            get {
-                object obj = ResourceManager.GetObject("characterSelector1Source", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

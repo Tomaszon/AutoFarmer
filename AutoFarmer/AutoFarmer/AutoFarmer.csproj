@@ -88,9 +88,11 @@
     <Compile Include="Models\Graph\Options.cs" />
     <Compile Include="Models\ImageMatching\ImageMatch.cs" />
     <Compile Include="Models\ImageMatching\ImageMatchResult.cs" />
+    <Compile Include="Models\ImageMatching\ImageMatchTemplateOptions.cs" />
     <Compile Include="Models\ImageMatching\SearchAreaFactory.cs" />
     <Compile Include="Models\Common\SerializableRectangle.cs" />
     <Compile Include="Models\Common\PerformanceMonitor.cs" />
+    <Compile Include="Models\ImageMatching\SearchRectangleOptions.cs" />
     <Compile Include="Models\InputHandling\InputSimulator.cs" />
     <Compile Include="Models\Common\MouseSafetyMeasures.cs" />
     <Compile Include="Models\InputHandling\NotificationPlayer.cs" />

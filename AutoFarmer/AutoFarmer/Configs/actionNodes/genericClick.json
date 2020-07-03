@@ -22,7 +22,6 @@
 		"assignmentsCloseButton",
 		"collectButtons",
 		"beginButton",
-		"assignmentsCloseButton",
 		"inventoryButton",
 		"assetsTab",
 		"refineDilithiumButton",
@@ -32,7 +31,10 @@
 		"submitOrderButton",
 		"inventoryTab",
 		"closeButtons",
-		"turnOverButton"
+		"beginTurnOverAssignmentButton",
+		"assignmentsCloseButton2",
+		"speakCloseButton",
+		"gameMenuButton"
 	],
 	"Actions": {
 		"InputActionNames": [

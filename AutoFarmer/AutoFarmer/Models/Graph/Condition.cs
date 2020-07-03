@@ -78,10 +78,13 @@ namespace AutoFarmer.Models.Graph
 			{
 				var lastProcessState = condition.Process(actionPoints);
 
-				if (lastProcessState != startState) break;
+				if (lastProcessState != startState)
+				{
+					return lastProcessState;
+				}
 			}
 
-			return ConditionMode == ConditionMode.Or;
+			return ConditionMode == ConditionMode.And;
 		}
 
 		private bool ProcessPrimitiveCondition(List<SerializablePoint> actionPoints)

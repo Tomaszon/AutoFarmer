@@ -6,20 +6,26 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public class SearchAreaFactory
 	{
-		public static SerializableRectangle FromEnum(int w, int h, NamedSearchArea searchArea)
+		public static SerializableRectangle FromEnum(NamedSearchArea searchArea)
 		{
 			return new SerializableRectangle()
 			{
-				X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2 + w / 2 - w,
-				Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2 + h / 2 - h,
-				W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2 + w / 2,
-				H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2 + h / 2
+				Position = new SerializablePoint()
+				{
+					X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2,
+					Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2
+				},
+				Size = new SerializableSize()
+				{
+					W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2,
+					H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2
+				}
 			};
 		}
 
-		public static List<SerializableRectangle> FromEnums(int w, int h, params NamedSearchArea[] searchAreas)
+		public static List<SerializableRectangle> FromEnums(params NamedSearchArea[] searchAreas)
 		{
-			return searchAreas.Select(a => FromEnum(w, h, a)).ToList();
+			return searchAreas.Select(a => FromEnum(a)).ToList();
 		}
 
 		private static bool Is(NamedSearchArea searchArea, int flag)

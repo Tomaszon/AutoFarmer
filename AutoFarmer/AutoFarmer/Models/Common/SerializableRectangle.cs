@@ -4,13 +4,9 @@ namespace AutoFarmer.Models.Common
 {
 	public class SerializableRectangle
 	{
-		public int X { get; set; }
+		public SerializableSize Size { get; set; }
 
-		public int Y { get; set; }
-
-		public int W { get; set; }
-
-		public int H { get; set; }
+		public SerializablePoint Position { get; set; }
 
 		public override string ToString()
 		{
@@ -21,7 +17,7 @@ namespace AutoFarmer.Models.Common
 		{
 			if (obj is SerializableRectangle r)
 			{
-				return X == r.X && Y == r.Y && W == r.W && H == r.H;
+				return Position.Equals(r.Position) && Size.Equals(r.Size);
 			}
 
 			return false;
@@ -29,17 +25,23 @@ namespace AutoFarmer.Models.Common
 
 		public static explicit operator Rectangle(SerializableRectangle rec)
 		{
-			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
+			return new Rectangle(rec.Position.X, rec.Position.Y, rec.Size.W, rec.Size.H);
 		}
 
 		public static explicit operator SerializableRectangle(Rectangle rec)
 		{
 			return new SerializableRectangle()
 			{
-				X = rec.X,
-				Y = rec.Y,
-				W = rec.Width,
-				H = rec.Height
+				Position = new SerializablePoint()
+				{
+					X = rec.X,
+					Y = rec.Y
+				},
+				Size = new SerializableSize()
+				{
+					W = rec.Width,
+					H = rec.Height
+				}
 			};
 		}
 	}

@@ -1,15 +1,14 @@
-﻿using AutoFarmer.Models;
-using AutoFarmer.Models.Common;
+﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace AutoFarmerTests
@@ -23,57 +22,79 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod2v1()
 		{
-			TestMethod2Core(0.99f, "TestTemplate2v1", "TestRectangle2v1", NamedSearchArea.Right);
+			TestMethod2Core(
+				0.99f,
+				"assignmentsCompleted",
+				new[] { "collectButton" },
+				"completedTab-collectButtons",
+				NamedSearchArea.Right,
+				new SerializablePoint() { X = 1388, Y = 527 },
+				new SerializablePoint() { X = 1388, Y = 393 });
 		}
 
 		[TestMethod]
 		public void TestMethod2v2()
 		{
-			TestMethod2Core(0.99f, "TestTemplate2v2", "TestRectangle2v2", NamedSearchArea.Left);
+			TestMethod2Core(
+				0.99f,
+				"assignmentsCompleted",
+				new[] { "collectButton" },
+				"completedTab-collectButtons",
+				NamedSearchArea.Left,
+				new SerializablePoint() { X = 1388, Y = 527 },
+				new SerializablePoint() { X = 1388, Y = 393 });
 		}
 
 		[TestMethod]
-		public void TestMethod2v5()
+		public void TestMethod2v3()
 		{
-			TestMethod2Core(0.99f, "TestTemplate2v5", "TestRectangle2v5");
+			TestMethod2Core(
+				0.99f,
+				"assignmentsCompleted",
+				new[] { "collectButton" },
+				"completedTab-collectButtons",
+				NamedSearchArea.Full,
+				new SerializablePoint() { X = 1388, Y = 527 },
+				new SerializablePoint() { X = 1388, Y = 393 });
 		}
 
-		private void TestMethod2Core(float similiarityThreshold, string templateName, string searchRectangleName, params NamedSearchArea[] namedSearchAreas)
+		private void TestMethod2Core(float similiarityThreshold, string templateName, string[] searchRectangleNames, string conditionEdgeName, NamedSearchArea namedSearchArea, params SerializablePoint[] expectedPoints)
 		{
 			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			Dictionary<MatchOrderBy, MatchOrderLike> o = new Dictionary<MatchOrderBy, MatchOrderLike>() { { MatchOrderBy.Y, MatchOrderLike.Descending } };
+			MouseSafetyMeasures.FromConfig();
+			MouseSafetyMeasures.Instance.IsEnabled = false;
 
-			Condition c = new Condition() { SearchRectangleName = searchRectangleName, TemplateName = templateName, MaximumOccurrence = 4, OrderBy = o };
+			ImageMatchFinder.FromConfig();
+			foreach (var srName in searchRectangleNames)
+			{
+				var sr = ImageMatchFinder.Instance.Templates.Single(t => t.Name == templateName).SearchRectangles.Single(t => t.Key == srName).Value;
+				sr.NamedSearchAreas = new[] { namedSearchArea };
+				sr.SearchAreas.Clear();
+				sr.Init();
+			}
 
-			var sr = new SearchRectangle() { X = 1323, Y = 382, W = 130, H = 20, NamedSearchAreas = namedSearchAreas };
+			WorkflowGraph graph = WorkflowGraph.FromConfig();
 
-			sr.Init();
+			var condition = graph.ConditionEdges.Single(e => e.Name == conditionEdgeName).Condition;
+			condition.MinimumOccurrence = 2;
 
-			var srs = new Dictionary<string, SearchRectangle> { { searchRectangleName, sr } };
-
-			ImageMatchFinder.Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
-
-			var t = new ImageMatchTemplate() { Name = templateName, Bitmap = ImageFactory.ConvertBitmap(Properties.Resources.assignmentsCompleted), SearchRectangles = srs };
-			var ts = new List<ImageMatchTemplate> { t };
-
-			ImageMatchFinder.Instance.Templates = ts;
+			Bitmap sourceImage = (Bitmap)Image.FromFile(Path.Combine(Config.Instance.ImageMatchTemplateResourcesDirectory, $"{templateName}.png"));
 
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
-			var points = ImageMatchFinder.FindClickPointForTemplate(c, ImageFactory.ConvertBitmap(Properties.Resources.assignmentsCompleted), similiarityThreshold);
+			var points = ImageMatchFinder.FindClickPointForTemplate(condition, ImageFactory.ConvertBitmap(sourceImage), similiarityThreshold);
 			stopwatch.Stop();
 
 			Console.WriteLine($"Elapsed: {stopwatch.ElapsedMilliseconds}");
 
-			var expectedPoint1 = new SerializablePoint() { X = 1388, Y = 392 };
-			var expectedPoint2 = new SerializablePoint() { X = 1388, Y = 526 };
+			Assert.AreEqual(expectedPoints.Length, points.Count);
 
-			Assert.AreEqual(2, points.Count);
-			Assert.AreEqual(expectedPoint1.X, points[1].X);
-			Assert.AreEqual(expectedPoint1.Y, points[1].Y);
-			Assert.AreEqual(expectedPoint2.X, points[0].X);
-			Assert.AreEqual(expectedPoint2.Y, points[0].Y);
+			for (int i = 0; i < expectedPoints.Length; i++)
+			{
+				Assert.AreEqual(expectedPoints[i].X, points[i].X, 2);
+				Assert.AreEqual(expectedPoints[i].Y, points[i].Y, 2);
+			}
 		}
 
 		[TestMethod]
@@ -131,21 +152,49 @@ namespace AutoFarmerTests
 			{
 				new SerializableRectangle()
 				{
-					X = 898,
-					Y = 0,
-					H = 1080,
-					W = 1022
+					Position = new SerializablePoint()
+					{
+						X = 898,
+						Y = 0
+					},
+					Size = new SerializableSize()
+					{
+						H = 1080,
+						W = 1022
+					}
 				},
 				new SerializableRectangle()
 				{
-					X = 850,
-					Y = 100,
-					W = 500,
-					H = 500
+					Position = new SerializablePoint()
+					{
+						X = 850,
+						Y = 100
+					},
+					Size = new SerializableSize()
+					{
+						W = 500,
+						H = 500
+					}
 				}
 			};
 
-			var sr = new SearchRectangle() { X = 1322, Y = 383, W = 132, H = 20, SearchAreas = new List<SerializableRectangle>(customSearchAreas) };
+			var sr = new SearchRectangle()
+			{
+				Rectangle = new SerializableRectangle()
+				{
+					Position = new SerializablePoint()
+					{
+						X = 1322,
+						Y = 383
+					},
+					Size = new SerializableSize()
+					{
+						W = 132,
+						H = 20
+					}
+				},
+				SearchAreas = new List<SerializableRectangle>(customSearchAreas)
+			};
 
 			Assert.ThrowsException<AutoFarmerException>(() => sr.Init());
 		}

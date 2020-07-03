@@ -2,20 +2,13 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace AutoFarmer.Models.ImageMatching
 {
 	public class SearchRectangle
 	{
-		public int X { get; set; }
-
-		public int Y { get; set; }
-
-		public int W { get; set; }
-
-		public int H { get; set; }
+		public SerializableRectangle Rectangle { get; set; }
 
 		public SerializablePoint ClickPoint { get; set; }
 
@@ -27,7 +20,7 @@ namespace AutoFarmer.Models.ImageMatching
 		{
 			get
 			{
-				return ClickPoint == null ? new SerializableSize() { W = W / 2, H = H / 2 } : new SerializableSize() { W = ClickPoint.X - X, H = ClickPoint.Y - Y };
+				return ClickPoint == null ? new SerializableSize() { W = Rectangle.Size.W / 2, H = Rectangle.Size.H / 2 } : new SerializableSize() { W = ClickPoint.X - Rectangle.Position.X, H = ClickPoint.Y - Rectangle.Position.Y };
 			}
 		}
 
@@ -42,7 +35,11 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 			else if (NamedSearchAreas != null)
 			{
-				SearchAreas.AddRange(SearchAreaFactory.FromEnums(W, H, NamedSearchAreas));
+				SearchAreas.AddRange(SearchAreaFactory.FromEnums(NamedSearchAreas));
+			}
+			else
+			{
+				SearchAreas.AddRange(SearchAreaFactory.FromEnums(NamedSearchArea.Full));
 			}
 		}
 
@@ -69,11 +66,6 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 
 			return intersectingRectangles.Count > 0;
-		}
-
-		public static explicit operator Rectangle(SearchRectangle rec)
-		{
-			return new Rectangle(rec.X, rec.Y, rec.W, rec.H);
 		}
 	}
 }

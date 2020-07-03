@@ -54,5 +54,14 @@ namespace AutoFarmer.Models.Common
 				Y = point.Y
 			};
 		}
+
+		public static explicit operator SerializablePoint(SerializableSize size)
+		{
+			return new SerializablePoint()
+			{
+				X = size.W,
+				Y = size.H
+			};
+		}
 	}
 }

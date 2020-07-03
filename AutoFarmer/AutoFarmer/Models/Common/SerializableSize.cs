@@ -8,11 +8,6 @@ namespace AutoFarmer.Models.Common
 
 		public int H { get; set; }
 
-		public override string ToString()
-		{
-			return ((Size)this).ToString();
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (obj is SerializableSize p)
@@ -23,9 +18,32 @@ namespace AutoFarmer.Models.Common
 			return false;
 		}
 
+		public override string ToString()
+		{
+			return ((Size)this).ToString();
+		}
+
+		public static explicit operator SerializableSize(Size size)
+		{
+			return new SerializableSize()
+			{
+				W = size.Width,
+				H = size.Height
+			};
+		}
+
 		public static explicit operator Size(SerializableSize size)
 		{
 			return new Size(size.W, size.H);
+		}
+
+		public static explicit operator SerializableSize(SerializablePoint point)
+		{
+			return new SerializableSize()
+			{
+				W = point.X,
+				H = point.Y
+			};
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.Common;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,26 +8,25 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public class ImageMatchTemplate
 	{
-		public string Name { get; set; }
+		private string _bitmapName;
 
-		public Bitmap Bitmap { get; set; }
+		public string Name { get; set; }
 
 		public Dictionary<string, SearchRectangle> SearchRectangles { get; set; }
 
-		public static ImageMatchTemplate FromJsonFile(string path, string resourcesDirectory)
+		public void Init()
 		{
-			var template = JsonConvert.DeserializeObject<ImageMatchTemplate>(File.ReadAllText(path));
-			template.Name = Path.GetFileNameWithoutExtension(path);
-
-			foreach (var searchRectangle in template.SearchRectangles)
+			foreach (var searchRectangle in SearchRectangles)
 			{
 				searchRectangle.Value.Init();
 			}
 
-			var resourceName = Directory.GetFiles(resourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == template.Name);
-			template.Bitmap = (Bitmap)Image.FromFile(resourceName);
+			_bitmapName = Directory.GetFiles(Config.Instance.ImageMatchTemplateResourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == Name);
+		}
 
-			return template;
+		public Bitmap LoadBitmap()
+		{
+			return (Bitmap)Image.FromFile(_bitmapName);
 		}
 	}
 }

@@ -30,15 +30,15 @@ namespace AutoFarmer.Models.ImageMatching
 
 			foreach (var template in Directory.GetFiles(Config.Instance.ImageMatchTemplatesDirectory))
 			{
-				Instance.Templates.Add(ImageMatchTemplate.FromJsonFile(template, Config.Instance.ImageMatchTemplateResourcesDirectory));
+				var templateOptions = ImageMatchTemplateOptions.FromJsonFile(template);
+
+				Instance.Templates.Add(templateOptions.ToImageMatchTemplate());
 			}
 		}
 
 		public static List<SerializablePoint> FindClickPointForTemplate(Condition condition, Bitmap source, float similiarityThreshold)
 		{
 			var matchResult = CalculateMatches(source, condition, similiarityThreshold);
-
-			Logger.GraphicalLog(matchResult, condition.TemplateName, condition.SearchRectangleName);
 
 			if (matchResult.Matches.Count < condition.MinimumOccurrence)
 			{
@@ -58,46 +58,48 @@ namespace AutoFarmer.Models.ImageMatching
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
-			var templateImage = ImageFactory.ConvertBitmap(template.Bitmap);
-			var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle);
-
-			var result = new ImageMatchResult()
+			using (var templateImage = ImageFactory.ConvertBitmap(template.LoadBitmap()))
+			using (var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle.Rectangle))
 			{
-				SearchAreas = searchRectangle.SearchAreas,
-				Source = source,
-				SearchImage = searchImage
-			};
-
-			_performanceMonitor.Start();
-
-			foreach (var searchArea in result.SearchAreas)
-			{
-				Logger.Log($"Calculating matches for search area: {searchArea}");
-
-				result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
-
-				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
-			}
-
-			if (result.Matches.Count < condition.MinimumOccurrence)
-			{
-				if (result.SearchAreas.Count > 0)
+				var result = new ImageMatchResult()
 				{
-					Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+					SearchAreas = searchRectangle.SearchAreas,
+					Source = source,
+					SearchImage = searchImage
+				};
+
+				_performanceMonitor.Start();
+
+				foreach (var searchArea in result.SearchAreas)
+				{
+					Logger.Log($"Calculating matches for search area: {searchArea}");
+
+					result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
+
+					if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
 				}
 
-				result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
+				if (result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
+				{
+					Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+
+					result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
+				}
+
+				_performanceMonitor.Stop();
+
+				Logger.Log($"Mathes calculated. Full search time: {_performanceMonitor.Elapsed}");
+
+				Logger.GraphicalLog(result, condition.TemplateName, condition.SearchRectangleName);
+
+				return result;
 			}
-
-			_performanceMonitor.Stop();
-
-			Logger.Log($"Mathes calculated. Full search time: {_performanceMonitor.Elapsed}");
-
-			return result;
 		}
 
 		private static List<ImageMatch> CollectMatches(Bitmap source, Bitmap searchImage, SerializableSize relativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, SerializableRectangle area = null)
 		{
+			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
+
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
 			var findResult = area is null ? matching.ProcessImage(source, searchImage) : matching.ProcessImage(source, searchImage, (Rectangle)area);

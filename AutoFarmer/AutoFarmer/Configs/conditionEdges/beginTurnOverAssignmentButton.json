@@ -1,0 +1,10 @@
+{
+	"Nodes": {
+		"beginTurnOverAssignmentButton": "assignmentsCloseButton2",
+		"assignmentsCloseButton2": "speakCloseButton"
+	},
+	"Condition": {
+		"TemplateName": "assignmentsCompleted",
+		"SearchRectangleName": "closeButton"
+	}
+}

@@ -72,7 +72,7 @@ namespace AutoFarmer.Models.Common
 				{
 					if (((Rectangle)area1).IntersectsWith((Rectangle)area2) && area1 != area2)
 					{
-						Rectangle r = new Rectangle(area1.X, area1.Y, area1.W, area1.H);
+						Rectangle r = new Rectangle(area1.Position.X, area1.Position.Y, area1.Size.W, area1.Size.H);
 						r.Intersect((Rectangle)area2);
 
 						g.FillRectangle(new SolidBrush(Color.FromArgb(16, 128, 255, 128)), r);
@@ -84,7 +84,7 @@ namespace AutoFarmer.Models.Common
 				searchRectangles.All(r =>
 					!((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
 					{
-						var rectangle = new Rectangle(e.X, e.Y, e.W - 1, e.H - 1);
+						var rectangle = new Rectangle(e.Position.X, e.Position.Y, e.Size.W - 1, e.Size.H - 1);
 						g.FillRectangle(new SolidBrush(Color.FromArgb(128, 0, 0, 0)), rectangle);
 						g.DrawRectangle(new Pen(new SolidBrush(Color.Yellow), 1), rectangle);
 					});
@@ -92,12 +92,12 @@ namespace AutoFarmer.Models.Common
 			searchAreas.Where(a =>
 				searchRectangles.All(r =>
 					((Rectangle)a).Contains((Rectangle)r))).ToList().ForEach(e =>
-						g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.X, e.Y, e.W - 1, e.H - 1)));
+						g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.Position.X, e.Position.Y, e.Size.W - 1, e.Size.H - 1)));
 		}
 
 		private static void HighlightFind(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
 		{
-			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.X, rectangle.Y, rectangle.W - 1, rectangle.H - 1));
+			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));
 		}

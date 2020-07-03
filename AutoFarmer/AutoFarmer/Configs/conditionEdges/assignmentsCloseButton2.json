@@ -1,0 +1,10 @@
+{
+	"Nodes":{
+		"assignmentsCloseButton2": "dialogCloseButton",
+		"startPartDialogClose":"dialogCloseButton"
+	},
+	"Condition": {
+		"TemplateName": "dialog",
+		"SearchRectangleName": "closeButton"
+	}
+}

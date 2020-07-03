@@ -39,6 +39,15 @@
 			"NamedSearchAreas":[
 				"TopRight"
 			]
+		},
+		"menuButton": {
+			"X": 1895,
+			"Y": 141,
+			"W": 20,
+			"H": 20,
+			"NamedSearchAreas":[
+				"TopRight"
+			]
 		}
 	}
 }

@@ -18,7 +18,8 @@
 		"startPartAssignments",
 		"startPartInventory",
 		"startPartExchangeButton",
-		"startPartScanScreen"
+		"startPartScanScreen",
+		"startPartDialogClose"
 	],
 	"IsStartNode": true
 }

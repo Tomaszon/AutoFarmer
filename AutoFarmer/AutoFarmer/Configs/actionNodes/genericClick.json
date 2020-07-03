@@ -33,7 +33,7 @@
 		"closeButtons",
 		"beginTurnOverAssignmentButton",
 		"assignmentsCloseButton2",
-		"speakCloseButton",
+		"dialogCloseButton",
 		"gameMenuButton"
 	],
 	"Actions": {

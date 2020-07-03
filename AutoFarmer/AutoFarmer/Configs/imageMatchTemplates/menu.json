@@ -1,10 +1,13 @@
 {
 	"SearchRectangles": {
-		"changeCharacterButton":{
-			"X":480,
-			"Y":386,
-			"W":51,
-			"H":16
+		"changeCharacterButton": {
+			"X": 480,
+			"Y": 386,
+			"W": 51,
+			"H": 16,
+			"NamedSearchAreas": [
+				"TopLeft"
+			]
 		}
 	}
 }

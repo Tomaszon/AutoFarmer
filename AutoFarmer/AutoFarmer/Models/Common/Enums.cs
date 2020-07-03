@@ -39,7 +39,10 @@
 		TopLeft = 0b1100,
 		TopRight = 0b0100,
 		BottomLeft = 0b1000,
-		BottomRight = 0b0000
+		BottomRight = 0b0000,
+		MiddleHalfWidth,
+		MiddleHalfHeight,
+		Middle
 	}
 
 	public enum ResultAppendMode

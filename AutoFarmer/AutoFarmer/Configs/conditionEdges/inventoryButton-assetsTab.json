@@ -3,11 +3,11 @@
 		"OR": [
 			{
 				"TemplateName": "inventory",
-				"SearchRectangleName": "assetsTab"
+				"SearchRectangleName": "assetsTabSelected"
 			},
 			{
 				"TemplateName": "inventory",
-				"SearchRectangleName": "assetsTabSelected"
+				"SearchRectangleName": "assetsTab"
 			}
 		]
 	}

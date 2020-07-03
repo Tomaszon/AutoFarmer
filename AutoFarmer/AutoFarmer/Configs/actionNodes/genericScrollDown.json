@@ -4,7 +4,7 @@
 		"inventoryScrollDownButton"
 	],
 	"ActionNames": [
-		"LeftHold1sec"
+		"LeftHold:1000"
 	],
 	"AdditionalDelayBetweenActions": 0,
 	"AdditionalDelayAfterLastAction": 0

@@ -1,7 +1,8 @@
 {
 	"Condition": {
 		"TemplateName": "assignmentsScroll",
-		"SearchRectangleName": "scrollDownButton"
+		"SearchRectangleName": "scrollDownButton",
+		"MinimumOccurrence": 0
 	},
 	"Order": 2
 }

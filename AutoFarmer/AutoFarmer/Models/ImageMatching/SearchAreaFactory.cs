@@ -8,19 +8,47 @@ namespace AutoFarmer.Models.ImageMatching
 	{
 		public static SerializableRectangle FromEnum(NamedSearchArea searchArea)
 		{
-			return new SerializableRectangle()
+			if (searchArea == NamedSearchArea.MiddleHalfWidth)
 			{
-				Position = new SerializablePoint()
+				return new SerializableRectangle()
 				{
-					X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2,
-					Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2
-				},
-				Size = new SerializableSize()
+					Position = new SerializablePoint()
+					{
+						X = Config.Instance.ScreenSize.W / 4,
+						Y = 0
+					},
+					Size = new SerializableSize()
+					{
+						W = Config.Instance.ScreenSize.W / 2,
+						H = Config.Instance.ScreenSize.H
+					}
+				};
+			}
+			//TODO
+			else if (searchArea == NamedSearchArea.MiddleHalfHeight)
+			{
+				return null;
+			}
+			else if (searchArea == NamedSearchArea.Middle)
+			{
+				return null;
+			}
+			else
+			{
+				return new SerializableRectangle()
 				{
-					W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2,
-					H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2
-				}
-			};
+					Position = new SerializablePoint()
+					{
+						X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2,
+						Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2
+					},
+					Size = new SerializableSize()
+					{
+						W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2,
+						H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2
+					}
+				};
+			}
 		}
 
 		public static List<SerializableRectangle> FromEnums(params NamedSearchArea[] searchAreas)

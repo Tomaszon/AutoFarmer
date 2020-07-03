@@ -8,7 +8,10 @@
 			"ClickPoint": {
 				"X": 832,
 				"Y": 651
-			}
+			},
+			"NamedSearchAreas":[
+				"MiddleHalfWidth"
+			]
 		},
 		"dilithiumToSellField": {
 			"X": 744,

@@ -217,5 +217,51 @@ namespace AutoFarmerTests
 			Assert.ThrowsException<AutoFarmerException>(() => InputSimulator.Simulate(new[] { "Move:12asd3,321" }, null));
 			Assert.ThrowsException<AutoFarmerException>(() => InputSimulator.Simulate(new[] { "Alma:123,321" }, null));
 		}
+
+		[TestMethod]
+		public void TestMethod9()
+		{
+			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Test9Core(NamedSearchArea.Bottom, 0, 540, 1920, 540, out var a1, out var refA1);
+			Test9Core(NamedSearchArea.BottomLeft, 0, 540, 960, 540, out var a2, out var refA2);
+			Test9Core(NamedSearchArea.BottomRight, 960, 540, 960, 540, out var a3, out var refA3);
+			Test9Core(NamedSearchArea.Full, 0, 0, 1920, 1080, out var a4, out var refA4);
+			Test9Core(NamedSearchArea.Left, 0, 0, 960, 1080, out var a5, out var refA5);
+			Test9Core(NamedSearchArea.Middle, 480, 270, 960, 540, out var a6, out var refA6);
+			Test9Core(NamedSearchArea.MiddleHalfHeight, 0, 270, 1920, 540, out var a7, out var refA7);
+			Test9Core(NamedSearchArea.MiddleHalfWidth, 480, 0, 960, 1080, out var a8, out var refA8);
+			Test9Core(NamedSearchArea.Right, 960, 0, 960, 1080, out var a9, out var refA9);
+			Test9Core(NamedSearchArea.Top, 0, 0, 1920, 540, out var a10, out var refA10);
+			Test9Core(NamedSearchArea.TopLeft, 0, 0, 960, 540, out var a11, out var refA11);
+			Test9Core(NamedSearchArea.TopRight, 960, 0, 960, 540, out var a12, out var refA12);
+
+			var areas = new[] { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+			var refAreas = new[] { refA1, refA2, refA3, refA4, refA5, refA6, refA7, refA8, refA9, refA10, refA11, refA12 };
+			
+			for (int i = 0; i < refAreas.Length; i++)
+			{
+				Assert.AreEqual(refAreas[i], areas[i]);
+			}
+		}
+
+		private void Test9Core(NamedSearchArea area, int refX, int refY, int refW, int refH, out SerializableRectangle a, out SerializableRectangle refA)
+		{
+			a = SearchAreaFactory.FromEnum(area);
+
+			refA = new SerializableRectangle()
+			{
+				Position = new SerializablePoint()
+				{
+					X = refX,
+					Y = refY
+				},
+				Size = new SerializableSize()
+				{
+					W = refW,
+					H = refH
+				}
+			};
+		}
 	}
 }

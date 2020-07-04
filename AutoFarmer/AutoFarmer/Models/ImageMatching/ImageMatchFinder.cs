@@ -79,7 +79,7 @@ namespace AutoFarmer.Models.ImageMatching
 					if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
 				}
 
-				if (result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
+				if (!condition.DisableSearchAreaFallback && result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
 				{
 					Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
 

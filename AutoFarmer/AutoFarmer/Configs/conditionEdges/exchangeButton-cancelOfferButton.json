@@ -1,9 +1,10 @@
 {
 	"Condition": {
-		"And": [
+		"AND": [
 			{
 				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
-				"SearchRectangleName": "tooManyOutstandingOffersLabel"
+				"SearchRectangleName": "tooManyOutstandingOffersLabel",
+				"DisableSearchAreaFallback":  true
 			},
 			{
 				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",

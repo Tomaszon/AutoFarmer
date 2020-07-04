@@ -38,6 +38,8 @@ namespace AutoFarmer.Models.Graph
 
 		public int RetryDelay { get; set; }
 
+		public bool DisableSearchAreaFallback { get; set; }
+
 		public float MaximumSimiliarityThreshold { get; set; }
 
 		public float MinimumSimiliarityThreshold { get; set; }

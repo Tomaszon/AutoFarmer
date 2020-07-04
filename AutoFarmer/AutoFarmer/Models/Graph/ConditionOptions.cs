@@ -38,6 +38,8 @@ namespace AutoFarmer.Models.Graph
 
 		public int RetryDelay { get; set; } = 1000;
 
+		public bool DisableSearchAreaFallback { get; set; }
+
 		public float MaximumSimiliarityThreshold { get; set; }
 
 		public float MinimumSimiliarityThreshold { get; set; }
@@ -88,6 +90,7 @@ namespace AutoFarmer.Models.Graph
 			{
 				AndConditions = And?.Select(c => c.ToCondition()).ToList(),
 				AppendMode = Result,
+				DisableSearchAreaFallback = DisableSearchAreaFallback,
 				MaximumOccurrence = MaximumOccurrence,
 				MaximumSimiliarityThreshold = MaximumSimiliarityThreshold,
 				MaxRetryPerSimiliarityThreshold = MaxRetryPerSimiliarityThreshold,

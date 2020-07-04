@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,49 +7,67 @@ namespace AutoFarmer.Models.ImageMatching
 {
 	public class SearchAreaFactory
 	{
-		public static SerializableRectangle FromEnum(NamedSearchArea searchArea)
+		private enum Size
 		{
-			if (searchArea == NamedSearchArea.MiddleHalfWidth)
+			Width,
+			Height
+		}
+
+		private enum Position
+		{
+			X,
+			Y
+		}
+
+		private enum NamedSearchAreasSizes
+		{
+			OneQuarter = 0b__001,
+			TwoQuarter = 0b__010,
+			ThreeQuarter = 0b__011,
+			FourQuarter = 0b__100
+		}
+
+		private enum NamedSearchAreasPositions
+		{
+			Zero = 0b__00,
+			OneQuarter = 0b__01,
+			TwoQuarter = 0b__10
+		}
+
+		public static SerializableRectangle FromEnum(NamedSearchArea area)
+		{
+			SerializableRectangle rec = new SerializableRectangle();
+
+			int qX = Config.Instance.ScreenSize.W / 4;
+			int qY = Config.Instance.ScreenSize.H / 4;
+			int qW = qX;
+			int qH = qY;
+
+			foreach (var p in Enum.GetValues(typeof(NamedSearchAreasPositions)).Cast<NamedSearchAreasPositions>())
 			{
-				return new SerializableRectangle()
+				if (Is(area, p, Position.X))
 				{
-					Position = new SerializablePoint()
-					{
-						X = Config.Instance.ScreenSize.W / 4,
-						Y = 0
-					},
-					Size = new SerializableSize()
-					{
-						W = Config.Instance.ScreenSize.W / 2,
-						H = Config.Instance.ScreenSize.H
-					}
-				};
-			}
-			//TODO
-			else if (searchArea == NamedSearchArea.MiddleHalfHeight)
-			{
-				return null;
-			}
-			else if (searchArea == NamedSearchArea.Middle)
-			{
-				return null;
-			}
-			else
-			{
-				return new SerializableRectangle()
+					rec.Position.X = qX * (int)p;
+				}
+				if (Is(area, p, Position.Y))
 				{
-					Position = new SerializablePoint()
-					{
-						X = Is(searchArea, 0b1000) ? 0 : Config.Instance.ScreenSize.W / 2,
-						Y = Is(searchArea, 0b0100) ? 0 : Config.Instance.ScreenSize.H / 2
-					},
-					Size = new SerializableSize()
-					{
-						W = Is(searchArea, 0b0010) ? Config.Instance.ScreenSize.W : Config.Instance.ScreenSize.W / 2,
-						H = Is(searchArea, 0b0001) ? Config.Instance.ScreenSize.H : Config.Instance.ScreenSize.H / 2
-					}
-				};
+					rec.Position.Y = qY * (int)p;
+				}
 			}
+
+			foreach (var p in Enum.GetValues(typeof(NamedSearchAreasSizes)).Cast<NamedSearchAreasSizes>())
+			{
+				if (Is(area, p, Size.Width))
+				{
+					rec.Size.W = qW * (int)p;
+				}
+				if (Is(area, p, Size.Height))
+				{
+					rec.Size.H = qH * (int)p;
+				}
+			}
+
+			return rec;
 		}
 
 		public static List<SerializableRectangle> FromEnums(params NamedSearchArea[] searchAreas)
@@ -56,9 +75,18 @@ namespace AutoFarmer.Models.ImageMatching
 			return searchAreas.Select(a => FromEnum(a)).ToList();
 		}
 
-		private static bool Is(NamedSearchArea searchArea, int flag)
+		private static bool Is(NamedSearchArea area, NamedSearchAreasSizes size, Size dimension)
 		{
-			return ((int)searchArea & flag) == flag;
+			int normalizedSize = dimension == Size.Width ? (int)size << 3 : (int)size;
+
+			return ((int)area & normalizedSize) == normalizedSize;
+		}
+
+		private static bool Is(NamedSearchArea area, NamedSearchAreasPositions position, Position dimension)
+		{
+			int normalizedPosition = dimension == Position.X ? (int)position << 8 : (int)position << 6;
+
+			return ((int)area & normalizedPosition) == normalizedPosition;
 		}
 	}
 }

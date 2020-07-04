@@ -4,13 +4,19 @@
 			"X": 1050,
 			"Y": 708,
 			"W": 73,
-			"H": 15
+			"H": 15,
+			"NamedSearchAreas": [
+				"Middle"
+			]
 		},
 		"turnOverButtonSelected": {
 			"X": 1050,
 			"Y": 754,
 			"W": 73,
-			"H": 15
+			"H": 15,
+			"NamedSearchAreas": [
+				"Middle"
+			]
 		},
 		"closeButton": {
 			"X": 1353,

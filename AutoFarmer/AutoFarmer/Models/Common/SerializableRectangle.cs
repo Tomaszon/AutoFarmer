@@ -4,9 +4,9 @@ namespace AutoFarmer.Models.Common
 {
 	public class SerializableRectangle
 	{
-		public SerializableSize Size { get; set; }
+		public SerializablePoint Position { get; set; } = new SerializablePoint();
 
-		public SerializablePoint Position { get; set; }
+		public SerializableSize Size { get; set; } = new SerializableSize();
 
 		public override string ToString()
 		{

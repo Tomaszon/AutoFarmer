@@ -6,20 +6,26 @@
 			"W": 71,
 			"H": 15,
 			"NamedSearchAreas":[
-				"Full"
+				"Middle"
 			]
 		},
 		"cancelButton": {
 			"X": 1080,
 			"Y": 512,
 			"W": 46,
-			"H": 13
+			"H": 13,
+			"NamedSearchAreas": [
+				"Middle"
+			]
 		},
 		"withdrawButton": {
 			"X": 981,
 			"Y": 601,
 			"W": 73,
-			"H": 15
+			"H": 15,
+			"NamedSearchAreas": [
+				"Middle"
+			]
 		}
 	}
 }

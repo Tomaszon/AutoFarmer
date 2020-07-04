@@ -10,7 +10,7 @@
 				"Y": 651
 			},
 			"NamedSearchAreas":[
-				"MiddleHalfWidth"
+				"Middle"
 			]
 		},
 		"dilithiumToSellField": {
@@ -21,7 +21,10 @@
 			"ClickPoint": {
 				"X": 771,
 				"Y": 704
-			}
+			},
+			"NamedSearchAreas": [
+				"Middle"
+			]
 		},
 		"submitButton": {
 			"X": 698,
@@ -29,7 +32,7 @@
 			"W": 51,
 			"H": 13,
 			"NamedSearchAreas":[
-				"Bottom"
+				"Middle"
 			]
 		},
 		"closeButton": {

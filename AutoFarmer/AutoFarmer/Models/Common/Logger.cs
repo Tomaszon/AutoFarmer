@@ -1,12 +1,10 @@
-﻿using AForge.Math.Geometry;
-using AutoFarmer.Models.ImageMatching;
+﻿using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -56,9 +54,12 @@ namespace AutoFarmer.Models.Common
 
 			message = $"{GetLevelTab()}{Path.GetFileName(file)} - {line}:\n{GetLevelTab()}{message}\n";
 
-			message = SmartBreak(message);
+			//message = SmartBreak(message);
 
-			return message;
+			//var res = WrapText.Wrap(message, 50, "Calibri", 11);
+			var res = WrapText.Split3(message, LineMaxLength);
+
+			return res;
 		}
 
 		private static string SmartBreak(string message)
@@ -75,22 +76,20 @@ namespace AutoFarmer.Models.Common
 
 				if (!char.IsWhiteSpace(message[i]))
 				{
-					//if (lastLineLength + 1 >= LineMaxLength)
-					//{
-					//	result.Append(buffer.ToString() + message[i] + "\n" + GetLevelTab());
-
-					//	buffer.Clear();
-					//}
-					//else
-					//{
 					buffer.Append(message[i]);
-					//}
 				}
 				else
 				{
-					if (lastLineLength  + 1 > LineMaxLength)
+					if (lastLineLength + 1 > LineMaxLength)
 					{
-						result.Append("\n" + GetLevelTab() + buffer.ToString() + message[i]);
+						if (buffer.Length + GetLevelTab().Length > LineMaxLength)
+						{
+							result.Append(SplitTooLongLine(buffer.ToString() + message[i]));
+						}
+						else
+						{
+							result.Append("\n" + GetLevelTab() + buffer.ToString() + message[i]);
+						}
 					}
 					else
 					{
@@ -101,10 +100,30 @@ namespace AutoFarmer.Models.Common
 				}
 			}
 
-			return result.ToString().Replace(" ", "S");
+			return result.ToString()/*.Replace(GetLevelTab() + "\n" + GetLevelTab(), GetLevelTab())*/.Replace(" ", "S");
 
 		}
 
+		private static string SplitTooLongLine(string message)
+		{
+			string result = "";
+
+			var blockLength = LineMaxLength - GetLevelTab().Length;
+
+			var l = new List<string>();
+
+			for (int i = 0; i < message.Length; i += blockLength)
+			{
+				l.Add(message.Substring(i, i + blockLength > message.Length ? message.Length - i : blockLength));
+			}
+
+			foreach (var block in l)
+			{
+				result += $"\n{GetLevelTab()}{block}";
+			}
+
+			return result.TrimStart('\n', ' ');
+		}
 
 		private static string ReplaceTabs(string message)
 		{
@@ -204,16 +223,16 @@ namespace AutoFarmer.Models.Common
 	{
 		public LogObject([CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
 		{
-			Logger.Level++;
+			Logger.Log($"Method enter: {method}", file: file, line: line);
 
-			//Logger.Log($"Method enter: {method}", file: file, line: line);
+			Logger.Level++;
 		}
 
 		public void Dispose()
 		{
-			Logger.Log("Method exit");
-
 			Logger.Level--;
+
+			Logger.Log("Method exit");
 		}
 	}
 }

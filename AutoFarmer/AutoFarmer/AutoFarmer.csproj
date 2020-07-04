@@ -143,6 +143,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>

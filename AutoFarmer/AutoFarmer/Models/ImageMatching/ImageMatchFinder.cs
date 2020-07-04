@@ -58,42 +58,41 @@ namespace AutoFarmer.Models.ImageMatching
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
-			using (var templateImage = ImageFactory.ConvertBitmap(template.LoadBitmap()))
-			using (var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle.Rectangle))
+			using var templateImage = ImageFactory.ConvertBitmap(template.LoadBitmap());
+			using var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle.Rectangle);
+
+			var result = new ImageMatchResult()
 			{
-				var result = new ImageMatchResult()
-				{
-					SearchAreas = searchRectangle.SearchAreas,
-					Source = source,
-					SearchImage = searchImage
-				};
+				SearchAreas = searchRectangle.SearchAreas,
+				Source = source,
+				SearchImage = searchImage
+			};
 
-				_PERFORMANCE_MONITOR.Start();
+			_PERFORMANCE_MONITOR.Start();
 
-				foreach (var searchArea in result.SearchAreas)
-				{
-					Logger.Log($"Calculating matches for search area: {searchArea}");
+			foreach (var searchArea in result.SearchAreas)
+			{
+				Logger.Log($"Calculating matches for search area: {searchArea}");
 
-					result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
+				result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
 
-					if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
-				}
-
-				if (!condition.DisableSearchAreaFallback && result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
-				{
-					Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
-
-					result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
-				}
-
-				_PERFORMANCE_MONITOR.Stop();
-
-				Logger.Log($"Mathes calculated. Full search time: {_PERFORMANCE_MONITOR.Elapsed}");
-
-				Logger.GraphicalLog(result, condition.TemplateName, condition.SearchRectangleName);
-
-				return result;
+				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
 			}
+
+			if (!condition.DisableSearchAreaFallback && result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
+			{
+				Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+
+				result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName);
+			}
+
+			_PERFORMANCE_MONITOR.Stop();
+
+			Logger.Log($"Mathes calculated. Full search time: {_PERFORMANCE_MONITOR.Elapsed}");
+
+			Logger.GraphicalLog(result, condition.TemplateName, condition.SearchRectangleName);
+
+			return result;
 		}
 
 		private static List<ImageMatch> CollectMatches(Bitmap source, Bitmap searchImage, SerializableSize relativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, SerializableRectangle area = null)

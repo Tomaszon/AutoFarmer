@@ -11,6 +11,8 @@ namespace AutoFarmer
 	{
 		private static void Main()
 		{
+			Config.FromJsonFile(@".\configs\config.json");
+
 			WorkMethod();
 		}
 
@@ -20,12 +22,10 @@ namespace AutoFarmer
 
 			do
 			{
+				using var log = Logger.BlockLog();
+
 				try
 				{
-					Console.Clear();
-
-					Config.FromJsonFile(@".\configs\config.json");
-
 					InputSimulator.FromConfig();
 
 					MouseSafetyMeasures.FromConfig();
@@ -36,27 +36,32 @@ namespace AutoFarmer
 
 					GraphMachine machine = new GraphMachine(graph);
 
-					Console.WriteLine($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds\n");
+					//Console.WriteLine($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds\n");
 
-					Countdown(Config.Instance.ProcessCountdown);
+					//Countdown(Config.Instance.ProcessCountdown);
 
 					DateTime startTime = DateTime.Now;
 
-					machine.Process();
+					//machine.Process();
 
 					Thread.Sleep(2000);
 
-					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+					//Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 				}
 				catch (AutoFarmerException ex)
 				{
 					Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
 				}
 
-				Console.WriteLine("Press 'y' for restart. Others will exit.\n");
+				//Console.WriteLine("Press 'y' for restart. Others will exit.\n");
 
-				Logger.Log("\n---------------------------------------------------------------------------" +
-						   "---------------------------------------------------------------------------\n");
+				//Logger.Log("--------------------------------------------------");
+				Logger.Log("-------------------------------------------------- ---------- -------------------- -- --------------------------- -------------------- ------------------------------ ----------------------------------------");
+				Logger.Log("----------------------------------------------------------------------------------------------------");
+				Logger.Log("----------------------------------------------");
+				Logger.Log("-----------------------------------------------------------------------------------------------------------------------------------------");
+				Logger.Log("---------- ---------- ---------- ------------ ---------- ---------- ---------- ------------");
+
 
 				input = Console.ReadLine();
 			}
@@ -73,15 +78,15 @@ namespace AutoFarmer
 
 			for (int i = seconds; i > 0; i--)
 			{
-				Console.Write(i.ToString());
+				//Console.Write(i.ToString());
 				for (int j = 0; j < p; j++)
 				{
-					Console.Write(".");
+					//Console.Write(".");
 					Thread.Sleep(1000 / p);
 				}
 			}
 
-			Console.WriteLine("\n");
+			//Console.WriteLine("\n");
 
 			Logger.Log("Processing", NotificationType.Info);
 		}

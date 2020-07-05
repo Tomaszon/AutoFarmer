@@ -1,4 +1,6 @@
 ﻿using AutoFarmer.Models.Graph;
+using AutoFarmer.Models.Graph.ActionNodes;
+using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Models.InputHandling;
 using System.Collections.Generic;
 using System.Linq;

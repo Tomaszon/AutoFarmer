@@ -1,5 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
+using AutoFarmer.Models.Graph.ActionNodes;
+using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

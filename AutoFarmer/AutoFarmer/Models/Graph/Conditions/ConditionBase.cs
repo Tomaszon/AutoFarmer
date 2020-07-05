@@ -1,7 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
 using System.Collections.Generic;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.Conditions
 {
 	public class ConditionBase
 	{

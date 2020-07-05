@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public abstract class ActionNodeBase
 	{

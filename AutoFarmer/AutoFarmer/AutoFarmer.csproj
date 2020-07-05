@@ -77,14 +77,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Common\TextFormatter.cs" />
-    <Compile Include="Models\Graph\ActionNode\ActionNodeBase.cs" />
-    <Compile Include="Models\Graph\ActionNode\ActionNodeOptions.cs" />
-    <Compile Include="Models\Graph\ConditionEdge\ConditionEdgeBase.cs" />
-    <Compile Include="Models\Graph\Condition\ConditionBase.cs" />
-    <Compile Include="Models\Graph\Condition\ConditionOptions.cs" />
-    <Compile Include="Models\Graph\ConditionEdge\ConditionEdgeOptions.cs" />
-    <Compile Include="Models\Graph\Condition\Condition.cs" />
-    <Compile Include="Models\Graph\ConditionEdge\ConditionEdge.cs" />
+    <Compile Include="Models\Graph\ActionNodes\ActionNodeBase.cs" />
+    <Compile Include="Models\Graph\ActionNodes\ActionNodeOptions.cs" />
+    <Compile Include="Models\Graph\ConditionEdges\ConditionEdgeBase.cs" />
+    <Compile Include="Models\Graph\Conditions\ConditionBase.cs" />
+    <Compile Include="Models\Graph\Conditions\ConditionOptions.cs" />
+    <Compile Include="Models\Graph\ConditionEdges\ConditionEdgeOptions.cs" />
+    <Compile Include="Models\Graph\Conditions\Condition.cs" />
+    <Compile Include="Models\Graph\ConditionEdges\ConditionEdge.cs" />
     <Compile Include="Models\Common\Config.cs" />
     <Compile Include="Models\Common\Enums.cs" />
     <Compile Include="Models\Common\Exceptions.cs" />
@@ -110,7 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Graph\ActionNode\ActionNode.cs" />
+    <Compile Include="Models\Graph\ActionNodes\ActionNode.cs" />
     <Compile Include="Models\Common\GraphMachine.cs" />
     <Compile Include="Models\ImageMatching\ImageFactory.cs" />
     <Compile Include="Models\ImageMatching\SearchRectangle.cs" />

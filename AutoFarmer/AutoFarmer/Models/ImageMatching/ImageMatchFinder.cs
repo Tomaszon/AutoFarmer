@@ -1,6 +1,7 @@
 ﻿using AForge.Imaging;
 using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
+using AutoFarmer.Models.Graph.Conditions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,7 +1,8 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph.Conditions;
 using System.Collections.Generic;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdge : ConditionEdgeBase
 	{

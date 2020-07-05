@@ -3,7 +3,7 @@ using AutoFarmer.Models.ImageMatching;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.Conditions
 {
 	public class Condition : ConditionBase
 	{

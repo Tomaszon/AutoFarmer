@@ -1,10 +1,11 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph.Conditions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdgeOptions : ConditionEdgeBase
 	{

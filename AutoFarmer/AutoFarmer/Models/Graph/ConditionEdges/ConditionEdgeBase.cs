@@ -1,4 +1,4 @@
-﻿namespace AutoFarmer.Models.Graph
+﻿namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public abstract class ConditionEdgeBase
 	{

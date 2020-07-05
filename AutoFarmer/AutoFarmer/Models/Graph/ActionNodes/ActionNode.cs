@@ -1,4 +1,4 @@
-﻿namespace AutoFarmer.Models.Graph
+﻿namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public class ActionNode : ActionNodeBase
 	{

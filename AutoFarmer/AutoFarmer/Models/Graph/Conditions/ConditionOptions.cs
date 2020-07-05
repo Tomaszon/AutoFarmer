@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AutoFarmer.Models.Graph
+namespace AutoFarmer.Models.Graph.Conditions
 {
 	public class ConditionOptions : ConditionBase
 	{

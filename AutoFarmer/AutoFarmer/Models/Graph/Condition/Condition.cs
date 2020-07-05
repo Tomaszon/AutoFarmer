@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class Condition
+	public class Condition : ConditionBase
 	{
 		public ResultAppendMode AppendMode { get; set; }
 
@@ -25,28 +25,6 @@ namespace AutoFarmer.Models.Graph
 				return ConditionMode.Primitive;
 			}
 		}
-
-		public string TemplateName { get; set; }
-
-		public string SearchRectangleName { get; set; }
-
-		public int MaximumOccurrence { get; set; }
-
-		public int MinimumOccurrence { get; set; }
-
-		public int MaxRetryPerSimiliarityThreshold { get; set; }
-
-		public int RetryDelay { get; set; }
-
-		public bool DisableSearchAreaFallback { get; set; }
-
-		public float MaximumSimiliarityThreshold { get; set; }
-
-		public float MinimumSimiliarityThreshold { get; set; }
-
-		public float SimiliarityThresholdStep { get; set; }
-
-		public Dictionary<MatchOrderBy, MatchOrderLike> OrderBy { get; set; }
 
 		public override bool Equals(object obj)
 		{

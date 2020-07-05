@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,6 +9,7 @@ namespace AutoFarmer.Models.Common
 	{
 		public int Level { get; set; }
 
+		//TODO make it configurable
 		public int LineMaxLength { get; set; } = 50;
 
 		public int TabSize { get; set; } = 4;

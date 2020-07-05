@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class ConditionOptions : Options
+	public class ConditionOptions : ConditionBase
 	{
 		public ResultAppendMode Result { get; set; }
 
@@ -26,28 +26,6 @@ namespace AutoFarmer.Models.Graph
 			}
 		}
 
-		public string TemplateName { get; set; }
-
-		public string SearchRectangleName { get; set; }
-
-		public int MaximumOccurrence { get; set; } = 1;
-
-		public int MinimumOccurrence { get; set; } = 1;
-
-		public int MaxRetryPerSimiliarityThreshold { get; set; } = 1;
-
-		public int RetryDelay { get; set; } = 1000;
-
-		public bool DisableSearchAreaFallback { get; set; }
-
-		public float MaximumSimiliarityThreshold { get; set; }
-
-		public float MinimumSimiliarityThreshold { get; set; }
-
-		public float SimiliarityThresholdStep { get; set; }
-
-		public Dictionary<MatchOrderBy, MatchOrderLike> OrderBy { get; set; }
-
 		public ConditionOptions Clone()
 		{
 			return JsonConvert.DeserializeObject<ConditionOptions>(JsonConvert.SerializeObject(this));
@@ -59,8 +37,8 @@ namespace AutoFarmer.Models.Graph
 			{
 				case ConditionMode.Primitive:
 				{
-					TemplateName = ReplaceVariables(TemplateName, templateVariables, index);
-					SearchRectangleName = ReplaceVariables(SearchRectangleName, templateVariables, index);
+					TemplateName = Shared.ReplaceVariables(TemplateName, templateVariables, index);
+					SearchRectangleName = Shared.ReplaceVariables(SearchRectangleName, templateVariables, index);
 				}
 				break;
 

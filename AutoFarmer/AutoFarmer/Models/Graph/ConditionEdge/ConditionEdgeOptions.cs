@@ -6,25 +6,17 @@ using System.Linq;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class ConditionEdgeOptions : Options
+	public class ConditionEdgeOptions : ConditionEdgeBase
 	{
 		public Dictionary<string, List<object>> TemplateVariables { get; set; }
-
-		public string Name { get; set; }
 
 		public Dictionary<string, string> Nodes { get; set; }
 
 		public ConditionOptions Condition { get; set; }
 
-		public int MaxCrossing { get; set; } = 1;
-
-		public int CurrentCrossing { get; set; }
-
-		public int Order { get; set; } = 1;
-
 		public static List<ConditionEdge> FromJsonFile(string path)
 		{
-			return FromJsonFileWrapper(() =>
+			return Shared.FromJsonFileWrapper(() =>
 			{
 				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
 				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
@@ -40,16 +32,16 @@ namespace AutoFarmer.Models.Graph
 
 				foreach (var tuple in edgeOptions.Nodes)
 				{
-					if (edgeOptions.TemplateVariables != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
+					if (edgeOptions.TemplateVariables != null && Shared.IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
 					{
 						for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 						{
-							var startNodeName = ReplaceVariables(tuple.Key, edgeOptions.TemplateVariables, i);
-							var endNodeName = ReplaceVariables(tuple.Value, edgeOptions.TemplateVariables, i);
+							var startNodeName = Shared.ReplaceVariables(tuple.Key, edgeOptions.TemplateVariables, i);
+							var endNodeName = Shared.ReplaceVariables(tuple.Value, edgeOptions.TemplateVariables, i);
 
 							var condition = edgeOptions.Condition?.Clone();
 
-							if (condition != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
+							if (condition != null && Shared.IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
 							{
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}

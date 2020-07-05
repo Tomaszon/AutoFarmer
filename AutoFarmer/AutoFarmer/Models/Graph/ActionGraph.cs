@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class WorkflowGraph
+	public class ActionGraph
 	{
 		public List<ActionNode> ActiveStartNodes
 		{
@@ -26,9 +26,9 @@ namespace AutoFarmer.Models.Graph
 
 		public List<ConditionEdge> ConditionEdges { get; set; } = new List<ConditionEdge>();
 
-		public static WorkflowGraph FromConfig()
+		public static ActionGraph FromConfig()
 		{
-			var graph = new WorkflowGraph();
+			var graph = new ActionGraph();
 
 			foreach (var file in Directory.GetFiles(Config.Instance.ActionNodesDirectory))
 			{

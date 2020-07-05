@@ -74,7 +74,7 @@ namespace AutoFarmerTests
 				sr.Init();
 			}
 
-			WorkflowGraph graph = WorkflowGraph.FromConfig();
+			ActionGraph graph = ActionGraph.FromConfig();
 
 			var condition = graph.ConditionEdges.Single(e => e.Name == conditionEdgeName).Condition;
 			condition.MinimumOccurrence = 2;

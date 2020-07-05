@@ -3,21 +3,13 @@ using System.Collections.Generic;
 
 namespace AutoFarmer.Models.Graph
 {
-	public class ConditionEdge
+	public class ConditionEdge : ConditionEdgeBase
 	{
-		public string Name { get; set; }
-
 		public string StartNodeName { get; set; }
 
 		public string EndNodeName { get; set; }
 
 		public Condition Condition { get; set; }
-
-		public int MaxCrossing { get; set; }
-
-		public int CurrentCrossing { get; set; }
-
-		public int Order { get; set; }
 
 		public bool IsEnabled
 		{

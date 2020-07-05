@@ -35,7 +35,7 @@ namespace AutoFarmer
 
 					ImageMatchFinder.FromConfig();
 
-					WorkflowGraph graph = WorkflowGraph.FromConfig();
+					ActionGraph graph = ActionGraph.FromConfig();
 
 					GraphMachine machine = new GraphMachine(graph);
 

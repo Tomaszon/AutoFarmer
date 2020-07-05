@@ -8,11 +8,11 @@ namespace AutoFarmer.Models.Common
 {
 	public class GraphMachine
 	{
-		public WorkflowGraph Graph { get; set; }
+		public ActionGraph Graph { get; set; }
 
 		public InputSimulator InputSimulator { get; set; } = new InputSimulator();
 
-		public GraphMachine(WorkflowGraph graph)
+		public GraphMachine(ActionGraph graph)
 		{
 			Graph = graph;
 		}

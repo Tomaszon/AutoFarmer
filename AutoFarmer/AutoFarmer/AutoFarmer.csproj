@@ -76,7 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Common\WrapText.cs" />
+    <Compile Include="Models\Common\TextFormatter.cs" />
     <Compile Include="Models\Graph\ActionNodeOptions.cs" />
     <Compile Include="Models\Graph\ConditionOptions.cs" />
     <Compile Include="Models\Graph\ConditionEdgeOptions.cs" />

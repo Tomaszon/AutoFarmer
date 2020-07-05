@@ -14,11 +14,7 @@ namespace AutoFarmer.Models.Common
 	{
 		private static readonly Guid _GUID = Guid.NewGuid();
 
-		public static int Level { get; set; }
-
-		public static int LineMaxLength { get; set; } = 50;
-
-		public static int TabSize { get; set; } = 4;
+		public static TextFormatter Formatter { get; set; } = new TextFormatter();
 
 		public static LogObject BlockLog([CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
 		{
@@ -29,7 +25,7 @@ namespace AutoFarmer.Models.Common
 		{
 			try
 			{
-				message = FormatMessage(message, file, line);
+				message = Formatter.FormatMessage(message, file, line);
 
 				Console.Write(message);
 
@@ -46,112 +42,6 @@ namespace AutoFarmer.Models.Common
 			{
 				Console.WriteLine("Unexpected exception occured durning logging:\n " + ex.ToString());
 			}
-		}
-
-		private static string FormatMessage(string message, string file, int line)
-		{
-			message = ReplaceTabs(message);
-
-			message = $"{GetLevelTab()}{Path.GetFileName(file)} - {line}:\n{GetLevelTab()}{message}\n";
-
-			//message = SmartBreak(message);
-
-			//var res = WrapText.Wrap(message, 50, "Calibri", 11);
-			var res = WrapText.Split3(message, LineMaxLength);
-
-			return res;
-		}
-
-		private static string SmartBreak(string message)
-		{
-			StringBuilder result = new StringBuilder();
-
-			StringBuilder buffer = new StringBuilder();
-
-			for (int i = 0; i < message.Length; i++)
-			{
-				int lastLineLength = result.ToString().Contains('\n') ?
-					result.Length - result.ToString().LastIndexOf('\n') - 1 + buffer.Length :
-					result.Length;
-
-				if (!char.IsWhiteSpace(message[i]))
-				{
-					buffer.Append(message[i]);
-				}
-				else
-				{
-					if (lastLineLength + 1 > LineMaxLength)
-					{
-						if (buffer.Length + GetLevelTab().Length > LineMaxLength)
-						{
-							result.Append(SplitTooLongLine(buffer.ToString() + message[i]));
-						}
-						else
-						{
-							result.Append("\n" + GetLevelTab() + buffer.ToString() + message[i]);
-						}
-					}
-					else
-					{
-						result.Append(buffer.ToString() + message[i]);
-					}
-
-					buffer.Clear();
-				}
-			}
-
-			return result.ToString()/*.Replace(GetLevelTab() + "\n" + GetLevelTab(), GetLevelTab())*/.Replace(" ", "S");
-
-		}
-
-		private static string SplitTooLongLine(string message)
-		{
-			string result = "";
-
-			var blockLength = LineMaxLength - GetLevelTab().Length;
-
-			var l = new List<string>();
-
-			for (int i = 0; i < message.Length; i += blockLength)
-			{
-				l.Add(message.Substring(i, i + blockLength > message.Length ? message.Length - i : blockLength));
-			}
-
-			foreach (var block in l)
-			{
-				result += $"\n{GetLevelTab()}{block}";
-			}
-
-			return result.TrimStart('\n', ' ');
-		}
-
-		private static string ReplaceTabs(string message)
-		{
-			return message.Replace("\t", ConvertTab());
-		}
-
-		private static string ConvertTab()
-		{
-			string s = "";
-
-			for (int i = 0; i < TabSize; i++)
-			{
-				s += " ";
-			}
-
-			return s;
-		}
-
-		private static string GetLevelTab()
-		{
-			var s = "";
-
-			for (int i = 0; i < Level; i++)
-			{
-				s += ConvertTab();
-			}
-
-			return s;
 		}
 
 		public static void GraphicalLog(ImageMatchResult matchCollection, string templateName, string searchRectangleName)
@@ -225,12 +115,12 @@ namespace AutoFarmer.Models.Common
 		{
 			Logger.Log($"Method enter: {method}", file: file, line: line);
 
-			Logger.Level++;
+			Logger.Formatter.Level++;
 		}
 
 		public void Dispose()
 		{
-			Logger.Level--;
+			Logger.Formatter.Level--;
 
 			Logger.Log("Method exit");
 		}

@@ -58,13 +58,14 @@ namespace AutoFarmer
 
 				//Console.WriteLine("Press 'y' for restart. Others will exit.\n");
 
-				//Logger.Log("--------------------------------------------------");
-				Logger.Log("a------------------------------------------------a a--------a a------------------a aa a-------------------------a a------------------a a----------------------------a a--------------------------------------a");
-				Logger.Log("a--a a----------------------------------------------------------------------------------------------a");
-				Logger.Log("a--------------------------------------------a");
+				Logger.Log("oooooooooooooooooooooooooooooooooooooooooooooooooo");
+				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooa");
+				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooa aooooooooa aooooooooooooooooooa aa aoooooooooooooooooooooooooa aooooooooooooooooooa aooooooooooooooooooooooooooooa aooooooooooooooooooooooooooooooooooooooa");
+				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
 				using var log2 = Logger.BlockLog();
-				Logger.Log("a---------------------------------------------------------------------------------------------------------------------------------------a");
-				Logger.Log("a--------a a--------a a--------a a----------a a--------a a--------a a--------a a----------a");
+				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooa");
+				Logger.Log("aooooooooa aooooooooa aooooooooa aooooooooooa aooooooooa aooooooooa aooooooooa aooooooooooa");
+				Logger.Log("oo                                                                                             oooooooooooooooooooooooooooooooooooooooooooooooo");
 
 
 				input = Console.ReadLine();

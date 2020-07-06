@@ -1,0 +1,48 @@
+{
+	"SearchRectangles": {
+		"dilithiumPerZenField": {
+			"X": 698,
+			"Y": 621,
+			"W": 67,
+			"H": 13,
+			"ClickPoint": {
+				"X": 832,
+				"Y": 651
+			},
+			"NamedSearchAreas":[
+				"Middle"
+			]
+		},
+		"dilithiumToSellField": {
+			"X": 744,
+			"Y": 674,
+			"W": 53,
+			"H": 13,
+			"ClickPoint": {
+				"X": 771,
+				"Y": 704
+			},
+			"NamedSearchAreas": [
+				"Middle"
+			]
+		},
+		"submitButton": {
+			"X": 698,
+			"Y": 765,
+			"W": 51,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Middle"
+			]
+		},
+		"closeButton": {
+			"X": 1302,
+			"Y": 250,
+			"W": 23,
+			"H": 23,
+			"NamedSearchAreas":[
+				"TopRight"
+			]
+		}
+	}
+}

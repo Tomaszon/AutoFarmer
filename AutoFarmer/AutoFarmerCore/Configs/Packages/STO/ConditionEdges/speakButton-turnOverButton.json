@@ -1,0 +1,14 @@
+{
+	"Condition": {
+		"OR": [
+			{
+				"TemplateName": "dialog",
+				"SearchRectangleName": "turnOverButtonSelected"
+			},
+			{
+				"TemplateName": "dialog",
+				"SearchRectangleName": "turnOverButton"
+			}
+		]
+	}
+}

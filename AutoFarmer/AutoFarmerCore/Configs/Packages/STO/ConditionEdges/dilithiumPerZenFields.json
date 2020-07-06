@@ -1,0 +1,10 @@
+{
+	"Nodes":{
+		"dilithiumPerZenField2000": "dilithiumToSellField2000",
+		"dilithiumPerZenField12000": "dilithiumToSellField12000"
+	},
+	"Condition": {
+		"TemplateName": "dilithiumExchange",
+		"SearchRectangleName": "dilithiumToSellField"
+	}
+}

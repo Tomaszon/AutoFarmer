@@ -1,0 +1,10 @@
+{
+	"Nodes": {
+		"personalTab": "confiscateAssignment",
+		"personalTabScrollDownButton": "confiscateAssignment"
+	},
+	"Condition": {
+		"TemplateName": "assignmentsPersonal",
+		"SearchRectangleName": "confiscateAssignment"
+	}
+}

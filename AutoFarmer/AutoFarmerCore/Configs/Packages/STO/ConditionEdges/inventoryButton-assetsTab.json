@@ -1,0 +1,14 @@
+{
+	"Condition": {
+		"OR": [
+			{
+				"TemplateName": "inventory",
+				"SearchRectangleName": "assetsTabSelected"
+			},
+			{
+				"TemplateName": "inventory",
+				"SearchRectangleName": "assetsTab"
+			}
+		]
+	}
+}

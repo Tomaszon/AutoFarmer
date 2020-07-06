@@ -1,0 +1,49 @@
+{
+	"SearchRectangles": {
+		"contraband05": {
+			"X": 246,
+			"Y": 802,
+			"W": 22,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Left"
+			]
+		},
+		"contraband06": {
+			"X": 246,
+			"Y": 732,
+			"W": 22,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Left"
+			]
+		},
+		"contraband07": {
+			"X": 246,
+			"Y": 662,
+			"W": 22,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Left"
+			]
+		},
+		"contraband08": {
+			"X": 246,
+			"Y": 592,
+			"W": 22,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Left"
+			]
+		},
+		"contraband09": {
+			"X": 246,
+			"Y": 522,
+			"W": 22,
+			"H": 13,
+			"NamedSearchAreas":[
+				"Left"
+			]
+		}
+	}
+}

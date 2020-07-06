@@ -1,0 +1,12 @@
+{
+	"ActionNames": [
+		"LeftHold:500",
+		"NUMPAD1",
+		"NUMPAD2",
+		"NUMPAD0",
+		"NUMPAD0",
+		"NUMPAD0"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
+}

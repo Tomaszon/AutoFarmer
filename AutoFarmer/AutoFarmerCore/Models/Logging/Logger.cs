@@ -14,13 +14,20 @@ namespace AutoFarmer.Models.Common
 	{
 		public static Logger Instance { get; set; }
 
-		public Guid SessionId { get; } = Guid.NewGuid();
+		public string SessionId { get; private set; }
 
 		public LogFormatter Formatter { get; set; } = new LogFormatter();
+
+		internal static void RefreshSessionId()
+		{
+			Instance.SessionId = DateTime.Now.ToString("yyyyMMdd-hhmmss");
+		}
 
 		public static void FromConfig()
 		{
 			Instance = LoggerOptions.FromJsonFile(Path.Combine(Config.Instance.ConfigDirectory, "loggerConfig.json"));
+
+			RefreshSessionId();
 		}
 
 		public static void IncreaseLevel()
@@ -69,13 +76,13 @@ namespace AutoFarmer.Models.Common
 				{
 					using Graphics g = Graphics.FromImage(matchCollection.Source);
 
-					Directory.CreateDirectory(Path.Combine(Instance.LogDirectory, Instance.SessionId.ToString()));
+					Directory.CreateDirectory(Path.Combine(Instance.LogDirectory, Instance.SessionId));
 
 					matchCollection.Matches.ForEach(m => HighlightFind(g, m.MatchRectangle, m.ClickPoint));
 
 					HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
-					var fileName = Path.Combine(Instance.LogDirectory, Instance.SessionId.ToString(), $"{templateName}-{searchRectangleName}");
+					var fileName = Path.Combine(Instance.LogDirectory, Instance.SessionId, $"{templateName}-{searchRectangleName}");
 
 					matchCollection.Source.Save($"{fileName}.png");
 					matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");

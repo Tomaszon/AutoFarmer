@@ -19,7 +19,7 @@
 			"W": 132,
 			"H": 20,
 			"NamedSearchAreas":[
-				"Right"
+				"TopRight"
 			]
 		},
 		"personalTab": {
@@ -28,7 +28,7 @@
 			"W": 63,
 			"H": 15,
 			"NamedSearchAreas":[
-				"Left"
+				"TopLeft"
 			]
 		},
 		"closeButton": {

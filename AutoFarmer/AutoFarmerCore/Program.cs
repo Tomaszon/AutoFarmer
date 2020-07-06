@@ -2,6 +2,7 @@
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
+using AutoFarmerCore.Models.Common;
 using System;
 using System.Threading;
 
@@ -20,14 +21,20 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
-			using var log = Logger.LogBlock();
-
 			string input;
 
 			do
 			{
 				try
 				{
+					using var log = Logger.LogBlock();
+
+					ReportBuilder.FromConfig();
+
+					ReportBuilder.Add("dummy", "message");
+					ReportBuilder.Add("dummy", "message2");
+					ReportBuilder.Add("dummy2", "message");
+
 					InputSimulator.FromConfig();
 
 					MouseSafetyMeasures.FromConfig();
@@ -55,9 +62,13 @@ namespace AutoFarmer
 					Logger.Log(ex.Message + ex.ToString(), NotificationType.Error, 3);
 				}
 
+				ReportBuilder.Generate();
+
 				Logger.Log("Press 'y' for restart. Others will exit.", fileLog: false);
 
 				input = Console.ReadLine();
+
+				Logger.RefreshSessionId();
 			}
 			while (input == "y");
 		}
@@ -73,7 +84,7 @@ namespace AutoFarmer
 			for (int i = seconds; i > 0; i--)
 			{
 				Console.Write(i.ToString());
-				
+
 				for (int j = 0; j < periodCount; j++)
 				{
 					Console.Write(".");

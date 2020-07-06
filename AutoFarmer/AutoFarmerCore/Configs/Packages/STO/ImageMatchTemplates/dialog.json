@@ -18,6 +18,15 @@
 				"Middle"
 			]
 		},
+		"turnOverButtonUnavailable": {
+			"X": 1050,
+			"Y": 801,
+			"W": 73,
+			"H": 15,
+			"NamedSearchAreas": [
+				"Middle"
+			]
+		},
 		"closeButton": {
 			"X": 1353,
 			"Y": 261,

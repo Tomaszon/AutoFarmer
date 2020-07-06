@@ -6,7 +6,7 @@
 			"W": 80,
 			"H": 28,
 			"NamedSearchAreas":[
-				"Left"
+				"TopLeft"
 			]
 		},
 		"beginButton": {

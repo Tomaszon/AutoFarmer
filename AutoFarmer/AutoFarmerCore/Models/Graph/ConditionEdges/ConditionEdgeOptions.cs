@@ -19,9 +19,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		{
 			return FromJsonFileWrapper(() =>
 			{
-				var content = File.ReadAllText(path);
-
-				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(content);
+				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
 				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
 
 				if (edgeOptions.Nodes is null)
@@ -71,7 +69,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 				Order = order,
 				StartNodeName = startNodeName,
 				EndNodeName = endNodeName,
-				Name = $"{startNodeName}-{endNodeName}"
+				Name = $"{startNodeName}-{endNodeName}",
+				ReportMessages = ReportMessages
 			};
 		}
 	}

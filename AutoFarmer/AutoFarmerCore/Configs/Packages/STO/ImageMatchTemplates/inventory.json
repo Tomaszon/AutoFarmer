@@ -36,22 +36,13 @@
 				"BottomRight"
 			]
 		},
-		"inventoryTab":{
-			"X":1514,
-			"Y":391,
-			"W":67,
-			"H":15,
-			"NamedSearchAreas":[
-				"Right"
-			]
-		},
 		"assetsTab":{
 			"X":1674,
 			"Y":391,
 			"W":53,
 			"H":15,
 			"NamedSearchAreas":[
-				"Right"
+				"TopRight"
 			]
 		},
 		"assetsTabSelected":{
@@ -60,7 +51,7 @@
 			"W":53,
 			"H":15,
 			"NamedSearchAreas":[
-				"Right"
+				"TopRight"
 			]
 		}
 	}

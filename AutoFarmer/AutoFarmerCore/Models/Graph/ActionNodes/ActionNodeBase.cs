@@ -12,7 +12,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 		public int AdditionalDelayBetweenActions { get; set; }
 
-		public int AdditionalDelayAfterLastAction { get; set; } = 500;
+		public int AdditionalDelayAfterLastAction { get; set; } = 1000;
 
 		public bool IsStartNode { get; set; }
 

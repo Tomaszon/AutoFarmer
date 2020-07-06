@@ -1,39 +1,56 @@
 ﻿using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
+using AutoFarmerCore.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace AutoFarmer.Models.Common
 {
-	public static class Logger
+	public class Logger : LoggerBase
 	{
-		private static readonly Guid _GUID = Guid.NewGuid();
+		public static Logger Instance { get; set; }
 
-		public static TextFormatter Formatter { get; set; } = new TextFormatter();
+		public Guid SessionId { get; } = Guid.NewGuid();
 
-		public static LogObject BlockLog([CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
+		public LogFormatter Formatter { get; set; } = new LogFormatter();
+
+		public static void FromConfig()
 		{
-			return new LogObject(file, method, line);
+			Instance = LoggerOptions.FromJsonFile(Path.Combine(Config.Instance.ConfigDirectory, "loggerConfig.json"));
+		}
+
+		public static void IncreaseLevel()
+		{
+			Instance.Formatter.Level++;
+		}
+
+		public static void DecreaseLevel()
+		{
+			Instance.Formatter.Level--;
+		}
+
+		public static LogBlock LogBlock(string name = default, [CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
+		{
+			return new LogBlock(name, file, method, line);
 		}
 
 		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = default, [CallerLineNumber] int line = default)
 		{
 			try
 			{
-				message = Formatter.FormatMessage(message, file, line);
+				message = Instance.Formatter.FormatMessage(message, file, line);
 
 				Console.Write(message);
 
-				if (Config.Instance.FileLogging)
+				if (Instance.FileLogging)
 				{
-					Directory.CreateDirectory(Config.Instance.LogDirectory);
+					Directory.CreateDirectory(Instance.LogDirectory);
 
-					File.AppendAllText(Path.Combine(Config.Instance.LogDirectory, $"{_GUID}.log"), message);
+					File.AppendAllText(Path.Combine(Instance.LogDirectory, $"{Instance.SessionId}.log"), message);
 				}
 
 				NotificationPlayer.Play(notificationType, count);
@@ -48,17 +65,17 @@ namespace AutoFarmer.Models.Common
 		{
 			try
 			{
-				if (Config.Instance.GraphicalLogging)
+				if (Instance.GraphicalLogging)
 				{
 					using Graphics g = Graphics.FromImage(matchCollection.Source);
 
-					Directory.CreateDirectory(Path.Combine(Config.Instance.LogDirectory, _GUID.ToString()));
+					Directory.CreateDirectory(Path.Combine(Instance.LogDirectory, Instance.SessionId.ToString()));
 
 					matchCollection.Matches.ForEach(m => HighlightFind(g, m.MatchRectangle, m.ClickPoint));
 
 					HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
-					var fileName = Path.Combine(Config.Instance.LogDirectory, _GUID.ToString(), $"{templateName}-{searchRectangleName}");
+					var fileName = Path.Combine(Instance.LogDirectory, Instance.SessionId.ToString(), $"{templateName}-{searchRectangleName}");
 
 					matchCollection.Source.Save($"{fileName}.png");
 					matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");
@@ -106,23 +123,6 @@ namespace AutoFarmer.Models.Common
 			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));
-		}
-	}
-
-	public class LogObject : IDisposable
-	{
-		public LogObject([CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
-		{
-			Logger.Log($"Method enter: {method}", file: file, line: line);
-
-			Logger.Formatter.Level++;
-		}
-
-		public void Dispose()
-		{
-			Logger.Formatter.Level--;
-
-			Logger.Log("Method exit");
 		}
 	}
 }

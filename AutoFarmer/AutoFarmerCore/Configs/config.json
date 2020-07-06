@@ -4,9 +4,7 @@
 		"H": 1080
 	},
 	"ActionSounds": true,
-	"ProcessCountdown": 1000,
-	"GraphicalLogging": true,
-	"FileLogging": true,
+	"ProcessCountdown": 5000,
 	"ActivePackage": "STO",
 	"ActiveStartNodes": [
 		"startPartExchangeButton"

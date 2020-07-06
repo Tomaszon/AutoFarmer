@@ -4,6 +4,11 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Configs\Packages\STO\**" />
+      <EmbeddedResource Remove="Configs\Packages\STO\**" />
+      <None Remove="Configs\Packages\STO\**" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="AForge.Imaging.Core" Version="1.0.0" />
         <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -21,6 +26,9 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Configs\Packages\" />
     </ItemGroup>
     <Target Name="SpicNSpan" AfterTargets="Clean">
         <RemoveDir Directories="$(TargetDir)" />

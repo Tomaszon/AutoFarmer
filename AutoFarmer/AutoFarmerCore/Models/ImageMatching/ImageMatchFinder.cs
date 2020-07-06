@@ -76,8 +76,6 @@ namespace AutoFarmer.Models.ImageMatching
 				Logger.Log($"Calculating matches for search area: {searchArea}");
 
 				result.Matches.AddRange(CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName, condition.TemplateName, searchArea));
-
-				if (result.Matches.Count > condition.MaximumOccurrence && !(Config.Instance.GraphicalLogging && Config.Instance.FileLogging)) break;
 			}
 
 			if (!condition.DisableSearchAreaFallback && result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))

@@ -3,14 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFarmer", "AutoFarmer\AutoFarmer.csproj", "{4AE01425-3EB6-4697-BFE1-41F2B23268F0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C208091A-C05D-42EC-85F9-1B9026202844}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFarmerTests", "AutoFarmerTests\AutoFarmerTests.csproj", "{090924D0-0003-4804-85A7-C05B2DDFE4F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoFarmerCore", "AutoFarmerCore\AutoFarmerCore.csproj", "{4B0DDACD-7561-4992-969C-D4F42260A683}"
 EndProject
@@ -22,14 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4AE01425-3EB6-4697-BFE1-41F2B23268F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AE01425-3EB6-4697-BFE1-41F2B23268F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AE01425-3EB6-4697-BFE1-41F2B23268F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AE01425-3EB6-4697-BFE1-41F2B23268F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{090924D0-0003-4804-85A7-C05B2DDFE4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{090924D0-0003-4804-85A7-C05B2DDFE4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{090924D0-0003-4804-85A7-C05B2DDFE4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{090924D0-0003-4804-85A7-C05B2DDFE4F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B0DDACD-7561-4992-969C-D4F42260A683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B0DDACD-7561-4992-969C-D4F42260A683}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B0DDACD-7561-4992-969C-D4F42260A683}.Release|Any CPU.ActiveCfg = Release|Any CPU

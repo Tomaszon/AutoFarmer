@@ -2,10 +2,11 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using static AutoFarmer.Models.Graph.IOptions;
 
 namespace AutoFarmer.Models.Graph.Conditions
 {
-	public class ConditionOptions : ConditionBase
+	public class ConditionOptions : ConditionBase, IOptions
 	{
 		public ResultAppendMode Result { get; set; }
 
@@ -37,8 +38,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 			{
 				case ConditionMode.Primitive:
 				{
-					TemplateName = Shared.ReplaceVariables(TemplateName, templateVariables, index);
-					SearchRectangleName = Shared.ReplaceVariables(SearchRectangleName, templateVariables, index);
+					TemplateName = ReplaceVariables(TemplateName, templateVariables, index);
+					SearchRectangleName = ReplaceVariables(SearchRectangleName, templateVariables, index);
 				}
 				break;
 

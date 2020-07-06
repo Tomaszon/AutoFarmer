@@ -61,22 +61,9 @@ namespace AutoFarmer.Models.Common
 
 		public int ProcessCountdown { get; set; }
 
-		public string LogDirectory
-		{
-			get
-			{
-				return Path.Combine(Directory.GetParent(ConfigDirectory).FullName, "Logs");
-			}
-
-		}
-
-		public bool FileLogging { get; set; }
-
 		public string ActivePackage { get; set; }
 
 		public string[] ActiveStartNodes { get; set; }
-
-		public bool GraphicalLogging { get; set; }
 
 		public static Config Instance { get; set; }
 

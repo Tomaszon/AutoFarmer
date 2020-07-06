@@ -13,20 +13,19 @@ namespace AutoFarmer
 		{
 			Config.FromJsonFile(@".\configs\config.json");
 
+			Logger.FromConfig();
+
 			WorkMethod();
 		}
 
 		private static void WorkMethod()
 		{
+			using var log = Logger.LogBlock("1");
+
 			string input;
-			
+
 			do
 			{
-				Logger.Log("alma");
-				Logger.Log("körte");
-
-				using var log = Logger.BlockLog();
-
 				try
 				{
 					InputSimulator.FromConfig();
@@ -47,7 +46,7 @@ namespace AutoFarmer
 
 					//machine.Process();
 
-					Thread.Sleep(2000);
+					//Thread.Sleep(2000);
 
 					//Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 				}
@@ -59,21 +58,26 @@ namespace AutoFarmer
 				//Console.WriteLine("Press 'y' for restart. Others will exit.\n");
 
 				Logger.Log("oooooooooooooooooooooooooooooooooooooooooooooooooo");
-				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooa");
 				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooa aooooooooa aooooooooooooooooooa aa aoooooooooooooooooooooooooa aooooooooooooooooooa aooooooooooooooooooooooooooooa aooooooooooooooooooooooooooooooooooooooa");
 				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
-				using var log2 = Logger.BlockLog();
+				using var log2 = Logger.LogBlock("2");
 				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooa");
-				Logger.Log("aooooooooa aooooooooa aooooooooa aooooooooooa aooooooooa aooooooooa aooooooooa aooooooooooa");
-				Logger.Log("oo                                                                                             oooooooooooooooooooooooooooooooooooooooooooooooo");
 
+				using var log3 = Logger.LogBlock("3");
+
+				Logger.Log("ao\n				oooooooa aooooooooa aooooooooa aooooooooooa aooooooooa aooooooooa aooooooooa aooooooooooa");
+				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
+
+				using var log4 = Logger.LogBlock("4");
+
+				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
+				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
+
+				Logger.Log("oo                                                                                             oooooooooooooooooooooooooooooooooooooooooooooooo");
 
 				input = Console.ReadLine();
 			}
 			while (input == "y");
-
-			Console.WriteLine("Press any button to exit!");
-			Console.ReadKey();
 		}
 
 		private static void Countdown(int milliseconds)

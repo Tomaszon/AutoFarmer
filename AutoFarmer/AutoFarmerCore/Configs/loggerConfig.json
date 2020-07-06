@@ -1,0 +1,10 @@
+﻿{
+	"GraphicalLogging": true,
+	"FileLogging": true,
+	"Format": {
+		"IndentCharacter": " ",
+		"IndentSize": 2,
+		"MaximumLineLength": 100,
+		"MinimumLineLength": 25
+	}
+}

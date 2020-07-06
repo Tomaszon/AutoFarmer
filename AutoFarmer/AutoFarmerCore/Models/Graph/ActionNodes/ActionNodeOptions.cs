@@ -1,16 +1,16 @@
-﻿using AutoFarmer.Models.Common;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static AutoFarmer.Models.Graph.IOptions;
 
 namespace AutoFarmer.Models.Graph.ActionNodes
 {
-	public class ActionNodeOptions : ActionNodeBase
+	public class ActionNodeOptions : ActionNodeBase, IOptions
 	{
 		public static List<ActionNode> FromJsonFile(string path)
 		{
-			return Shared.FromJsonFileWrapper(() =>
+			return FromJsonFileWrapper(() =>
 			{
 				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
@@ -23,11 +23,11 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 				foreach (var name in nodeOptions.Names)
 				{
-					if (nodeOptions.TemplateVariables != null && Shared.IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
+					if (nodeOptions.TemplateVariables != null && IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
 					{
 						for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
 						{
-							var modifiedName = Shared.ReplaceVariables(name, nodeOptions.TemplateVariables, j);
+							var modifiedName = ReplaceVariables(name, nodeOptions.TemplateVariables, j);
 
 							result.Add(nodeOptions.ToActionNode(modifiedName));
 						}

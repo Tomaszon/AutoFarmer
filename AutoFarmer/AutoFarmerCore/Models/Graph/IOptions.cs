@@ -1,14 +1,13 @@
 ﻿using AutoFarmer.Models.Common;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Models.Graph
 {
-	public static class Shared
+	public interface IOptions
 	{
-		public static string ReplaceVariables(string value, Dictionary<string, List<object>> varables, int index)
+		protected static string ReplaceVariables(string value, Dictionary<string, List<object>> varables, int index)
 		{
 			foreach (var t in varables)
 			{
@@ -18,12 +17,12 @@ namespace AutoFarmer.Models.Common
 			return value;
 		}
 
-		public static bool IsContainVariable(List<string> parameterNames, params string[] values)
+		protected static bool IsContainVariable(List<string> parameterNames, params string[] values)
 		{
 			return parameterNames.Any(p => values.Any(a => a.Contains($"{{{p}}}")));
 		}
 
-		public static List<T> FromJsonFileWrapper<T>(Func<List<T>> func)
+		protected static List<T> FromJsonFileWrapper<T>(Func<List<T>> func)
 		{
 			try
 			{

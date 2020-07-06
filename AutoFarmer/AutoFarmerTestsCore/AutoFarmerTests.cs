@@ -138,16 +138,6 @@ namespace AutoFarmerTests
 		}
 
 		[TestMethod]
-		public void TestMethod6()
-		{
-			var e = (int)NamedSearchArea.Left;
-
-			Assert.AreEqual(0b1101, e | 0b0000);
-			Assert.AreEqual(0b1101, e & 0b1111);
-			Assert.AreEqual(0b1100, e & 0b1100);
-		}
-
-		[TestMethod]
 		public void TestMethod7()
 		{
 			var customSearchAreas = new[]

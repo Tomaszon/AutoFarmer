@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoFarmer.Models.Graph.ConditionEdge">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQECAAIAACAAABAAAhEAAAQAAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>Models\Graph\ConditionEdge.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Conditions" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AutoFarmer.Models.Graph.Conditions">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAgAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Graph\Conditions.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Condition" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AutoFarmer.Models.Graph.MatchCondition">
+    <Position X="6.5" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAIAAAGAAAAAAgwAAAUAAAAgAAAAAEAAAAAAQABA=</HashCode>
+      <FileName>Models\Graph\MatchCondition.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrderBy" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="AutoFarmer.Models.Common.MatchOrderLike">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Common\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

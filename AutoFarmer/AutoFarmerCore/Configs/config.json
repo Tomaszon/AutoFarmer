@@ -1,0 +1,14 @@
+{
+	"ScreenSize": {
+		"W": 1920,
+		"H": 1080
+	},
+	"ActionSounds": true,
+	"ProcessCountdown": 1000,
+	"GraphicalLogging": true,
+	"FileLogging": true,
+	"ActivePackage": "STO",
+	"ActiveStartNodes": [
+		"startPartExchangeButton"
+	]
+}

@@ -1,8 +1,13 @@
 {
+	"Nodes": {
+		"dilithiumToSellField2000": "closeButtons",
+		"dilithiumToSellField12000": "closeButtons"
+	},
 	"Condition": {
 		"TemplateName": "dilithiumExchange",
 		"SearchRectangleName": "closeButton",
 		"MaximumOccurrence": 2,
 		"MinimumOccurrence": 2
-	}
+	},
+	"Order": 2
 }

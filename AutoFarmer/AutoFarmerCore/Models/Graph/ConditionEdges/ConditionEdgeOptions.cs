@@ -19,7 +19,9 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		{
 			return FromJsonFileWrapper(() =>
 			{
-				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
+				var content = File.ReadAllText(path);
+
+				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(content);
 				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
 
 				if (edgeOptions.Nodes is null)

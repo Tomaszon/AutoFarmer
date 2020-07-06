@@ -20,7 +20,7 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
-			using var log = Logger.LogBlock("1");
+			using var log = Logger.LogBlock();
 
 			string input;
 
@@ -38,42 +38,24 @@ namespace AutoFarmer
 
 					GraphMachine machine = new GraphMachine(graph);
 
-					//Console.WriteLine($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds\n");
+					Logger.Log($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds", fileLog: false);
 
-					//Countdown(Config.Instance.ProcessCountdown);
+					Countdown(Config.Instance.ProcessCountdown);
 
 					DateTime startTime = DateTime.Now;
 
-					//machine.Process();
+					machine.Process();
 
-					//Thread.Sleep(2000);
+					Thread.Sleep(1000);
 
-					//Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
 				}
 				catch (AutoFarmerException ex)
 				{
-					Logger.Log(ex.Message + ":\n" + ex.ToString(), NotificationType.Error, 3);
+					Logger.Log(ex.Message + ex.ToString(), NotificationType.Error, 3);
 				}
 
-				//Console.WriteLine("Press 'y' for restart. Others will exit.\n");
-
-				Logger.Log("oooooooooooooooooooooooooooooooooooooooooooooooooo");
-				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooa aooooooooa aooooooooooooooooooa aa aoooooooooooooooooooooooooa aooooooooooooooooooa aooooooooooooooooooooooooooooa aooooooooooooooooooooooooooooooooooooooa");
-				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
-				using var log2 = Logger.LogBlock("2");
-				Logger.Log("aooooooooooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooooo.ooooooooooooooooooooooooooooooooooooooooa");
-
-				using var log3 = Logger.LogBlock("3");
-
-				Logger.Log("ao\n				oooooooa aooooooooa aooooooooa aooooooooooa aooooooooa aooooooooa aooooooooa aooooooooooa");
-				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
-
-				using var log4 = Logger.LogBlock("4");
-
-				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
-				Logger.Log("aoooooooooooooooooooooooooooooooooooooooooa aooooooooooooooa aoooooooooooooooooooooooooooooooooooooa");
-
-				Logger.Log("oo                                                                                             oooooooooooooooooooooooooooooooooooooooooooooooo");
+				Logger.Log("Press 'y' for restart. Others will exit.", fileLog: false);
 
 				input = Console.ReadLine();
 			}
@@ -82,7 +64,7 @@ namespace AutoFarmer
 
 		private static void Countdown(int milliseconds)
 		{
-			int p = 3;
+			int periodCount = 3;
 			int seconds = milliseconds / 1000;
 			int fraction = milliseconds % 1000;
 
@@ -90,15 +72,16 @@ namespace AutoFarmer
 
 			for (int i = seconds; i > 0; i--)
 			{
-				//Console.Write(i.ToString());
-				for (int j = 0; j < p; j++)
+				Console.Write(i.ToString());
+				
+				for (int j = 0; j < periodCount; j++)
 				{
-					//Console.Write(".");
-					Thread.Sleep(1000 / p);
+					Console.Write(".");
+					Thread.Sleep(1000 / periodCount);
 				}
 			}
 
-			//Console.WriteLine("\n");
+			Console.WriteLine("\n");
 
 			Logger.Log("Processing", NotificationType.Info);
 		}

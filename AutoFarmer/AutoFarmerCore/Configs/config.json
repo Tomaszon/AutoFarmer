@@ -7,6 +7,6 @@
 	"ProcessCountdown": 5000,
 	"ActivePackage": "STO",
 	"ActiveStartNodes": [
-		"startPartExchangeButton"
+		"startPartInventory"
 	]
 }

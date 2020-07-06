@@ -38,7 +38,7 @@ namespace AutoFarmer.Models.Common
 			return new LogBlock(name, file, method, line);
 		}
 
-		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = default, [CallerLineNumber] int line = default)
+		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = default, [CallerLineNumber] int line = default, bool fileLog = true)
 		{
 			try
 			{
@@ -46,7 +46,7 @@ namespace AutoFarmer.Models.Common
 
 				Console.Write(message);
 
-				if (Instance.FileLogging)
+				if (Instance.FileLogging && fileLog)
 				{
 					Directory.CreateDirectory(Instance.LogDirectory);
 

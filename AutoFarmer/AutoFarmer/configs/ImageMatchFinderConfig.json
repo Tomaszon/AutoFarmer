@@ -1,5 +1,0 @@
-{
-	"DefaultMaximumSimiliarityThreshold": 0.99,
-	"DefaultMiniumuSimiliarityThreshold": 0.99,
-	"DefaultSimiliarityThresholdStep": 0.01
-}

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoFarmerCore\AutoFarmerCore.csproj" />
+    <ProjectReference Include="..\AutoFarmer\AutoFarmer.csproj" />
   </ItemGroup>
 
 </Project>

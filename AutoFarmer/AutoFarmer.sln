@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoFarmerCore", "AutoFarmerCore\AutoFarmerCore.csproj", "{4B0DDACD-7561-4992-969C-D4F42260A683}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoFarmer", "AutoFarmer\AutoFarmer.csproj", "{4B0DDACD-7561-4992-969C-D4F42260A683}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFarmerTestsCore", "AutoFarmerTestsCore\AutoFarmerTestsCore.csproj", "{39A21A7F-AE33-4803-BCF5-53D3D08C4BE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFarmerTests", "AutoFarmerTests\AutoFarmerTests.csproj", "{39A21A7F-AE33-4803-BCF5-53D3D08C4BE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

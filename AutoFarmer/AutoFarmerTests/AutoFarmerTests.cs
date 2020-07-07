@@ -102,7 +102,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod3()
 		{
-			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\actionNodes\startScrollUpButtons.json");
+			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
 
 			Assert.AreEqual(a.Count, 10);
 
@@ -115,7 +115,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod4()
 		{
-			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\conditionEdges\startScrollButtons.json");
+			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
 
 			Assert.AreEqual(a.Count, 20);
 

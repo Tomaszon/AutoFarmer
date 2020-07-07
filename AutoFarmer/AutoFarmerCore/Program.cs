@@ -4,6 +4,7 @@ using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
 using AutoFarmerCore.Models.Common;
 using System;
+using System.IO;
 using System.Threading;
 
 namespace AutoFarmer
@@ -29,7 +30,7 @@ namespace AutoFarmer
 				{
 					using var log = Logger.LogBlock();
 
-					ReportBuilder.FromConfig();
+					ReportBuilder.FromJsonFile(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
 
 					ReportBuilder.Add("dummy", "message");
 					ReportBuilder.Add("dummy", "message2");

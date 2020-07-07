@@ -1,4 +1,6 @@
 ﻿using AutoFarmer.Models.Common;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +14,10 @@ namespace AutoFarmerCore.Models.Common
 		public Dictionary<string, List<string>> MessageEntries { get; set; } = new Dictionary<string, List<string>>();
 
 		public string ReportDirectory { get; set; }
+
+		public bool GenerateReport { get; set; } = true;
+
+		public bool SaveToFile { get; set; } = true;
 
 		public static ReportBuilder Instance { get; set; }
 
@@ -34,43 +40,52 @@ namespace AutoFarmerCore.Models.Common
 
 		public static void Generate()
 		{
-			using var log = Logger.LogBlock();
-
-			if (Instance.MessageEntries.Count > 0)
+			if (Instance.GenerateReport)
 			{
-				StringBuilder result = new StringBuilder();
+				using var log = Logger.LogBlock();
 
-				foreach (var t in Instance.MessageEntries)
+				if (Instance.MessageEntries.Count > 0)
 				{
-					if (t.Value.Count > 1)
-					{
-						result.Append($"{t.Key}:\n");
+					StringBuilder result = new StringBuilder();
 
-						foreach (var e in t.Value)
+					foreach (var t in Instance.MessageEntries)
+					{
+						if (t.Value.Count > 1)
 						{
-							result.Append($"\t{e}\n");
+							result.Append($"{t.Key}:\n");
+
+							foreach (var e in t.Value)
+							{
+								result.Append($"\t{e}\n");
+							}
 						}
+						else
+						{
+							result.Append($"{t.Key}: {t.Value.First()}\n");
+						}
+
+						result.Append("\n");
 					}
-					else
+
+					Directory.CreateDirectory(Instance.ReportDirectory);
+
+					var report = result.ToString().Trim();
+
+					Console.WriteLine(report);
+
+					if (Instance.SaveToFile)
 					{
-						result.Append($"{t.Key}: {t.Value.First()}\n");
+						File.AppendAllText(Path.Combine(Instance.ReportDirectory, $"{Logger.Instance.SessionId}.report"), report);
 					}
-
-					result.Append("\n");
 				}
-
-				Directory.CreateDirectory(Instance.ReportDirectory);
-
-				File.AppendAllText(Path.Combine(Instance.ReportDirectory, $"{Logger.Instance.SessionId}.report"), result.ToString().Trim());
 			}
 		}
 
-		public static void FromConfig()
+		public static void FromJsonFile(string path)
 		{
-			Instance = new ReportBuilder()
-			{
-				ReportDirectory = Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Report")
-			};
+			Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
+
+			Instance.ReportDirectory = Instance.ReportDirectory ?? Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");
 		}
 	}
 }

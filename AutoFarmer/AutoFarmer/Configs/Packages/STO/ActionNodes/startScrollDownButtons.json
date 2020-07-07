@@ -1,0 +1,24 @@
+{
+	"TemplateVariables": {
+		"i": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9
+		]
+	},
+	"Names": [
+		"startScrollDownButton0{i}"
+	],
+	"ActionNames": [
+		"LeftHold:1000"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
+}

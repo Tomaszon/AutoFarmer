@@ -1,0 +1,23 @@
+{
+	"TemplateVariables": {
+		"i": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9
+		]
+	},
+	"Nodes": {
+		"start0{i}": "startScrollDownButton0{i}"
+	},
+	"Condition": {
+		"TemplateName": "characterSelector1",
+		"SearchRectangleName": "scrollDownButton"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"Names": [
+		"confiscateAssignment"
+	],
+	"ActionNames": [
+		"LeftDoubleClick"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
+}

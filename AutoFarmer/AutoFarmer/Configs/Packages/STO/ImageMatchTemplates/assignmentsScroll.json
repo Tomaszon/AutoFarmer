@@ -1,0 +1,13 @@
+{
+	"SearchRectangles": {
+		"scrollDownButton": {
+			"X": 1334,
+			"Y": 873,
+			"W": 13,
+			"H": 13,
+			"NamedSearchAreas":[
+				"BottomRight"
+			]
+		}
+	}
+}

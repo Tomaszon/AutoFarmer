@@ -1,0 +1,30 @@
+{
+	"Names": [
+		"assignmentsButton",
+		"dutyOfficersTab",
+		"completedTab",
+		"personalTab",
+		"assignmentsCloseButton",
+		"collectButtons",
+		"beginButton",
+		"inventoryButton",
+		"assetsTab",
+		"refineDilithiumButton",
+		"withdrawButton",
+		"withdrawOkButton",
+		"submitOrderButton",
+		"submitOkButton",
+		"closeButtons",
+		"beginTurnOverAssignmentButton",
+		"assignmentsCloseButton2",
+		"dialogCloseButton",
+		"gameMenuButton",
+		"changeCharacterButton",
+		"changeCharacterOkButton"
+	],
+	"ActionNames": [
+		"LeftClick"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
+}

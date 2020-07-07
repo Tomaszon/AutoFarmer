@@ -1,0 +1,13 @@
+{
+	"Names": [
+		"dilithiumPerZenField2000",
+		"dilithiumPerZenField12000"
+	],
+	"ActionNames": [
+		"LeftHold:500",
+		"NUMPAD2",
+		"NUMPAD5"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 0
+}

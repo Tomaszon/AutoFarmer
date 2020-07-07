@@ -1,0 +1,10 @@
+{
+	"Nodes": {
+		"refineDilithiumButton": "exchangeButton",
+		"startPartExchangeButton": "exchangeButton"
+	},
+	"Condition": {
+		"TemplateName": "inventory",
+		"SearchRectangleName": "exchangeButton"
+	}
+}

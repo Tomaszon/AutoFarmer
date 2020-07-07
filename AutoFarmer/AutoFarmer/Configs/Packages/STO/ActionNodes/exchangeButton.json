@@ -1,0 +1,7 @@
+{
+	"ActionNames": [
+		"LeftClick"
+	],
+	"AdditionalDelayBetweenActions": 0,
+	"AdditionalDelayAfterLastAction": 2500
+}

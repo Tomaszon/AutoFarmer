@@ -1,0 +1,26 @@
+{
+	"SearchRectangles": {
+		"assignmentsButton": {
+			"X": 1716,
+			"Y": 271,
+			"W": 60,
+			"H": 16,
+			"ClickPoint": {
+				"X": 1792,
+				"Y": 278
+			},
+			"NamedSearchAreas": [
+				"TopRight"
+			]
+		},
+		"speakButton": {
+			"X": 862,
+			"Y": 682,
+			"W": 22,
+			"H": 22,
+			"NamedSearchAreas": [
+				"MiddleHalfWidth"
+			]
+		}
+	}
+}

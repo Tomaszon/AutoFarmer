@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AutoFarmer.Models.Graph.ConditionEdges
+﻿namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public abstract class ConditionEdgeBase
 	{
@@ -13,12 +11,5 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		public int Order { get; set; } = 1;
 
 		public ReportMessages ReportMessages { get; set; }
-	}
-
-	public class ReportMessages
-	{
-		public Dictionary<string, string> Success { get; set; }
-
-		public Dictionary<string, string> Fail { get; set; }
 	}
 }

@@ -6,7 +6,7 @@
 			"W": 67,
 			"H": 13,
 			"ClickPoint": {
-				"X": 832,
+				"X": 850,
 				"Y": 651
 			},
 			"NamedSearchAreas":[
@@ -19,7 +19,7 @@
 			"W": 53,
 			"H": 13,
 			"ClickPoint": {
-				"X": 771,
+				"X": 850,
 				"Y": 704
 			},
 			"NamedSearchAreas": [
@@ -28,9 +28,13 @@
 		},
 		"submitButton": {
 			"X": 698,
-			"Y": 765,
-			"W": 51,
-			"H": 13,
+			"Y": 733,
+			"W": 25,
+			"H": 40,
+			"ClickPoint": {
+				"X": 716,
+				"Y": 772
+			},
 			"NamedSearchAreas":[
 				"Middle"
 			]

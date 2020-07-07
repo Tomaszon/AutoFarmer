@@ -9,6 +9,15 @@
 				"Middle"
 			]
 		},
+		"notEnoughDilithiumLabel": {
+			"X": 973,
+			"Y": 726,
+			"W": 83,
+			"H": 15,
+			"NamedSearchAreas":[
+				"Middle"
+			]
+		},
 		"cancelButton": {
 			"X": 1080,
 			"Y": 512,

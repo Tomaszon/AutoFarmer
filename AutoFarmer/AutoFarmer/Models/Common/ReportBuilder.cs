@@ -13,6 +13,8 @@ namespace AutoFarmerCore.Models.Common
 	{
 		public Dictionary<string, List<string>> MessageEntries { get; set; } = new Dictionary<string, List<string>>();
 
+		public Dictionary<string, List<string>> MessageEntryBuffer { get; set; } = new Dictionary<string, List<string>>();
+
 		public string ReportDirectory { get; set; }
 
 		public bool GenerateReport { get; set; } = true;
@@ -21,16 +23,36 @@ namespace AutoFarmerCore.Models.Common
 
 		public static ReportBuilder Instance { get; set; }
 
-		public static void Add(string key, string value)
+		public static void Add(string key, string value, bool toBuffer = true)
 		{
-			if (Instance.MessageEntries.ContainsKey(key))
+			var selectedDictionary = toBuffer ? Instance.MessageEntryBuffer : Instance.MessageEntries;
+
+			if (selectedDictionary.ContainsKey(key))
 			{
-				Instance.MessageEntries[key].Add(value);
+				selectedDictionary[key].Add(value);
 			}
 			else
 			{
-				Instance.MessageEntries.Add(key, new List<string>(new[] { value }));
+				selectedDictionary.Add(key, new List<string>(new[] { value }));
 			}
+		}
+
+		public static void CommitBuffer()
+		{
+			foreach (var t in Instance.MessageEntryBuffer)
+			{
+				foreach (var v in t.Value)
+				{
+					Add(t.Key, v, false);
+				}
+			}
+
+			ClearBuffer();
+		}
+
+		public static void ClearBuffer()
+		{
+			Instance.MessageEntryBuffer.Clear();
 		}
 
 		public static void Clear()

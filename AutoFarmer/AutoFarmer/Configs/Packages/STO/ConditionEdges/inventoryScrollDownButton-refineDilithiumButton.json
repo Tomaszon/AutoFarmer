@@ -1,7 +1,6 @@
 {
 	"Condition": {
 		"TemplateName": "inventory",
-		"SearchRectangleName": "refineButton",
-		"MinimumOccurrence": 0
+		"SearchRectangleName": "refineButton"
 	}
 }

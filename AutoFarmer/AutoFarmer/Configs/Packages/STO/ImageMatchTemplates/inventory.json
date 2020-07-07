@@ -36,6 +36,15 @@
 				"BottomRight"
 			]
 		},
+		"refineButtonUnavailable":{
+			"X":1829,
+			"Y":777,
+			"W":48,
+			"H":19,
+			"NamedSearchAreas":[
+				"BottomRight"
+			]
+		},
 		"assetsTab":{
 			"X":1674,
 			"Y":391,

@@ -1,0 +1,19 @@
+{
+	"Condition": {
+		"AND": [
+			{
+				"TemplateName": "inventory",
+				"SearchRectangleName": "refineButtonUnavailable",
+				"ReportMessages": {
+					"Success": {
+						"refining": "failed"
+					}
+				}
+			},
+			{
+				"TemplateName": "inventory",
+				"SearchRectangleName": "exchangeButton"
+			}
+		]
+	}
+}

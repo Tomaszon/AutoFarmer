@@ -18,13 +18,15 @@ namespace AutoFarmerTests
 	[TestClass]
 	public class AutoFarmerTests
 	{
+		private string UserName => System.Security.Principal.WindowsIdentity.GetCurrent().Name.Split('\\')[1];
+
 		[DllImport("user32.dll")]
 		private static extern bool GetCursorPos(out Point lpPoint);
 
 		[TestMethod]
 		public void TestMethod2v1()
 		{
-			TestMethod2Core(
+			TestMethod2(
 				0.99f,
 				"assignmentsCompleted",
 				new[] { "collectButton" },
@@ -37,7 +39,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod2v2()
 		{
-			TestMethod2Core(
+			TestMethod2(
 				0.99f,
 				"assignmentsCompleted",
 				new[] { "collectButton" },
@@ -50,7 +52,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod2v3()
 		{
-			TestMethod2Core(
+			TestMethod2(
 				0.99f,
 				"assignmentsCompleted",
 				new[] { "collectButton" },
@@ -60,9 +62,9 @@ namespace AutoFarmerTests
 				new SerializablePoint() { X = 1388, Y = 393 });
 		}
 
-		private void TestMethod2Core(float similiarityThreshold, string templateName, string[] searchRectangleNames, string conditionEdgeName, NamedSearchArea namedSearchArea, params SerializablePoint[] expectedPoints)
+		private void TestMethod2(float similiarityThreshold, string templateName, string[] searchRectangleNames, string conditionEdgeName, NamedSearchArea namedSearchArea, params SerializablePoint[] expectedPoints)
 		{
-			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
 			MouseSafetyMeasures.FromConfig();
 			MouseSafetyMeasures.Instance.IsEnabled = false;
@@ -102,7 +104,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod3()
 		{
-			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
+			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
 
 			Assert.AreEqual(a.Count, 10);
 
@@ -115,7 +117,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod4()
 		{
-			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
+			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
 
 			Assert.AreEqual(a.Count, 20);
 
@@ -194,7 +196,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod8()
 		{
-			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
 			MouseSafetyMeasures.FromConfig();
 			MouseSafetyMeasures.Instance.IsEnabled = false;
@@ -213,20 +215,20 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod9()
 		{
-			Config.FromJsonFile(@"C:\Users\toti9\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
-			Test9Core(NamedSearchArea.Bottom, 0, 540, 1920, 540, out var a1, out var refA1);
-			Test9Core(NamedSearchArea.BottomLeft, 0, 540, 960, 540, out var a2, out var refA2);
-			Test9Core(NamedSearchArea.BottomRight, 960, 540, 960, 540, out var a3, out var refA3);
-			Test9Core(NamedSearchArea.Full, 0, 0, 1920, 1080, out var a4, out var refA4);
-			Test9Core(NamedSearchArea.Left, 0, 0, 960, 1080, out var a5, out var refA5);
-			Test9Core(NamedSearchArea.Middle, 480, 270, 960, 540, out var a6, out var refA6);
-			Test9Core(NamedSearchArea.MiddleHalfHeight, 0, 270, 1920, 540, out var a7, out var refA7);
-			Test9Core(NamedSearchArea.MiddleHalfWidth, 480, 0, 960, 1080, out var a8, out var refA8);
-			Test9Core(NamedSearchArea.Right, 960, 0, 960, 1080, out var a9, out var refA9);
-			Test9Core(NamedSearchArea.Top, 0, 0, 1920, 540, out var a10, out var refA10);
-			Test9Core(NamedSearchArea.TopLeft, 0, 0, 960, 540, out var a11, out var refA11);
-			Test9Core(NamedSearchArea.TopRight, 960, 0, 960, 540, out var a12, out var refA12);
+			Test9(NamedSearchArea.Bottom, 0, 540, 1920, 540, out var a1, out var refA1);
+			Test9(NamedSearchArea.BottomLeft, 0, 540, 960, 540, out var a2, out var refA2);
+			Test9(NamedSearchArea.BottomRight, 960, 540, 960, 540, out var a3, out var refA3);
+			Test9(NamedSearchArea.Full, 0, 0, 1920, 1080, out var a4, out var refA4);
+			Test9(NamedSearchArea.Left, 0, 0, 960, 1080, out var a5, out var refA5);
+			Test9(NamedSearchArea.Middle, 480, 270, 960, 540, out var a6, out var refA6);
+			Test9(NamedSearchArea.MiddleHalfHeight, 0, 270, 1920, 540, out var a7, out var refA7);
+			Test9(NamedSearchArea.MiddleHalfWidth, 480, 0, 960, 1080, out var a8, out var refA8);
+			Test9(NamedSearchArea.Right, 960, 0, 960, 1080, out var a9, out var refA9);
+			Test9(NamedSearchArea.Top, 0, 0, 1920, 540, out var a10, out var refA10);
+			Test9(NamedSearchArea.TopLeft, 0, 0, 960, 540, out var a11, out var refA11);
+			Test9(NamedSearchArea.TopRight, 960, 0, 960, 540, out var a12, out var refA12);
 
 			var areas = new[] { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 			var refAreas = new[] { refA1, refA2, refA3, refA4, refA5, refA6, refA7, refA8, refA9, refA10, refA11, refA12 };
@@ -237,7 +239,7 @@ namespace AutoFarmerTests
 			}
 		}
 
-		private void Test9Core(NamedSearchArea area, int refX, int refY, int refW, int refH, out SerializableRectangle a, out SerializableRectangle refA)
+		private void Test9(NamedSearchArea area, int refX, int refY, int refW, int refH, out SerializableRectangle a, out SerializableRectangle refA)
 		{
 			a = SearchAreaFactory.FromEnum(area);
 
@@ -254,6 +256,27 @@ namespace AutoFarmerTests
 					H = refH
 				}
 			};
+		}
+
+		[TestMethod]
+		public void TestMethod10()
+		{
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Logger.FromConfig();
+
+			ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
+
+			ReportBuilder.Add("key1", ReportMessageType.Success, "msg1");
+			ReportBuilder.Add("key1", ReportMessageType.Success, "msg2");
+
+			ReportBuilder.Add("key2", ReportMessageType.Success, "msg3");
+
+			ReportBuilder.Add("key3", ReportMessageType.Fail, "msg4");
+
+			ReportBuilder.Commit(ReportMessageType.Fail);
+
+			ReportBuilder.Generate();
 		}
 	}
 }

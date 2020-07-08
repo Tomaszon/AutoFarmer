@@ -33,6 +33,7 @@
     <Target Name="SpicNSpan" AfterTargets="Clean">
         <RemoveDir Directories="$(TargetDir)" />
         <RemoveDir Directories="$(ProjectDir)Logs" />
+		<RemoveDir Directories="$(ProjectDir)Reports" />
     </Target>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="echo d|xcopy &quot;$(ProjectDir)configs&quot; &quot;$(TargetDir)configs&quot; /e /s /y" />

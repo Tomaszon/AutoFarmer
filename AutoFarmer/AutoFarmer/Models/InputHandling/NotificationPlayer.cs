@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Media;
-using AutoFarmerCore.Properties;
+using AutoFarmer.Properties;
 
 namespace AutoFarmer.Models.InputHandling
 {

@@ -1,6 +1,6 @@
 ﻿using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
-using AutoFarmerCore.Models.Common;
+using AutoFarmer.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

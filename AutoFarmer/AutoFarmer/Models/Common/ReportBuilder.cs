@@ -1,20 +1,14 @@
 ﻿using AutoFarmer.Models.Common;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
-namespace AutoFarmerCore.Models.Common
+namespace AutoFarmer.Models.Common
 {
 	public class ReportBuilder
 	{
-		public Dictionary<string, List<string>> MessageEntries { get; set; } = new Dictionary<string, List<string>>();
-
-		public Dictionary<string, List<string>> MessageEntryBuffer { get; set; } = new Dictionary<string, List<string>>();
-
 		public string ReportDirectory { get; set; }
 
 		public bool GenerateReport { get; set; } = true;
@@ -23,41 +17,16 @@ namespace AutoFarmerCore.Models.Common
 
 		public static ReportBuilder Instance { get; set; }
 
-		public static void Add(string key, string value, bool toBuffer = true)
-		{
-			var selectedDictionary = toBuffer ? Instance.MessageEntryBuffer : Instance.MessageEntries;
+		public ReportBuilderMessageContainer Container { get; set; } = new ReportBuilderMessageContainer();
 
-			if (selectedDictionary.ContainsKey(key))
-			{
-				selectedDictionary[key].Add(value);
-			}
-			else
-			{
-				selectedDictionary.Add(key, new List<string>(new[] { value }));
-			}
+		public static void Add(string key, ReportMessageType type, string value)
+		{
+			Instance.Container.AddToBuffer(key, type, value);
 		}
 
-		public static void CommitBuffer()
+		public static void Commit(ReportMessageType type)
 		{
-			foreach (var t in Instance.MessageEntryBuffer)
-			{
-				foreach (var v in t.Value)
-				{
-					Add(t.Key, v, false);
-				}
-			}
-
-			ClearBuffer();
-		}
-
-		public static void ClearBuffer()
-		{
-			Instance.MessageEntryBuffer.Clear();
-		}
-
-		public static void Clear()
-		{
-			Instance.MessageEntries.Clear();
+			Instance.Container.Commit(type);
 		}
 
 		public static void Generate()
@@ -66,11 +35,11 @@ namespace AutoFarmerCore.Models.Common
 			{
 				using var log = Logger.LogBlock();
 
-				if (Instance.MessageEntries.Count > 0)
+				if (Instance.Container.Messages.Count > 0)
 				{
 					StringBuilder result = new StringBuilder();
 
-					foreach (var t in Instance.MessageEntries)
+					foreach (var t in Instance.Container.Messages)
 					{
 						if (t.Value.Count > 1)
 						{
@@ -78,7 +47,7 @@ namespace AutoFarmerCore.Models.Common
 
 							foreach (var e in t.Value)
 							{
-								result.Append($"\t{e}\n");
+								result.Append($"  {e}\n");
 							}
 						}
 						else
@@ -93,17 +62,19 @@ namespace AutoFarmerCore.Models.Common
 
 					var report = result.ToString().Trim();
 
-					Console.WriteLine(report);
+					Console.WriteLine(report + "\n");
 
 					if (Instance.SaveToFile)
 					{
-						File.AppendAllText(Path.Combine(Instance.ReportDirectory, $"{Logger.Instance.SessionId}.report"), report);
+						File.AppendAllText(Path.Combine(Instance.ReportDirectory, $"{Logger.Instance.SessionId}.log"), report);
 					}
 				}
+
+				Instance.Container.Clear();
 			}
 		}
 
-		public static void FromJsonFile(string path)
+		public static void FromJsonFileWithConfig(string path)
 		{
 			Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
 

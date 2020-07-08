@@ -61,4 +61,10 @@
 		Or,
 		And
 	}
+
+	public enum ReportMessageType
+	{
+		Success,
+		Fail
+	}
 }

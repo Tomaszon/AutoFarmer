@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoFarmerCore.Properties {
+namespace AutoFarmer.Properties {
     using System;
     
     

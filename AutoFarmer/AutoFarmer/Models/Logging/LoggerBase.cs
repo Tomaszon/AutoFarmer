@@ -1,4 +1,4 @@
-﻿namespace AutoFarmerCore.Models.Common
+﻿namespace AutoFarmer.Models.Common
 {
 	public abstract class LoggerBase
 	{

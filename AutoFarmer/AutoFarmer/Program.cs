@@ -2,7 +2,7 @@
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
-using AutoFarmerCore.Models.Common;
+using AutoFarmer.Models.Common;
 using System;
 using System.IO;
 using System.Threading;
@@ -30,11 +30,11 @@ namespace AutoFarmer
 				{
 					using var log = Logger.LogBlock();
 
-					ReportBuilder.FromJsonFile(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
+					ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
 
-					ReportBuilder.Add("dummy", "message");
-					ReportBuilder.Add("dummy", "message2");
-					ReportBuilder.Add("dummy2", "message");
+					ReportBuilder.Add("dummy", ReportMessageType.Success,"message");
+					ReportBuilder.Add("dummy", ReportMessageType.Success, "message2");
+					ReportBuilder.Add("dummy2", ReportMessageType.Success, "message");
 
 					InputSimulator.FromConfig();
 

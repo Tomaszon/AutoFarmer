@@ -5,7 +5,20 @@ namespace AutoFarmer.Models.Common
 {
 	public class Config
 	{
-		public SerializableSize ScreenSize { get; set; }
+		//[DllImport("user32.dll")]
+		//private static extern bool GetCursorPos(out Point lpPoint);
+
+		//TODO get the value automatically with System.Windows.Forms.dll
+		//TODO update to handle multi-monitor setups
+		public SerializableSize ScreenSize
+		{
+			get;
+			//{
+			//GetCursorPos(out var p);
+			//return (SerializableSize)Screen.FromPoint(p).Bounds.Size;
+			//}
+			set;
+		}
 
 		public bool ActionSounds { get; set; }
 

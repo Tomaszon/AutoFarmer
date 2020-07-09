@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Common
 {
 	public class ReportBuilder
 	{

@@ -1,10 +1,10 @@
 ﻿using AutoFarmer.Models.Common;
-using System.IO;
-using System.Threading.Tasks;
-using System.Media;
 using AutoFarmer.Properties;
+using System.IO;
+using System.Media;
+using System.Threading.Tasks;
 
-namespace AutoFarmer.Models.InputHandling
+namespace AutoFarmer.Services.InputHandling
 {
 	public static class NotificationPlayer
 	{

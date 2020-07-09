@@ -1,8 +1,9 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph;
-using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Models.InputHandling;
-using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Common;
+using AutoFarmer.Services.Graph;
+using AutoFarmer.Services.ImageMatching;
 using System;
 using System.IO;
 using System.Threading;

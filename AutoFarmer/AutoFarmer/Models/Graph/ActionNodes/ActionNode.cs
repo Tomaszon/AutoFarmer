@@ -1,6 +1,4 @@
-﻿using AutoFarmer.Models.Common;
-
-namespace AutoFarmer.Models.Graph.ActionNodes
+﻿namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public class ActionNode : ActionNodeBase
 	{

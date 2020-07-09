@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.ImageMatching;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

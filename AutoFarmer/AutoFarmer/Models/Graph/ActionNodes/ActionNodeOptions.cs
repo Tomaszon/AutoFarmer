@@ -13,8 +13,6 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 		{
 			return FromJsonFileWrapper(() =>
 			{
-				using var log = Logger.LogBlock();
-
 				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
 				if (nodeOptions.Names is null)

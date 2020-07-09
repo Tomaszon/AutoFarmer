@@ -18,8 +18,6 @@ namespace AutoFarmer.Models.ImageMatching
 		{
 			return FromJsonFileWrapper(() =>
 			{
-				using var log = Logger.LogBlock();
-
 				var templateOptions = JsonConvert.DeserializeObject<ImageMatchTemplateOptions>(File.ReadAllText(path));
 				templateOptions.Name = Path.GetFileNameWithoutExtension(path);
 

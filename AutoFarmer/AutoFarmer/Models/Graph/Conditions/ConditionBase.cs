@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph.ConditionEdges;
 using System.Collections.Generic;
 
 namespace AutoFarmer.Models.Graph.Conditions
@@ -26,5 +27,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 		public float SimiliarityThresholdStep { get; set; }
 
 		public Dictionary<MatchOrderBy, MatchOrderLike> OrderBy { get; set; }
+
+		public ReportMessages ReportMessages { get; set; }
 	}
 }

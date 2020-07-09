@@ -1,5 +1,4 @@
 ﻿using AutoFarmer.Models.Common;
-using AutoFarmer.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +36,6 @@ namespace AutoFarmer.Services.Imaging
 
 		public static SerializableRectangle FromEnum(NamedSearchArea area)
 		{
-			using var log = Logger.LogBlock();
-
 			SerializableRectangle rec = new SerializableRectangle();
 
 			int qX = Config.Instance.ScreenSize.W / 4;
@@ -75,15 +72,11 @@ namespace AutoFarmer.Services.Imaging
 
 		public static List<SerializableRectangle> FromEnums(params NamedSearchArea[] searchAreas)
 		{
-			using var log = Logger.LogBlock();
-
 			return searchAreas.Select(a => FromEnum(a)).ToList();
 		}
 
 		private static bool Is(NamedSearchArea area, NamedSearchAreasSizes size, Size dimension)
 		{
-			using var log = Logger.LogBlock();
-
 			int normalizedSize = dimension == Size.Width ? (int)size << 3 : (int)size;
 
 			return ((int)area & normalizedSize) == normalizedSize;
@@ -91,8 +84,6 @@ namespace AutoFarmer.Services.Imaging
 
 		private static bool Is(NamedSearchArea area, NamedSearchAreasPositions position, Position dimension)
 		{
-			using var log = Logger.LogBlock();
-
 			int normalizedPosition = dimension == Position.X ? (int)position << 8 : (int)position << 6;
 
 			return ((int)area & normalizedPosition) == normalizedPosition;

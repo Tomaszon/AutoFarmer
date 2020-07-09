@@ -41,6 +41,8 @@ namespace AutoFarmer.Services
 					{
 						if (ProcessEdge(currentEdge, actionPoints))
 						{
+							ReportBuilder.ReportBuilder.Commit(ReportMessageType.Success);
+
 							currentNode = Graph.GetNextNode(currentEdge);
 
 							Logger.Log($"Next node selected: {currentNode.Name}");
@@ -49,6 +51,8 @@ namespace AutoFarmer.Services
 						}
 						else
 						{
+							ReportBuilder.ReportBuilder.Commit(ReportMessageType.Fail);
+
 							currentEdge.Disable();
 						}
 					}

@@ -28,8 +28,6 @@ namespace AutoFarmer.Services.Imaging
 
 		public static void FromConfig()
 		{
-			using var log = Logger.LogBlock();
-
 			Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
 			foreach (var template in Directory.GetFiles(Config.Instance.ImageMatchTemplatesDirectory))

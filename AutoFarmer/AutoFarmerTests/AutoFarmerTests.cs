@@ -70,6 +70,8 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
+			Logger.FromConfig();
+
 			MouseSafetyMeasures.FromConfig();
 			MouseSafetyMeasures.Instance.IsEnabled = false;
 
@@ -108,6 +110,10 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod3()
 		{
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Logger.FromConfig();
+
 			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
 
 			Assert.AreEqual(a.Count, 10);
@@ -121,6 +127,10 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod4()
 		{
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Logger.FromConfig();
+
 			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
 
 			Assert.AreEqual(a.Count, 20);
@@ -202,6 +212,8 @@ namespace AutoFarmerTests
 		{
 			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
 
+			Logger.FromConfig();
+
 			MouseSafetyMeasures.FromConfig();
 			MouseSafetyMeasures.Instance.IsEnabled = false;
 
@@ -220,6 +232,8 @@ namespace AutoFarmerTests
 		public void TestMethod9()
 		{
 			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Logger.FromConfig();
 
 			Test9(NamedSearchArea.Bottom, 0, 540, 1920, 540, out var a1, out var refA1);
 			Test9(NamedSearchArea.BottomLeft, 0, 540, 960, 540, out var a2, out var refA2);
@@ -245,6 +259,10 @@ namespace AutoFarmerTests
 
 		private void Test9(NamedSearchArea area, int refX, int refY, int refW, int refH, out SerializableRectangle a, out SerializableRectangle refA)
 		{
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+
+			Logger.FromConfig();
+
 			a = SearchAreaFactory.FromEnum(area);
 
 			refA = new SerializableRectangle()

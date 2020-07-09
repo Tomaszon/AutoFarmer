@@ -36,6 +36,7 @@ namespace AutoFarmer.Services.ReportBuilder
 			Instance.Container.Commit(type);
 		}
 
+		//TODO
 		public static void Generate()
 		{
 			if (Instance.GenerateReport)
@@ -75,9 +76,9 @@ namespace AutoFarmer.Services.ReportBuilder
 					{
 						File.AppendAllText(Path.Combine(Instance.ReportDirectory, $"{Logger.Instance.SessionId}.log"), report);
 					}
-				}
 
-				Instance.Container.Clear();
+					Instance.Container.Clear();
+				}
 			}
 		}
 
@@ -85,8 +86,6 @@ namespace AutoFarmer.Services.ReportBuilder
 		{
 			FromJsonFileWrapper(() =>
 			{
-				using var log = Logger.LogBlock();
-
 				Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
 
 				Instance.ReportDirectory = Instance.ReportDirectory ?? Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");

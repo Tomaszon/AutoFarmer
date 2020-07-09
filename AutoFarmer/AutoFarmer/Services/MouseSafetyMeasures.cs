@@ -23,8 +23,6 @@ namespace AutoFarmer.Services
 
 		public static void FromConfig()
 		{
-			using var log = Logger.LogBlock();
-
 			Instance = JsonConvert.DeserializeObject<MouseSafetyMeasures>(File.ReadAllText(Config.Instance.MouseSafetyMeasuresConfigPath));
 		}
 

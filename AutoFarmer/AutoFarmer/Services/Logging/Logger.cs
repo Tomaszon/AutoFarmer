@@ -70,6 +70,8 @@ namespace AutoFarmer.Services.Logging
 
 		public static void GraphicalLog(ImageMatchResult matchCollection, string templateName, string searchRectangleName)
 		{
+			using var log = LogBlock();
+
 			try
 			{
 				if (Instance.GraphicalLogging)
@@ -96,6 +98,8 @@ namespace AutoFarmer.Services.Logging
 
 		private static void HighlightSearchAreas(Graphics g, List<SerializableRectangle> searchAreas, IEnumerable<SerializableRectangle> searchRectangles)
 		{
+			using var log = LogBlock();
+
 			foreach (var area1 in searchAreas)
 			{
 				foreach (var area2 in searchAreas)
@@ -127,6 +131,8 @@ namespace AutoFarmer.Services.Logging
 
 		private static void HighlightFind(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
 		{
+			using var log = Logger.LogBlock();
+
 			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));

@@ -1,6 +1,11 @@
 {
 	"Condition": {
 		"TemplateName": "securityOfficer",
-		"SearchRectangleName": "assignmentsButton"
+		"SearchRectangleName": "assignmentsButton",
+		"ReportMessages": {
+			"Success": {
+				"testKey": "TestMessage"
+			}
+		}
 	}
 }

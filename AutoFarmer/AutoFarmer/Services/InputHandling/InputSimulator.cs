@@ -17,8 +17,6 @@ namespace AutoFarmer.Services.InputHandling
 
 		public static void FromConfig()
 		{
-			using var log = Logger.LogBlock();
-
 			Instance = new InputSimulator
 			{
 				ScreenSize = Config.Instance.ScreenSize

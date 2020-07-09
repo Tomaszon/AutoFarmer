@@ -9,7 +9,5 @@
 		public int CurrentCrossing { get; set; }
 
 		public int Order { get; set; } = 1;
-
-		public ReportMessages ReportMessages { get; set; }
 	}
 }

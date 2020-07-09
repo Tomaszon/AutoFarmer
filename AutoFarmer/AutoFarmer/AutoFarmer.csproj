@@ -5,8 +5,14 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="Configs\Packages\STO\**" />
+      <Compile Remove="Logs\**" />
+      <Compile Remove="Reports\**" />
       <EmbeddedResource Remove="Configs\Packages\STO\**" />
+      <EmbeddedResource Remove="Logs\**" />
+      <EmbeddedResource Remove="Reports\**" />
       <None Remove="Configs\Packages\STO\**" />
+      <None Remove="Logs\**" />
+      <None Remove="Reports\**" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AForge.Imaging.Core" Version="1.0.0" />

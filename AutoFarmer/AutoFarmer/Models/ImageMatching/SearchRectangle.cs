@@ -28,8 +28,6 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public void Init()
 		{
-			using var log = Logger.LogBlock();
-
 			if (SearchAreas.Count != 0)
 			{
 				if (IsOverlaping(out var intersectingRectangles))

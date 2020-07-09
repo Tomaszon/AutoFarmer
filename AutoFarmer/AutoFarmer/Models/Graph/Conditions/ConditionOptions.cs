@@ -35,8 +35,6 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 		public void ReplaceVariablesInCondition(Dictionary<string, List<object>> templateVariables, int index)
 		{
-			using var log = Logger.LogBlock();
-
 			switch (Mode)
 			{
 				case ConditionMode.Primitive:
@@ -83,7 +81,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 				RetryDelay = RetryDelay,
 				SearchRectangleName = SearchRectangleName,
 				SimiliarityThresholdStep = SimiliarityThresholdStep,
-				TemplateName = TemplateName
+				TemplateName = TemplateName,
+				ReportMessages = ReportMessages
 			};
 		}
 	}

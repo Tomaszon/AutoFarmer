@@ -15,28 +15,29 @@ namespace AutoFarmer
 	{
 		private static void Main()
 		{
-			Config.FromJsonFile(@".\configs\config.json");
-
-			Logger.FromConfig();
-
-			WorkMethod();
+			try
+			{
+				WorkMethod();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Unexpected error in {nameof(WorkMethod)}: {ex.Message}\n{ex}");
+			}
 		}
 
 		private static void WorkMethod()
 		{
-			string input;
-
 			do
 			{
 				try
 				{
+					Config.FromJsonFile(@".\configs\config.json");
+
+					Logger.FromConfig();
+
 					using var log = Logger.LogBlock();
 
 					ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
-
-					ReportBuilder.Add("dummy", ReportMessageType.Success,"message");
-					ReportBuilder.Add("dummy", ReportMessageType.Success, "message2");
-					ReportBuilder.Add("dummy2", ReportMessageType.Success, "message");
 
 					InputSimulator.FromConfig();
 
@@ -64,16 +65,72 @@ namespace AutoFarmer
 				{
 					Logger.Log(ex.Message + ex.ToString(), NotificationType.Error, 3);
 				}
+				finally
+				{
+					try
+					{
+						ReportBuilder.Generate();
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine($"{ex}\n");
+					}
+				}
 
-				ReportBuilder.Generate();
+			CommandSelection:
+				Command command;
 
-				Logger.Log("Press 'y' for restart. Others will exit.", fileLog: false);
+				Console.WriteLine("Choose from the following commands:");
+				foreach (var value in Enum.GetValues(typeof(Command)))
+				{
+					Console.WriteLine($"  -{value}");
+				}
 
-				input = Console.ReadLine();
+				var input = Console.ReadLine();
+
+				if (!Enum.TryParse(input, true, out command))
+				{
+					Console.WriteLine("Typed value was not in correct form!\n");
+
+					goto CommandSelection;
+				}
+
+				switch (command)
+				{
+					case Command.Logs:
+					{
+						OpenFolder(Logger.Instance.LogDirectory);
+						goto CommandSelection;
+					}
+					case Command.Reports:
+					{
+						OpenFolder(ReportBuilder.Instance.ReportDirectory);
+						goto CommandSelection;
+					}
+					case Command.Exit:
+						return;
+				}
 
 				Logger.RefreshSessionId();
 			}
-			while (input == "y");
+			while (true);
+		}
+
+		private static void OpenFolder(string folder)
+		{
+			try
+			{
+				System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+				{
+					FileName = folder,
+					UseShellExecute = true,
+					Verb = "open"
+				});
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"{ex}\n");
+			}
 		}
 
 		private static void Countdown(int milliseconds)
@@ -98,6 +155,14 @@ namespace AutoFarmer
 			Console.WriteLine("\n");
 
 			Logger.Log("Processing", NotificationType.Info);
+		}
+
+		private enum Command
+		{
+			Restart,
+			Logs,
+			Reports,
+			Exit
 		}
 	}
 }

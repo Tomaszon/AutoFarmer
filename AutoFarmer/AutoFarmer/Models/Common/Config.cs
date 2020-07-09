@@ -82,8 +82,6 @@ namespace AutoFarmer.Models.Common
 
 		public static void FromJsonFile(string path)
 		{
-			using var log = Logger.LogBlock();
-
 			Instance = JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
 			Instance.ConfigDirectory = Path.GetDirectoryName(path);
 		}

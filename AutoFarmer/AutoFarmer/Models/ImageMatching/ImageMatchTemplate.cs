@@ -17,8 +17,6 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public void Init()
 		{
-			using var log = Logger.LogBlock();
-
 			foreach (var searchRectangle in SearchRectangles)
 			{
 				searchRectangle.Value.Init();

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace AutoFarmer.Services.Common
+namespace AutoFarmer.Services
 {
 	public class MouseSafetyMeasures
 	{

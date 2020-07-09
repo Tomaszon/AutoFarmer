@@ -2,13 +2,12 @@
 using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
-using AutoFarmer.Services.Common;
 using AutoFarmer.Services.InputHandling;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace AutoFarmer.Services.Graph
+namespace AutoFarmer.Services
 {
 	public class GraphMachine
 	{

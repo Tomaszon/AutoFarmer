@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace AutoFarmer.Services.ImageMatching
+namespace AutoFarmer.Services.Imaging
 {
 	public static class ImageFactory
 	{

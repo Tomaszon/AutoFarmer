@@ -1,5 +1,4 @@
 ﻿using AutoFarmer.Models.Common;
-using AutoFarmer.Services.Common;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;

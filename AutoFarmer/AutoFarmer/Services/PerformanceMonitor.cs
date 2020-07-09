@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace AutoFarmer.Services.Common
+namespace AutoFarmer.Services
 {
 	public class PerformanceMonitor
 	{

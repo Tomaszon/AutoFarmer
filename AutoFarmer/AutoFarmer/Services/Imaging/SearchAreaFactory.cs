@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AutoFarmer.Services.ImageMatching
+namespace AutoFarmer.Services.Imaging
 {
 	public class SearchAreaFactory
 	{

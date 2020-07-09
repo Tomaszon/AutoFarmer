@@ -1,5 +1,6 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph.Conditions;
+using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
 
 namespace AutoFarmer.Models.Graph.ConditionEdges

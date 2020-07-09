@@ -1,4 +1,4 @@
-﻿namespace AutoFarmer.Models.Common
+﻿namespace AutoFarmer.Services.Logging
 {
 	public abstract class LogFormatterBase
 	{

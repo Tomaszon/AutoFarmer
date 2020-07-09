@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -16,6 +17,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		public static void FromConfig()
 		{
+			using var log = Logger.LogBlock();
+
 			Instance = new InputSimulator
 			{
 				ScreenSize = Config.Instance.ScreenSize
@@ -24,6 +27,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		public static void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
 		{
+			using var log = Logger.LogBlock();
+
 			if (inputActionNames is null) return;
 
 			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
@@ -61,6 +66,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static bool TryParse(string value, out int length)
 		{
+			using var log = Logger.LogBlock();
+
 			length = 0;
 
 			Regex regex = new Regex($"{MouseAction.LeftHold}:(?<l>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
@@ -79,6 +86,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static bool TryParse(string value, out SerializableSize size, out int delay)
 		{
+			using var log = Logger.LogBlock();
+
 			size = null;
 			delay = 0;
 
@@ -99,6 +108,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static bool TryParse(string value, out SerializablePoint point)
 		{
+			using var log = Logger.LogBlock();
+
 			point = null;
 
 			Regex regex = new Regex($"{MouseAction.Move}:(?<x>(\\d)+),(?<y>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
@@ -117,6 +128,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static void KeyboardEvent(VirtualKeyCode virtualKeyCode, int additionalDelay = 0)
 		{
+			using var log = Logger.LogBlock();
+
 			new WindowsInput.InputSimulator().Keyboard.KeyPress(virtualKeyCode);
 
 			Logger.Log($"Virtual key pressed: {virtualKeyCode}", NotificationType.Click);
@@ -126,6 +139,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static void ClickEvent(MouseAction mouseAction, int additionalDelay = 0)
 		{
+			using var log = Logger.LogBlock();
+
 			var simulator = new WindowsInput.InputSimulator();
 
 			switch (mouseAction)
@@ -153,6 +168,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		private static void HoldEvent(int length)
 		{
+			using var log = Logger.LogBlock();
+
 			var simulator = new WindowsInput.InputSimulator();
 
 			Logger.Log("Left mouse hold", NotificationType.Click, 1);//TODO use unique sound
@@ -171,9 +188,14 @@ namespace AutoFarmer.Services.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0, bool log = true)
+		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0, bool logging = true)
 		{
-			if (log) Logger.Log($"Mouse move to: {point}");
+			using var log = Logger.LogBlock();
+
+			if (logging)
+			{
+				Logger.Log($"Mouse move to: {point}");
+			}
 
 			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
 
@@ -184,6 +206,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		public static void ScanScreenForFadedUI(SerializableSize s, int delay = 0, int additionalDelay = 0)
 		{
+			using var log = Logger.LogBlock();
+
 			Logger.Log("Scanning for faded UI");
 
 			for (int y = 0; y <= Instance.ScreenSize.H; y += s.H)

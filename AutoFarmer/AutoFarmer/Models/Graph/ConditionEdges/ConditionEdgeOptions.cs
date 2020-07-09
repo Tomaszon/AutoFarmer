@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Graph.Conditions;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		{
 			return FromJsonFileWrapper(() =>
 			{
+				using var log = Logger.LogBlock();
+
 				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
 				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
 

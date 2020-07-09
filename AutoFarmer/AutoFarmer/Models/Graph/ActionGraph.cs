@@ -1,6 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
+using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,11 +47,15 @@ namespace AutoFarmer.Models.Graph
 
 		public ActionNode GetNextNode(ConditionEdge conditionEdge)
 		{
+			using var log = Logger.LogBlock();
+
 			return ActionNodes.First(n => conditionEdge.EndNodeName == n.Name);
 		}
 
 		public ConditionEdge GetNextEdge(ActionNode actionNode)
 		{
+			using var log = Logger.LogBlock();
+
 			return ConditionEdges.Where(e =>
 				e.StartNodeName == actionNode.Name && e.IsEnabled).OrderBy(e =>
 					e.Order).FirstOrDefault();
@@ -58,6 +63,8 @@ namespace AutoFarmer.Models.Graph
 
 		public void ResetStates()
 		{
+			using var log = Logger.LogBlock();
+
 			foreach (var edge in ConditionEdges)
 			{
 				edge.ResetState();

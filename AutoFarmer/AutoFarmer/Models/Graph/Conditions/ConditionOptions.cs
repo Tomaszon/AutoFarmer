@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 		public void ReplaceVariablesInCondition(Dictionary<string, List<object>> templateVariables, int index)
 		{
+			using var log = Logger.LogBlock();
+
 			switch (Mode)
 			{
 				case ConditionMode.Primitive:

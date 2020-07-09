@@ -3,6 +3,7 @@ using AutoFarmer.Models.Graph;
 using AutoFarmer.Services;
 using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.InputHandling;
+using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using System;
 using System.IO;

@@ -1,13 +1,16 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static AutoFarmer.Models.Graph.IOptions;
 
 namespace AutoFarmer.Services.ReportBuilder
 {
-	public class ReportBuilder
+	public class ReportBuilder : IOptions
 	{
 		public string ReportDirectory { get; set; }
 
@@ -21,11 +24,15 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public static void Add(string key, ReportMessageType type, string value)
 		{
+			using var log = Logger.LogBlock();
+
 			Instance.Container.AddToBuffer(key, type, value);
 		}
 
 		public static void Commit(ReportMessageType type)
 		{
+			using var log = Logger.LogBlock();
+
 			Instance.Container.Commit(type);
 		}
 
@@ -76,9 +83,14 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public static void FromJsonFileWithConfig(string path)
 		{
-			Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
+			FromJsonFileWrapper(() =>
+			{
+				using var log = Logger.LogBlock();
 
-			Instance.ReportDirectory = Instance.ReportDirectory ?? Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");
+				Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
+
+				Instance.ReportDirectory = Instance.ReportDirectory ?? Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");
+			});
 		}
 	}
 }

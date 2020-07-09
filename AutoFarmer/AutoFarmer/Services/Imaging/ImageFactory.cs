@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -8,6 +9,8 @@ namespace AutoFarmer.Services.Imaging
 	{
 		public static Bitmap CreateScreenshot()
 		{
+			using var log = Logger.LogBlock();
+
 			var bmp = new Bitmap(Config.Instance.ScreenSize.W, Config.Instance.ScreenSize.H, PixelFormat.Format24bppRgb);
 
 			using (var g = Graphics.FromImage(bmp))
@@ -20,6 +23,8 @@ namespace AutoFarmer.Services.Imaging
 
 		public static Bitmap ConvertBitmap(Bitmap original)
 		{
+			using var log = Logger.LogBlock();
+
 			Bitmap clone = new Bitmap(original.Width, original.Height, PixelFormat.Format24bppRgb);
 
 			using (Graphics g = Graphics.FromImage(clone))

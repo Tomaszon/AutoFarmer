@@ -3,6 +3,7 @@ using AutoFarmer.Models.Graph;
 using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services.InputHandling;
+using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,6 +23,8 @@ namespace AutoFarmer.Services
 
 		public void Process()
 		{
+			using var log = Logger.LogBlock();
+
 			while (GetNextStartNode(out var currentNode))
 			{
 				MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
@@ -62,6 +65,8 @@ namespace AutoFarmer.Services
 
 		private bool GetNextOutgoingEdge(ActionNode currentNode, out ConditionEdge edge)
 		{
+			using var log = Logger.LogBlock();
+
 			edge = Graph.GetNextEdge(currentNode);
 
 			Logger.Log($"Next edge selected: {(edge is null ? "none" : edge.Name)}");
@@ -71,6 +76,8 @@ namespace AutoFarmer.Services
 
 		private bool GetNextStartNode(out ActionNode node)
 		{
+			using var log = Logger.LogBlock();
+
 			node = Graph.ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
 
 			Logger.Log($"Start node selected: {(node is null ? "none" : node.Name)}");
@@ -80,6 +87,8 @@ namespace AutoFarmer.Services
 
 		private void ProcessNode(ActionNode node, params SerializablePoint[] actionPositions)
 		{
+			using var log = Logger.LogBlock();
+
 			node.IsVisited = true;
 
 			if (node.ActionNames is null)
@@ -106,6 +115,8 @@ namespace AutoFarmer.Services
 
 		private bool ProcessEdge(ConditionEdge edge, List<SerializablePoint> actionPoints)
 		{
+			using var log = Logger.LogBlock();
+
 			if (edge.Condition is null)
 			{
 				actionPoints.Clear();

@@ -6,6 +6,7 @@ using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Services;
 using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.InputHandling;
+using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

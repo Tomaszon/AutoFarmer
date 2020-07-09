@@ -1,4 +1,6 @@
-﻿namespace AutoFarmer.Models.Graph.ActionNodes
+﻿using AutoFarmer.Services.Logging;
+
+namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public class ActionNode : ActionNodeBase
 	{
@@ -6,6 +8,8 @@
 
 		public void ResetState()
 		{
+			using var log = Logger.LogBlock();
+
 			if (!IsStartNode)
 			{
 				IsVisited = false;

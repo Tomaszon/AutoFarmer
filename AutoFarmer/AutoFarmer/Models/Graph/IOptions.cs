@@ -26,7 +26,31 @@ namespace AutoFarmer.Models.Graph
 		{
 			try
 			{
-				return func.Invoke();
+				return func();
+			}
+			catch (Exception ex)
+			{
+				throw new AutoFarmerException("Configuration error!", ex);
+			}
+		}
+
+		protected static T FromJsonFileWrapper<T>(Func<T> func)
+		{
+			try
+			{
+				return func();
+			}
+			catch (Exception ex)
+			{
+				throw new AutoFarmerException("Configuration error!", ex);
+			}
+		}
+
+		protected static void FromJsonFileWrapper(Action action)
+		{
+			try
+			{
+				action();
 			}
 			catch (Exception ex)
 			{

@@ -1,5 +1,6 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Imaging;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public void Init()
 		{
+			using var log = Logger.LogBlock();
+
 			if (SearchAreas.Count != 0)
 			{
 				if (IsOverlaping(out var intersectingRectangles))
@@ -46,6 +49,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		private bool IsOverlaping(out List<Tuple<SerializableRectangle, List<SerializableRectangle>>> intersectingRectangles)
 		{
+			using var log = Logger.LogBlock();
+
 			intersectingRectangles = new List<Tuple<SerializableRectangle, List<SerializableRectangle>>>();
 
 			foreach (var a1 in SearchAreas)

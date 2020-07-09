@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Logging
 {
 	public class LogFormatter : LogFormatterBase
 	{

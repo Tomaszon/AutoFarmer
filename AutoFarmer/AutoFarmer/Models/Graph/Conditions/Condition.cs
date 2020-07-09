@@ -1,6 +1,7 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services;
 using AutoFarmer.Services.Imaging;
+using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
 using System.Threading;
 

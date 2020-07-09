@@ -2,6 +2,7 @@
 using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph.Conditions;
 using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,6 +28,8 @@ namespace AutoFarmer.Services.Imaging
 
 		public static void FromConfig()
 		{
+			using var log = Logger.LogBlock();
+
 			Instance = JsonConvert.DeserializeObject<ImageMatchFinder>(File.ReadAllText(Config.Instance.ImageMatchFinderConfigPath));
 
 			foreach (var template in Directory.GetFiles(Config.Instance.ImageMatchTemplatesDirectory))
@@ -39,6 +42,8 @@ namespace AutoFarmer.Services.Imaging
 
 		public static List<SerializablePoint> FindClickPointForTemplate(Condition condition, Bitmap source, float similiarityThreshold)
 		{
+			using var log = Logger.LogBlock();
+
 			var matchResult = CalculateMatches(source, condition, similiarityThreshold);
 
 			if (matchResult.Matches.Count < condition.MinimumOccurrence)
@@ -56,6 +61,8 @@ namespace AutoFarmer.Services.Imaging
 
 		private static ImageMatchResult CalculateMatches(Bitmap source, Condition condition, float similiarityThreshold)
 		{
+			using var log = Logger.LogBlock();
+
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
@@ -96,6 +103,8 @@ namespace AutoFarmer.Services.Imaging
 
 		private static List<ImageMatch> CollectMatches(Bitmap source, Bitmap searchImage, SerializableSize relativeClickPoint, float similiarityThreshold, string searchRectangleName, string templateName, SerializableRectangle area = null)
 		{
+			using var log = Logger.LogBlock();
+
 			MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
@@ -112,6 +121,8 @@ namespace AutoFarmer.Services.Imaging
 
 		private static Bitmap CropTemplateImage(Bitmap bitmap, Rectangle rectangle)
 		{
+			using var log = Logger.LogBlock();
+
 			Bitmap searchImage = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format24bppRgb);
 
 			using (Graphics gr = Graphics.FromImage(searchImage))
@@ -126,6 +137,8 @@ namespace AutoFarmer.Services.Imaging
 
 		private static List<SerializablePoint> OrderResults(IEnumerable<SerializablePoint> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
 		{
+			using var log = Logger.LogBlock();
+
 			if (orderBy is null) return points.ToList();
 
 			var result = orderBy.TryGetValue(MatchOrderBy.X, out var orderLike) && orderLike == MatchOrderLike.Descending

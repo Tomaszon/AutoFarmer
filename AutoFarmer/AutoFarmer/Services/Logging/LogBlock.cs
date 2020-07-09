@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Logging
 {
 	public class LogBlock : IDisposable
 	{
@@ -28,10 +27,6 @@ namespace AutoFarmer.Models.Common
 		public void Dispose()
 		{
 			Logger.DecreaseLevel();
-
-			StackTrace st2 = new StackTrace(new StackFrame(1, true));
-
-			var a = st2.ToString();
 
 			Logger.Log($"< {_name}", file: _file, line: _line);
 		}

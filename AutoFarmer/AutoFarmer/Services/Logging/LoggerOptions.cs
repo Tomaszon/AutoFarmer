@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Logging
 {
 	public class LoggerOptions : LoggerBase
 	{

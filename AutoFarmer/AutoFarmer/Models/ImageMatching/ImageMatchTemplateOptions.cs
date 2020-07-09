@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.Graph;
+using AutoFarmer.Services.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static AutoFarmer.Models.Graph.IOptions;
 
 namespace AutoFarmer.Models.ImageMatching
 {
-	public class ImageMatchTemplateOptions
+	public class ImageMatchTemplateOptions : IOptions
 	{
 		public string Name { get; set; }
 
@@ -13,10 +16,15 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public static ImageMatchTemplateOptions FromJsonFile(string path)
 		{
-			var templateOptions = JsonConvert.DeserializeObject<ImageMatchTemplateOptions>(File.ReadAllText(path));
-			templateOptions.Name = Path.GetFileNameWithoutExtension(path);
+			return FromJsonFileWrapper(() =>
+			{
+				using var log = Logger.LogBlock();
 
-			return templateOptions;
+				var templateOptions = JsonConvert.DeserializeObject<ImageMatchTemplateOptions>(File.ReadAllText(path));
+				templateOptions.Name = Path.GetFileNameWithoutExtension(path);
+
+				return templateOptions;
+			});
 		}
 
 		public ImageMatchTemplate ToImageMatchTemplate()

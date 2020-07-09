@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -16,6 +17,8 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public void Init()
 		{
+			using var log = Logger.LogBlock();
+
 			foreach (var searchRectangle in SearchRectangles)
 			{
 				searchRectangle.Value.Init();

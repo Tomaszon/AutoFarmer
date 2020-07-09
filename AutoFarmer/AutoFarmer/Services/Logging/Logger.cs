@@ -1,4 +1,5 @@
-﻿using AutoFarmer.Models.ImageMatching;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.ImageMatching;
 using AutoFarmer.Services.InputHandling;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Logging
 {
 	public class Logger : LoggerBase
 	{

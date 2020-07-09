@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public void AddToMessages(string key, string value)
 		{
+			using var log = Logger.LogBlock();
+
 			if (Messages.ContainsKey(key))
 			{
 				Messages[key].Add(value);
@@ -25,6 +28,8 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public void AddToBuffer(string key, ReportMessageType type, string value)
 		{
+			using var log = Logger.LogBlock();
+
 			var k = new Tuple<string, ReportMessageType>(key, type);
 
 			if (_buffer.ContainsKey(k))
@@ -39,6 +44,8 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public void Commit(ReportMessageType type)
 		{
+			using var log = Logger.LogBlock();
+
 			_buffer.Where(t =>
 				t.Key.Item2 == type).Select(t =>
 					new KeyValuePair<string, List<string>>(t.Key.Item1, t.Value)).ToList().ForEach(t =>
@@ -49,11 +56,15 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public void Clear()
 		{
+			using var log = Logger.LogBlock();
+
 			Messages.Clear();
 		}
 
 		public void ClearBuffer()
 		{
+			using var log = Logger.LogBlock();
+
 			_buffer.Clear();
 		}
 	}

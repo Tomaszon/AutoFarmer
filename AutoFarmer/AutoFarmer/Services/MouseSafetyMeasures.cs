@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Drawing;
@@ -22,11 +23,15 @@ namespace AutoFarmer.Services
 
 		public static void FromConfig()
 		{
+			using var log = Logger.LogBlock();
+
 			Instance = JsonConvert.DeserializeObject<MouseSafetyMeasures>(File.ReadAllText(Config.Instance.MouseSafetyMeasuresConfigPath));
 		}
 
 		public static SerializablePoint GetCursorCurrentPosition()
 		{
+			using var log = Logger.LogBlock();
+
 			GetCursorPos(out Point currentPosition);
 
 			return (SerializablePoint)currentPosition;
@@ -34,6 +39,8 @@ namespace AutoFarmer.Services
 
 		public static bool IsMouseInSafePosition()
 		{
+			using var log = Logger.LogBlock();
+
 			var currentPosition = GetCursorCurrentPosition();
 
 			SerializableSize difference = Instance.LastActionPosition - currentPosition;
@@ -49,6 +56,8 @@ namespace AutoFarmer.Services
 		{
 			if (Instance.IsEnabled && !IsMouseInSafePosition())
 			{
+				using var log = Logger.LogBlock();
+
 				throw new AutoFarmerException("Intentional emergency stop!");
 			}
 		}

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Services.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 		{
 			return FromJsonFileWrapper(() =>
 			{
+				using var log = Logger.LogBlock();
+
 				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
 				if (nodeOptions.Names is null)

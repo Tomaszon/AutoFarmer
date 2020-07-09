@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services.Logging
 {
 	public class LogFormatterOptions : LogFormatterBase
 	{

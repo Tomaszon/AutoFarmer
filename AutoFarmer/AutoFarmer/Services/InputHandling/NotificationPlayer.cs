@@ -1,5 +1,6 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Properties;
+using AutoFarmer.Services.Logging;
 using System.IO;
 using System.Media;
 using System.Threading.Tasks;
@@ -10,8 +11,12 @@ namespace AutoFarmer.Services.InputHandling
 	{
 		private static async void Play(Stream sound, int count)
 		{
+			using var log = Logger.LogBlock();
+
 			await Task.Run(() =>
 			{
+				using var log = Logger.LogBlock();
+
 				var player = new SoundPlayer(sound);
 
 				for (int i = 0; i < count; i++)
@@ -23,6 +28,8 @@ namespace AutoFarmer.Services.InputHandling
 
 		public static void Play(NotificationType type, int count = 1)
 		{
+			using var log = Logger.LogBlock();
+
 			if (type == NotificationType.None) return;
 
 			switch (type)

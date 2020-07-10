@@ -289,12 +289,12 @@ namespace AutoFarmerTests
 
 			ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
 
-			ReportBuilder.Add("key1", ReportMessageType.Success, "msg1");
-			ReportBuilder.Add("key1", ReportMessageType.Success, "msg2");
+			ReportBuilder.Add("key1", "msg1", ReportMessageType.Success);
+			ReportBuilder.Add("key1", "msg2", ReportMessageType.Success);
 
-			ReportBuilder.Add("key2", ReportMessageType.Success, "msg3");
+			ReportBuilder.Add("key2", "msg3", ReportMessageType.Success);
 
-			ReportBuilder.Add("key3", ReportMessageType.Fail, "msg4");
+			ReportBuilder.Add("key3", "msg4", ReportMessageType.Fail);
 
 			ReportBuilder.Commit(ReportMessageType.Fail);
 

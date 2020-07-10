@@ -3,6 +3,7 @@ using AutoFarmer.Models.Graph;
 using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,15 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public ReportBuilderMessageContainer Container { get; set; } = new ReportBuilderMessageContainer();
 
-		public static void Add(string key, ReportMessageType type, string value)
+		public static void AddRange(Dictionary<string, string> keyValuePairs, ReportMessageType type)
+		{
+			foreach (var t in keyValuePairs)
+			{
+				Add(t.Key, t.Value, type);
+			}
+		}
+
+		public static void Add(string key, string value, ReportMessageType type)
 		{
 			using var log = Logger.LogBlock();
 

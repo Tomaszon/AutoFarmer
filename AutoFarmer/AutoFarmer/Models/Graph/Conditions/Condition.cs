@@ -2,6 +2,7 @@
 using AutoFarmer.Services;
 using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.Logging;
+using AutoFarmer.Services.ReportBuilder;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -114,6 +115,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
+						ReportBuilder.AddRange(ReportMessages.Success, ReportMessageType.Success);
+
 						return true;
 					}
 					catch (ImageMatchNotFoundException)
@@ -132,6 +135,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 				current -= thresholdStep;
 			}
+
+			ReportBuilder.AddRange(ReportMessages.Fail, ReportMessageType.Fail);
 
 			return false;
 		}

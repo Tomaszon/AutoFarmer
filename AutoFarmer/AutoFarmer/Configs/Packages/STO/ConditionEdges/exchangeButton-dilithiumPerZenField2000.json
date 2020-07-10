@@ -1,6 +1,14 @@
 {
 	"Condition": {
-		"TemplateName": "dilithiumExchange",
-		"SearchRectangleName": "dilithiumPerZenField"
+		"AND": [
+			{
+				"TemplateName": "dilithiumExchange",
+				"SearchRectangleName": "submitButton"
+			},
+			{
+				"TemplateName": "dilithiumExchange",
+				"SearchRectangleName": "dilithiumPerZenField"
+			}
+		]
 	}
 }

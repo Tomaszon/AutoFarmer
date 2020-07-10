@@ -2,6 +2,7 @@
 using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,8 +57,12 @@ namespace AutoFarmer.Models.Graph
 		{
 			using var log = Logger.LogBlock();
 
+			Random r = new Random();
+
+			double minimumProbability = r.NextDouble();
+
 			return ConditionEdges.Where(e =>
-				e.StartNodeName == actionNode.Name && e.IsEnabled).OrderBy(e =>
+				e.StartNodeName == actionNode.Name && e.IsEnabled && e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
 					e.Order).FirstOrDefault();
 		}
 

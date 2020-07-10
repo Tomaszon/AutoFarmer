@@ -12,7 +12,16 @@
 		"beginButton": {
 			"X": 1261,
 			"Y": 877,
-			"W": 132,
+			"W": 41,
+			"H": 18,
+			"NamedSearchAreas":[
+				"BottomRight"
+			]
+		},
+		"beginButtonUnavailable": {
+			"X": 1101,
+			"Y": 877,
+			"W": 41,
 			"H": 18,
 			"NamedSearchAreas":[
 				"BottomRight"

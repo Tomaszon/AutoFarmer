@@ -1,8 +1,4 @@
 {
-	"Nodes": {
-		"dilithiumToSellField12000": "closeButtons",
-		"dilithiumToSellField2000": "closeButtons"
-	},
 	"Condition": {
 		"AND": [
 			{
@@ -22,5 +18,5 @@
 			}
 		]
 	},
-	"Order": 2
+	"Order": 3
 }

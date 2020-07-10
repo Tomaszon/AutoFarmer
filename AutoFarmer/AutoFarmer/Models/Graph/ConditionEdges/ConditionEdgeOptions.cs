@@ -48,7 +48,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}
 
-							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, edgeOptions.Condition));
+							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, condition));
 						}
 					}
 					else

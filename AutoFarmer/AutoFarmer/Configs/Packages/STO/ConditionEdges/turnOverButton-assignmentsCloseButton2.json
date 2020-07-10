@@ -1,0 +1,20 @@
+{
+	"Condition": {
+		"AND": [
+			{
+				"TemplateName": "assignmentsDetails",
+				"SearchRectangleName": "beginButtonUnavailable",
+				"ReportMessages": {
+					"Success": {
+						"turnOverAssignment": "unavailable"
+					}
+				}
+			},
+			{
+				"TemplateName": "assignmentsCompleted",
+				"SearchRectangleName": "closeButton"
+			}
+		]
+	},
+	"Order": 2
+}

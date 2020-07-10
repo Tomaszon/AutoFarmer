@@ -1,28 +1,28 @@
 {
 	"SearchRectangles": {
 		"turnOverButton": {
-			"X": 1050,
+			"X": 1051,
 			"Y": 708,
-			"W": 73,
-			"H": 15,
+			"W": 33,
+			"H": 11,
 			"NamedSearchAreas": [
 				"Middle"
 			]
 		},
 		"turnOverButtonSelected": {
-			"X": 1050,
-			"Y": 754,
-			"W": 73,
-			"H": 15,
+			"X": 1051,
+			"Y": 756,
+			"W": 33,
+			"H": 11,
 			"NamedSearchAreas": [
 				"Middle"
 			]
 		},
 		"turnOverButtonUnavailable": {
-			"X": 1050,
-			"Y": 801,
-			"W": 73,
-			"H": 15,
+			"X": 1051,
+			"Y": 803,
+			"W": 33,
+			"H": 11,
 			"NamedSearchAreas": [
 				"Middle"
 			]

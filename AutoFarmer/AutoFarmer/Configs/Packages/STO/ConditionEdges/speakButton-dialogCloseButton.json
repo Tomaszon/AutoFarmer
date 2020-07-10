@@ -1,0 +1,20 @@
+{
+	"Condition": {
+		"AND": [
+			{
+				"TemplateName": "dialog",
+				"SearchRectangleName": "turnOverButtonUnavailable",
+				"ReportMessages": {
+					"Success": {
+						"turnOverButton": "unavailable"
+					}
+				}
+			},
+			{
+				"TemplateName": "dialog",
+				"SearchRectangleName": "closeButton"
+			}
+		]
+	},
+	"Order": 2
+}

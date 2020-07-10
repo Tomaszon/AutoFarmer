@@ -19,7 +19,8 @@
 	"Condition": {
 		"TemplateName": "characterLoading",
 		"SearchRectangleName": "loadingLabel",
-		"RetryDelay": 0
+		"RetryDelay": 0,
+		"DisableSearchAreaFallback": true
 	},
-	"MaxCrossing": 3
+	"MaxCrossing": 5
 }

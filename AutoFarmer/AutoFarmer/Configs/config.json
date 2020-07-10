@@ -4,9 +4,9 @@
 		"H": 1080
 	},
 	"ActionSounds": true,
-	"ProcessCountdown": 5000,
+	"ProcessCountdown": 7000,
 	"ActivePackage": "STO",
 	"ActiveStartNodes": [
-		"startPartAssignments"
+		"start01"
 	]
 }

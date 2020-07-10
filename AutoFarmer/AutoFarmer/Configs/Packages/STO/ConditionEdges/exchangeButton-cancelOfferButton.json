@@ -2,14 +2,15 @@
 	"Condition": {
 		"AND": [
 			{
-				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+				"TemplateName": "dilithiumExchangeUnavailable",
 				"SearchRectangleName": "tooManyOutstandingOffersLabel",
-				"DisableSearchAreaFallback":  true
+				"DisableSearchAreaFallback": true
 			},
 			{
-				"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+				"TemplateName": "dilithiumExchangeUnavailable",
 				"SearchRectangleName": "cancelButton"
 			}
 		]
-	}
+	},
+	"Order": 2
 }

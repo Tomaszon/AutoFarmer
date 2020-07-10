@@ -15,14 +15,19 @@ namespace AutoFarmer
 	{
 		private static void Main()
 		{
+#if !DEBUG
 			try
 			{
-				WorkMethod();
+#endif
+			WorkMethod();
+
+#if !DEBUG
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine($"Unexpected error in {nameof(WorkMethod)}: {ex.Message}\n{ex}");
 			}
+#endif
 		}
 
 		private static void WorkMethod()

@@ -1,5 +1,4 @@
-﻿using AutoFarmer.Services.Logging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace AutoFarmer.Services
 {
@@ -16,15 +15,11 @@ namespace AutoFarmer.Services
 
 		public void Start()
 		{
-			using var log = Logger.LogBlock();
-
 			_stopwatch.Start();
 		}
 
 		public void Stop()
 		{
-			using var log = Logger.LogBlock();
-
 			_stopwatch.Stop();
 
 			Elapsed = _stopwatch.ElapsedMilliseconds;

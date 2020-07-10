@@ -1,6 +1,6 @@
 {
 	"Condition": {
-		"TemplateName": "dilithiumExchangeTooManyOutstandingOffers",
+		"TemplateName": "dilithiumExchangeUnavailable",
 		"SearchRectangleName": "withdrawButton"
 	}
 }

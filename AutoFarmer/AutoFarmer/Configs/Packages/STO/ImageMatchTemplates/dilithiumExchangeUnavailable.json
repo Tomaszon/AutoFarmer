@@ -1,19 +1,19 @@
 {
 	"SearchRectangles": {
 		"tooManyOutstandingOffersLabel": {
-			"X": 618,
-			"Y": 726,
-			"W": 71,
-			"H": 15,
+			"X": 619,
+			"Y": 727,
+			"W": 26,
+			"H": 11,
 			"NamedSearchAreas":[
 				"Middle"
 			]
 		},
 		"notEnoughDilithiumLabel": {
-			"X": 973,
-			"Y": 726,
-			"W": 83,
-			"H": 15,
+			"X": 974,
+			"Y": 727,
+			"W": 25,
+			"H": 11,
 			"NamedSearchAreas":[
 				"Middle"
 			]

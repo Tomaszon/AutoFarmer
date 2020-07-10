@@ -115,7 +115,10 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-						ReportBuilder.AddRange(ReportMessages.Success, ReportMessageType.Success);
+						if(ReportMessages != null)
+						{
+							ReportBuilder.AddRange(ReportMessages.Success, ReportMessageType.Success);
+						}
 
 						return true;
 					}
@@ -136,7 +139,10 @@ namespace AutoFarmer.Models.Graph.Conditions
 				current -= thresholdStep;
 			}
 
-			ReportBuilder.AddRange(ReportMessages.Fail, ReportMessageType.Fail);
+			if (ReportMessages != null)
+			{
+				ReportBuilder.AddRange(ReportMessages.Fail, ReportMessageType.Fail);
+			}
 
 			return false;
 		}

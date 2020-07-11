@@ -1,0 +1,12 @@
+{
+	"Condition": {
+		"TemplateName": "assignmentsCompleted",
+		"SearchRectangleName": "closeButton",
+		"ReportMessages": {
+			"Success": {
+				"confiscateAssignment": "skipped"
+			}
+		}
+	},
+	"Order": 2
+}

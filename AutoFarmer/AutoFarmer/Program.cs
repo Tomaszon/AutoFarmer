@@ -7,6 +7,7 @@ using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AutoFarmer
@@ -32,28 +33,65 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
+			ActionGraph graph = null;
+
+			GraphMachine machine = null;
+
+			try
+			{
+				Config.FromJsonFile(@".\configs\config.json");
+
+				Logger.FromConfig();
+
+				using var log = Logger.LogBlock();
+
+				ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
+
+				InputSimulator.FromConfig();
+
+				MouseSafetyMeasures.FromConfig();
+
+				ImageMatchFinder.FromConfig();
+
+				graph = ActionGraph.FromConfig();
+
+				machine = new GraphMachine(graph);
+
+				Logger.GraphicalLogTemplates(ImageMatchFinder.Instance.Templates);
+
+				Logger.Log($"Configs loaded, templates generated!");
+
+				HandleCommand<BeforeCommand>(c =>
+				{
+					switch (c)
+					{
+						case BeforeCommand.Logs:
+						{
+							OpenFolder(Logger.Instance.LogDirectory);
+
+							return true;
+						}
+
+						case BeforeCommand.Exit:
+						{
+							Environment.Exit(0);
+
+							goto default;
+						}
+
+						default: return false;
+					}
+				});
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
 			do
 			{
 				try
 				{
-					Config.FromJsonFile(@".\configs\config.json");
-
-					Logger.FromConfig();
-
-					using var log = Logger.LogBlock();
-
-					ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
-
-					InputSimulator.FromConfig();
-
-					MouseSafetyMeasures.FromConfig();
-
-					ImageMatchFinder.FromConfig();
-
-					ActionGraph graph = ActionGraph.FromConfig();
-
-					GraphMachine machine = new GraphMachine(graph);
-
 					Logger.Log($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds", fileLog: false);
 
 					Countdown(Config.Instance.ProcessCountdown);
@@ -82,43 +120,66 @@ namespace AutoFarmer
 					}
 				}
 
-			CommandSelection:
-				Command command;
+				HandleCommand<AfterCommand>(c =>
+				{
+					switch (c)
+					{
+						case AfterCommand.Logs:
+						{
+							OpenFolder(Logger.Instance.LogDirectory);
 
+							return true;
+						}
+
+						case AfterCommand.Reports:
+						{
+							OpenFolder(ReportBuilder.Instance.ReportDirectory);
+
+							return true;
+						}
+
+						case AfterCommand.Exit:
+						{
+							Environment.Exit(0);
+
+							goto default;
+						}
+
+						default: return false;
+					}
+				});
+
+				Logger.RefreshSessionId();
+
+				graph.ResetStates();
+			}
+			while (true);
+		}
+
+		private static void HandleCommand<T>(Predicate<T> predicate) where T : struct, Enum
+		{
+			bool runAgain = true;
+
+			while (runAgain)
+			{
 				Console.WriteLine("Choose from the following commands:");
-				foreach (var value in Enum.GetValues(typeof(Command)))
+
+				foreach (var value in Enum.GetValues(typeof(T)))
 				{
 					Console.WriteLine($"  -{value}");
 				}
 
 				var input = Console.ReadLine();
 
-				if (!Enum.TryParse(input, true, out command))
+				if (!Enum.TryParse(input, true, out T command))
 				{
 					Console.WriteLine("Typed value was not in correct form!\n");
-
-					goto CommandSelection;
 				}
-
-				switch (command)
+				else
 				{
-					case Command.Logs:
-					{
-						OpenFolder(Logger.Instance.LogDirectory);
-						goto CommandSelection;
-					}
-					case Command.Reports:
-					{
-						OpenFolder(ReportBuilder.Instance.ReportDirectory);
-						goto CommandSelection;
-					}
-					case Command.Exit:
-						return;
+					runAgain = predicate(command);
 				}
-
-				Logger.RefreshSessionId();
 			}
-			while (true);
 		}
 
 		private static void OpenFolder(string folder)
@@ -162,11 +223,18 @@ namespace AutoFarmer
 			Logger.Log("Processing", NotificationType.Info);
 		}
 
-		private enum Command
+		private enum AfterCommand
 		{
 			Restart,
 			Logs,
 			Reports,
+			Exit
+		}
+
+		private enum BeforeCommand
+		{
+			Start,
+			Logs,
 			Exit
 		}
 	}

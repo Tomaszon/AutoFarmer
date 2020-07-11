@@ -46,24 +46,37 @@ namespace AutoFarmer.Models.Graph
 			return graph;
 		}
 
-		public ActionNode GetNextNode(ConditionEdge conditionEdge)
+		public bool TryGetNextNode(ConditionEdge conditionEdge, out ActionNode nextNode)
 		{
 			using var log = Logger.LogBlock();
 
-			return ActionNodes.First(n => conditionEdge.EndNodeName == n.Name);
+			nextNode = ActionNodes.FirstOrDefault(n => conditionEdge.EndNodeName == n.Name);
+
+			return nextNode != null;
 		}
 
-		public ConditionEdge GetNextEdge(ActionNode actionNode)
+		public bool TryGetNextEdge(ActionNode actionNode, out ConditionEdge nextEdge)
 		{
 			using var log = Logger.LogBlock();
 
 			Random r = new Random();
 
-			double minimumProbability = r.NextDouble();
+			double minimumProbability = r.Next(1, 100) / 100d;
 
-			return ConditionEdges.Where(e =>
-				e.StartNodeName == actionNode.Name && e.IsEnabled && e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
+			var potentialEdges = ConditionEdges.Where(e => e.StartNodeName == actionNode.Name && e.IsEnabled);
+
+			nextEdge = potentialEdges.Where(e => 
+				e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
 					e.Order).FirstOrDefault();
+
+			return nextEdge != null;
+		}
+
+		public bool TryGetNextStartNode(out ActionNode nextStartNode)
+		{
+			nextStartNode = ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
+
+			return nextStartNode != null;
 		}
 
 		public void ResetStates()

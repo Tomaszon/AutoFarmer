@@ -9,7 +9,7 @@
 				"X": 889,
 				"Y": 232
 			},
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopLeft"
 			]
 		},
@@ -18,7 +18,7 @@
 			"Y": 383,
 			"W": 132,
 			"H": 20,
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopRight"
 			]
 		},
@@ -27,7 +27,7 @@
 			"Y": 336,
 			"W": 63,
 			"H": 15,
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopLeft"
 			]
 		},
@@ -36,7 +36,7 @@
 			"Y": 222,
 			"W": 23,
 			"H": 23,
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopRight"
 			]
 		},
@@ -45,7 +45,7 @@
 			"Y": 141,
 			"W": 20,
 			"H": 20,
-			"NamedSearchAreas":[
+			"NamedSearchAreas": [
 				"TopRight"
 			]
 		}

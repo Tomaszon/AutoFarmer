@@ -7,6 +7,6 @@
 	"ProcessCountdown": 7000,
 	"ActivePackage": "STO",
 	"ActiveStartNodes": [
-		"start01"
+		"startPartAssignments"
 	]
 }

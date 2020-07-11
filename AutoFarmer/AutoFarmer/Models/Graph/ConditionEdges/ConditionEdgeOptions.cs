@@ -70,7 +70,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 				Order = order,
 				StartNodeName = startNodeName,
 				EndNodeName = endNodeName,
-				Name = $"{startNodeName}-{endNodeName}"
+				Name = $"{startNodeName}-{endNodeName}",
+				ConsiderationProbability = ConsiderationProbability
 			};
 		}
 	}

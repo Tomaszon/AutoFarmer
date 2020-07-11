@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using AutoFarmer.Services.Extensions;
 
 namespace AutoFarmer.Services.Logging
 {
@@ -78,13 +79,15 @@ namespace AutoFarmer.Services.Logging
 				{
 					using Graphics g = Graphics.FromImage(matchCollection.Source);
 
-					Directory.CreateDirectory(Path.Combine(Instance.LogDirectory, Instance.SessionId));
+					var folderName = Path.Combine(Instance.LogDirectory, Instance.SessionId, "Finds");
 
-					matchCollection.Matches.ForEach(m => HighlightFind(g, m.MatchRectangle, m.ClickPoint));
+					Directory.CreateDirectory(folderName);
+
+					matchCollection.Matches.ForEach(m => DrawRectangleWithClickPoint(g, m.MatchRectangle, m.ClickPoint));
 
 					HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
-					var fileName = Path.Combine(Instance.LogDirectory, Instance.SessionId, $"{templateName}-{searchRectangleName}");
+					var fileName = Path.Combine(folderName, $"{templateName}-{searchRectangleName}");
 
 					matchCollection.Source.Save($"{fileName}.png");
 					matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");
@@ -96,10 +99,53 @@ namespace AutoFarmer.Services.Logging
 			}
 		}
 
-		private static void HighlightSearchAreas(Graphics g, List<SerializableRectangle> searchAreas, IEnumerable<SerializableRectangle> searchRectangles)
+		internal static void GraphicalLogTemplates(List<ImageMatchTemplate> templates)
 		{
 			using var log = LogBlock();
 
+			var folderName = Path.Combine(Instance.LogDirectory, Instance.SessionId, "Templates");
+
+			Directory.CreateDirectory(folderName);
+
+			foreach (var template in templates)
+			{
+				using Bitmap b = template.LoadBitmap();
+
+				using Graphics g = Graphics.FromImage(b);
+
+				foreach (var searchRectangleElement in template.SearchRectangles)
+				{
+					DrawLabel(g, b.Size, searchRectangleElement.Key, searchRectangleElement.Value.Rectangle);
+
+					DrawRectangleWithClickPoint(g, searchRectangleElement.Value.Rectangle, searchRectangleElement.Value.Rectangle.Position + searchRectangleElement.Value.RelativeClickPoint);
+				}
+
+				var fileName = Path.Combine(folderName, $"{template.Name}");
+
+				b.Save($"{fileName}.png");
+			}
+		}
+
+		private static void DrawLabel(Graphics g, Size bitmapSize, string text, SerializableRectangle rectangle)
+		{
+			var font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular);
+
+			var labelSize = g.MeasureString(text, font).ToSize();
+
+			var labelPosition = (Point)rectangle.Position + new Size(rectangle.Size.W / 2, 0) - new Size(labelSize.Width / 2, labelSize.Height);
+
+			labelPosition.X = (labelPosition.X + labelSize.Width).Normalize(0, bitmapSize.Width) - labelSize.Width;
+			labelPosition.X = labelPosition.X.Normalize(0, bitmapSize.Width);
+
+			labelPosition.Y = labelPosition.Y < 0 ? rectangle.Position.Y + rectangle.Size.H : labelPosition.Y;
+
+			g.FillRectangle(new SolidBrush(Color.Black), new RectangleF(labelPosition, labelSize));
+
+			g.DrawString(text, font, new SolidBrush(Color.Red), labelPosition);
+		}
+
+		private static void HighlightSearchAreas(Graphics g, List<SerializableRectangle> searchAreas, IEnumerable<SerializableRectangle> searchRectangles)
+		{
 			foreach (var area1 in searchAreas)
 			{
 				foreach (var area2 in searchAreas)
@@ -129,10 +175,8 @@ namespace AutoFarmer.Services.Logging
 						g.DrawRectangle(new Pen(new SolidBrush(Color.Orange), 3), new Rectangle(e.Position.X, e.Position.Y, e.Size.W - 1, e.Size.H - 1)));
 		}
 
-		private static void HighlightFind(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
+		private static void DrawRectangleWithClickPoint(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
 		{
-			using var log = Logger.LogBlock();
-
 			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));

@@ -1,0 +1,7 @@
+{
+	"Condition": {
+		"TemplateName": "assignmentsPersonal",
+		"SearchRectangleName": "confiscateAssignment",
+		"DisableSearchAreaFallback": true
+	}
+}

@@ -5,7 +5,6 @@ using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace AutoFarmer.Services
@@ -25,8 +24,10 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
-			while (GetNextStartNode(out var currentNode))
+			while (Graph.TryGetNextStartNode(out var currentNode))
 			{
+				Logger.Log($"Start node selected: {currentNode.Name}");
+
 				MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
 
 				List<SerializablePoint> actionPoints = new List<SerializablePoint>();
@@ -35,15 +36,17 @@ namespace AutoFarmer.Services
 				{
 					ProcessNode(currentNode, actionPoints.ToArray());
 
-					ConditionEdge currentEdge;
+					ConditionEdge currentEdge = null;
 
-					while (GetNextOutgoingEdge(currentNode, out currentEdge))
+					while (Graph.TryGetNextEdge(currentNode, out currentEdge))
 					{
+						Logger.Log($"Next edge selected: {currentEdge.Name}");
+
 						if (ProcessEdge(currentEdge, actionPoints))
 						{
 							ReportBuilder.ReportBuilder.Commit(ReportMessageType.Success);
 
-							currentNode = Graph.GetNextNode(currentEdge);
+							Graph.TryGetNextNode(currentEdge, out currentNode);
 
 							Logger.Log($"Next node selected: {currentNode.Name}");
 
@@ -57,7 +60,9 @@ namespace AutoFarmer.Services
 						}
 					}
 
-					if (!currentNode.IsEndNode && currentEdge is null) throw new AutoFarmerException("Can not move to the next node!");
+					Logger.Log($"No edge left to select!");
+
+					if (!currentNode.IsEndNode && currentEdge is null) throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}!");
 				}
 				while (!currentNode.IsEndNode);
 
@@ -65,28 +70,6 @@ namespace AutoFarmer.Services
 
 				Graph.ResetStates();
 			}
-		}
-
-		private bool GetNextOutgoingEdge(ActionNode currentNode, out ConditionEdge edge)
-		{
-			using var log = Logger.LogBlock();
-
-			edge = Graph.GetNextEdge(currentNode);
-
-			Logger.Log($"Next edge selected: {(edge is null ? "none" : edge.Name)}");
-
-			return edge != null;
-		}
-
-		private bool GetNextStartNode(out ActionNode node)
-		{
-			using var log = Logger.LogBlock();
-
-			node = Graph.ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
-
-			Logger.Log($"Start node selected: {(node is null ? "none" : node.Name)}");
-
-			return node != null;
 		}
 
 		private void ProcessNode(ActionNode node, params SerializablePoint[] actionPositions)

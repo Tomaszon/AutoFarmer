@@ -3,8 +3,8 @@
 	"FileLogging": true,
 	"Format": {
 		"IndentCharacter": " ",
-		"IndentSize": 2,
-		"MaximumLineLength": 100,
+		"IndentSize": 4,
+		"MaximumLineLength": 150,
 		"MinimumLineLength": 25
 	}
 }

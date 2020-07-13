@@ -48,6 +48,15 @@
 			"NamedSearchAreas": [
 				"TopRight"
 			]
+		},
+		"completedTabSelected": {
+			"X": 489,
+			"Y": 442,
+			"W": 75,
+			"H": 13,
+			"NamedSearchAreas":[
+				"TopLeft"
+			]
 		}
 	}
 }

@@ -6,11 +6,9 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 	{
 		public string Name { get; set; }
 
-		public void ResetState()
+		public void ResetState(bool complete)
 		{
-			using var log = Logger.LogBlock();
-
-			if (!IsStartNode)
+			if (complete || !IsStartNode)
 			{
 				IsVisited = false;
 			}

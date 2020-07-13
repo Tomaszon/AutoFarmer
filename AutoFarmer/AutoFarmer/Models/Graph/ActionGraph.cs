@@ -79,7 +79,7 @@ namespace AutoFarmer.Models.Graph
 			return nextStartNode != null;
 		}
 
-		public void ResetStates()
+		public void ResetStates(bool complete = false)
 		{
 			using var log = Logger.LogBlock();
 
@@ -90,7 +90,7 @@ namespace AutoFarmer.Models.Graph
 
 			foreach (var node in ActionNodes)
 			{
-				node.ResetState();
+				node.ResetState(complete);
 			}
 		}
 	}

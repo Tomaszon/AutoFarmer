@@ -1,6 +1,14 @@
 {
 	"Condition": {
-		"TemplateName": "assignmentsDetails",
-		"SearchRectangleName": "completedTab"
+		"OR": [
+			{
+				"TemplateName": "assignmentsDetails",
+				"SearchRectangleName": "completedTab"
+			},
+			{
+				"TemplateName": "assignmentsCompleted",
+				"SearchRectangleName": "completedTabSelected"
+			}
+		]
 	}
 }

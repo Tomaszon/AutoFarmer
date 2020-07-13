@@ -145,13 +145,18 @@ namespace AutoFarmer
 							goto default;
 						}
 
-						default: return false;
+						default:
+						{
+							Console.Clear();
+
+							return false;
+						}
 					}
 				});
 
 				Logger.RefreshSessionId();
 
-				graph.ResetStates();
+				graph.ResetStates(true);
 			}
 			while (true);
 		}

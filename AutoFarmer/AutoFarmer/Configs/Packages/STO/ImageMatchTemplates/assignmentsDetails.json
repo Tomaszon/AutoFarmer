@@ -1,10 +1,10 @@
 {
 	"SearchRectangles": {
 		"completedTab": {
-			"X": 376,
-			"Y": 336,
-			"W": 80,
-			"H": 28,
+			"X": 378,
+			"Y": 343,
+			"W": 75,
+			"H": 13,
 			"NamedSearchAreas":[
 				"TopLeft"
 			]

@@ -7,7 +7,7 @@ using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using System;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Security.Principal;
 using System.Threading;
 
 namespace AutoFarmer
@@ -16,7 +16,9 @@ namespace AutoFarmer
 	{
 		private static void Main()
 		{
-#if !DEBUG
+#if DEBUG
+			CopyConfigDirectory();
+#else
 			try
 			{
 #endif
@@ -227,6 +229,49 @@ namespace AutoFarmer
 
 			Logger.Log("Processing", NotificationType.Info);
 		}
+
+		private static void CopyConfigDirectory()
+		{
+			string source = @"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\Configs";
+
+			string target = Path.Combine(Directory.GetCurrentDirectory(), "Configs");
+
+			var userName = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
+
+			source = source.Replace("{UserName}", userName);
+
+			DirectoryCopy(source, target);
+		}
+
+		private static void DirectoryCopy(string sourceDirName, string destDirName)
+		{
+			DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+			if (!dir.Exists)
+			{
+				throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
+			}
+
+			DirectoryInfo[] dirs = dir.GetDirectories();
+			if (!Directory.Exists(destDirName))
+			{
+				Directory.CreateDirectory(destDirName);
+			}
+
+			FileInfo[] files = dir.GetFiles();
+			foreach (FileInfo file in files)
+			{
+				string temppath = Path.Combine(destDirName, file.Name);
+				file.CopyTo(temppath, true);
+			}
+
+			foreach (DirectoryInfo subdir in dirs)
+			{
+				string temppath = Path.Combine(destDirName, subdir.Name);
+				DirectoryCopy(subdir.FullName, temppath);
+			}
+		}
+
 
 		private enum AfterCommand
 		{

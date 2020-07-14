@@ -4,13 +4,10 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="Configs\Packages\STO\**" />
       <Compile Remove="Logs\**" />
       <Compile Remove="Reports\**" />
-      <EmbeddedResource Remove="Configs\Packages\STO\**" />
       <EmbeddedResource Remove="Logs\**" />
       <EmbeddedResource Remove="Reports\**" />
-      <None Remove="Configs\Packages\STO\**" />
       <None Remove="Logs\**" />
       <None Remove="Reports\**" />
     </ItemGroup>
@@ -18,6 +15,7 @@
         <PackageReference Include="AForge.Imaging.Core" Version="1.0.0" />
         <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="System.Security.Principal.Windows" Version="4.7.0" />
         <PackageReference Include="System.Windows.Extensions" Version="4.7.0" />
     </ItemGroup>
     <ItemGroup>
@@ -33,15 +31,9 @@
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Configs\Packages\" />
-    </ItemGroup>
     <Target Name="SpicNSpan" AfterTargets="Clean">
         <RemoveDir Directories="$(TargetDir)" />
         <RemoveDir Directories="$(ProjectDir)Logs" />
 		<RemoveDir Directories="$(ProjectDir)Reports" />
-    </Target>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="echo d|xcopy &quot;$(ProjectDir)configs&quot; &quot;$(TargetDir)configs&quot; /e /s /y" />
     </Target>
 </Project>

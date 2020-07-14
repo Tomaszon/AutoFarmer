@@ -1,8 +1,0 @@
-{
-	"Condition": {
-		"TemplateName": "dilithiumExchange",
-		"SearchRectangleName": "closeButton",
-		"MaximumOccurrence": 2,
-		"MinimumOccurrence": 2
-	}
-}

@@ -41,6 +41,17 @@ namespace AutoFarmer.Models.Graph.Conditions
 				{
 					TemplateName = ReplaceVariables(TemplateName, templateVariables, index);
 					SearchRectangleName = ReplaceVariables(SearchRectangleName, templateVariables, index);
+
+					if (ReportMessages != null)
+					{
+						ReportMessages.Success = ReportMessages.Success.Select(t =>
+							new KeyValuePair<string, string>(t.Key, ReplaceVariables(t.Value, templateVariables, index))).ToDictionary(t =>
+								t.Key, t => t.Value);
+
+						ReportMessages.Fail = ReportMessages.Fail.Select(t =>
+							new KeyValuePair<string, string>(t.Key, ReplaceVariables(t.Value, templateVariables, index))).ToDictionary(t =>
+								t.Key, t => t.Value);
+					}
 				}
 				break;
 

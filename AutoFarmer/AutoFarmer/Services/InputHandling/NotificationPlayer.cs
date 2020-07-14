@@ -1,6 +1,5 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Properties;
-using AutoFarmer.Services.Logging;
 using System.IO;
 using System.Media;
 using System.Threading.Tasks;
@@ -30,19 +29,25 @@ namespace AutoFarmer.Services.InputHandling
 			{
 				case NotificationType.Click:
 				{
-					Play(Resources.soundnavigate, count);
+					Play(Resources.click, count);
+				}
+				break;
+
+				case NotificationType.ClickSingle:
+				{
+					Play(Resources.clickSingle, count);
 				}
 				break;
 
 				case NotificationType.Error:
 				{
-					Play(Resources.sounderror, count);
+					Play(Resources.error, count);
 				}
 				break;
 
 				case NotificationType.Info:
 				{
-					Play(Resources.soundexclamation, count);
+					Play(Resources.information, count);
 				}
 				break;
 			}

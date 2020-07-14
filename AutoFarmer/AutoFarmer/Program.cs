@@ -5,8 +5,10 @@ using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 
@@ -70,6 +72,22 @@ namespace AutoFarmer
 						case BeforeCommand.Logs:
 						{
 							OpenFolder(Logger.Instance.LogDirectory);
+
+							return true;
+						}
+
+						case BeforeCommand.Nodes://TODO save to file
+						{
+							Console.WriteLine(JsonConvert.SerializeObject(graph.ActionNodes.OrderBy(e => 
+								e.Name), Formatting.Indented));
+
+							return true;
+						}
+
+						case BeforeCommand.Edges://TODO save to file
+						{
+							Console.WriteLine(JsonConvert.SerializeObject(graph.ConditionEdges.OrderBy(e => 
+								e.StartNodeName).ThenBy(e => e.EndNodeName), Formatting.Indented));
 
 							return true;
 						}
@@ -272,7 +290,6 @@ namespace AutoFarmer
 			}
 		}
 
-
 		private enum AfterCommand
 		{
 			Restart,
@@ -284,6 +301,8 @@ namespace AutoFarmer
 		private enum BeforeCommand
 		{
 			Start,
+			Nodes,
+			Edges,
 			Logs,
 			Exit
 		}

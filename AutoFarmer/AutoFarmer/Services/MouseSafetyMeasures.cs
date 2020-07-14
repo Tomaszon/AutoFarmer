@@ -41,9 +41,7 @@ namespace AutoFarmer.Services
 
 			var currentPosition = GetCursorCurrentPosition();
 
-			SerializableSize difference = Instance.LastActionPosition - currentPosition;
-
-			double distance = Math.Round(Math.Sqrt(Math.Pow(difference.W, 2) + Math.Pow(difference.H, 2)), 2);
+			var distance = SerializablePoint.Distance(Instance.LastActionPosition, currentPosition);
 
 			Logger.Log($"Safe position check: current mouse position: {currentPosition}, last action position: {Instance.LastActionPosition}, distance: {distance}");
 

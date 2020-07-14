@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace AutoFarmer.Models.Common
 {
@@ -21,6 +22,13 @@ namespace AutoFarmer.Models.Common
 		public override string ToString()
 		{
 			return ((Point)this).ToString();
+		}
+
+		public static double Distance(SerializablePoint from, SerializablePoint to)
+		{
+			SerializableSize difference = from - to;
+
+			return Math.Round(Math.Sqrt(Math.Pow(difference.W, 2) + Math.Pow(difference.H, 2)), 2);
 		}
 
 		public static SerializableSize operator -(SerializablePoint point, SerializablePoint other)

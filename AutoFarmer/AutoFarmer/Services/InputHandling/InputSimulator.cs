@@ -1,8 +1,12 @@
-﻿using AutoFarmer.Models.Common;
+﻿using AForge;
+using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Logging;
 using System;
+using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsInput.Native;
 
 namespace AutoFarmer.Services.InputHandling
@@ -39,9 +43,9 @@ namespace AutoFarmer.Services.InputHandling
 				{
 					MoveMouseTo(p);
 				}
-				else if (TryParse(action, out SerializableSize s, out var delay))
+				else if (TryParse(action, out var stepSize, out var scanSize, out var delay))
 				{
-					ScanScreenForFadedUI(s, delay, additionalDelay);
+					ScanScreenForFadedUI(stepSize, scanSize, delay, additionalDelay);
 				}
 				else if (TryParse(action, out int l))
 				{
@@ -82,22 +86,20 @@ namespace AutoFarmer.Services.InputHandling
 			return false;
 		}
 
-		private static bool TryParse(string value, out SerializableSize size, out int delay)
+		private static bool TryParse(string value, out int stepSize, out int scanSize, out int delay)
 		{
 			using var log = Logger.LogBlock();
 
-			size = null;
+			stepSize = 0;
+			scanSize = 0;
 			delay = 0;
 
 			Regex regex = new Regex($"{MouseAction.ScanScreenForFadedUI}:(?<w>(\\d)+),(?<h>(\\d)+),(?<d>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
 			var match = regex.Match(value);
 
-			if (match.Success && int.TryParse(match.Groups["w"].Value, out var w) && int.TryParse(match.Groups["h"].Value, out var h) && int.TryParse(match.Groups["d"].Value, out var d))
+			if (match.Success && int.TryParse(match.Groups["w"].Value, out stepSize) && int.TryParse(match.Groups["h"].Value, out scanSize) && int.TryParse(match.Groups["d"].Value, out delay))
 			{
-				size = new SerializableSize { W = w, H = h };
-				delay = d;
-
 				return true;
 			}
 
@@ -130,7 +132,7 @@ namespace AutoFarmer.Services.InputHandling
 
 			new WindowsInput.InputSimulator().Keyboard.KeyPress(virtualKeyCode);
 
-			Logger.Log($"Virtual key pressed: {virtualKeyCode}", NotificationType.Click);
+			Logger.Log($"Virtual key pressed: {virtualKeyCode}", NotificationType.ClickSingle);
 
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
@@ -145,7 +147,7 @@ namespace AutoFarmer.Services.InputHandling
 			{
 				case MouseAction.LeftClick:
 				{
-					Logger.Log("Left mouse click", NotificationType.Click);
+					Logger.Log("Left mouse click", NotificationType.ClickSingle, 2);
 
 					simulator.Mouse.LeftButtonClick();
 
@@ -153,7 +155,7 @@ namespace AutoFarmer.Services.InputHandling
 				}
 				case MouseAction.LeftDoubleClick:
 				{
-					Logger.Log("Left mouse double click", NotificationType.Click, 1);//TODO use unique sound
+					Logger.Log("Left mouse double click", NotificationType.ClickSingle, 4);//TODO use unique sound
 
 					simulator.Mouse.LeftButtonDoubleClick();
 
@@ -170,13 +172,13 @@ namespace AutoFarmer.Services.InputHandling
 
 			var simulator = new WindowsInput.InputSimulator();
 
-			Logger.Log("Left mouse hold", NotificationType.Click, 1);//TODO use unique sound
+			Logger.Log("Left mouse hold", NotificationType.ClickSingle);
 
 			simulator.Mouse.LeftButtonDown();
 
 			Thread.Sleep(length);
 
-			Logger.Log("Left mouse release", NotificationType.Click, 1);//TODO use unique sound
+			Logger.Log("Left mouse release", NotificationType.ClickSingle);
 
 			simulator.Mouse.LeftButtonUp();
 		}
@@ -186,45 +188,66 @@ namespace AutoFarmer.Services.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0, bool logging = true)
+		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
 		{
 			using var log = Logger.LogBlock();
 
-			if (logging)
-			{
-				Logger.Log($"Mouse move to: {point}");
-			}
+			Logger.Log($"Mouse move to: {point}");
 
-			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
+			SmoothMouseMove(point);
 
 			MouseSafetyMeasures.Instance.LastActionPosition = MouseSafetyMeasures.GetCursorCurrentPosition();
 
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		public static void ScanScreenForFadedUI(SerializableSize s, int delay = 0, int additionalDelay = 0)
+		public static void ScanScreenForFadedUI(int stepSize, int scanSize, int delay, int additionalDelay = 0)
 		{
 			using var log = Logger.LogBlock();
 
 			Logger.Log("Scanning for faded UI");
 
-			for (int y = 0; y <= Instance.ScreenSize.H; y += s.H)
+			NormalizedMouseMove(new SerializablePoint());
+
+			for (int y = 0; y <= Instance.ScreenSize.H; y += scanSize)
 			{
-				for (int x = 0; x <= Instance.ScreenSize.W; x += s.W)
-				{
-					MoveMouseTo(new SerializablePoint() { X = x, Y = y }, delay - Instance.Delay, false);
+				SmoothMouseMove(new SerializablePoint() { X = Instance.ScreenSize.W, Y = y }, stepSize, delay);
 
-					if (x == Instance.ScreenSize.W) break;
-
-					x = x + s.W > Instance.ScreenSize.W ? Instance.ScreenSize.W - s.W : x;
-				}
+				SmoothMouseMove(new SerializablePoint() { X = 0, Y = y }, stepSize, delay);
 
 				if (y == Instance.ScreenSize.H) break;
 
-				y = y + s.H > Instance.ScreenSize.H ? Instance.ScreenSize.H - s.H : y;
+				y = y + scanSize > Instance.ScreenSize.H ? Instance.ScreenSize.H - scanSize : y;
 			}
 
+			NormalizedMouseMove(MouseSafetyMeasures.Instance.LastActionPosition);
+
 			Thread.Sleep(Instance.Delay + additionalDelay);
+		}
+
+		private static void SmoothMouseMove(SerializablePoint to, int stepSize = 60, int delay = 10)
+		{
+			var from = MouseSafetyMeasures.GetCursorCurrentPosition();
+
+			var difference = to - from;
+
+			var distance = SerializablePoint.Distance(from, to);
+
+			var step = (int)(distance / stepSize);
+
+			for (int i = 0; i < step; i++)
+			{
+				NormalizedMouseMove(from + new SerializableSize() { W = (int)((double)difference.W / step * i), H = (int)((double)difference.H / step * i) });
+
+				Thread.Sleep(delay);
+			}
+
+			NormalizedMouseMove(to);
+		}
+
+		private static void NormalizedMouseMove(SerializablePoint point)
+		{
+			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
 		}
 	}
 }

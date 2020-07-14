@@ -17,11 +17,6 @@ namespace AutoFarmer.Models.Graph
 			return value;
 		}
 
-		protected static bool IsContainVariable(List<string> parameterNames, params string[] values)
-		{
-			return parameterNames.Any(p => values.Any(a => a.Contains($"{{{p}}}")));
-		}
-
 		protected static List<T> FromJsonFileWrapper<T>(Func<List<T>> func)
 		{
 			try

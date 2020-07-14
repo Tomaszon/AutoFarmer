@@ -63,27 +63,36 @@ namespace AutoFarmer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream sounderror {
+        internal static System.IO.UnmanagedMemoryStream click {
             get {
-                return ResourceManager.GetStream("sounderror", resourceCulture);
+                return ResourceManager.GetStream("click", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream soundexclamation {
+        internal static System.IO.UnmanagedMemoryStream clickSingle {
             get {
-                return ResourceManager.GetStream("soundexclamation", resourceCulture);
+                return ResourceManager.GetStream("clickSingle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream soundnavigate {
+        internal static System.IO.UnmanagedMemoryStream error {
             get {
-                return ResourceManager.GetStream("soundnavigate", resourceCulture);
+                return ResourceManager.GetStream("error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream information {
+            get {
+                return ResourceManager.GetStream("information", resourceCulture);
             }
         }
     }

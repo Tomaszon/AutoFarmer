@@ -4,6 +4,7 @@
 	{
 		None,
 		Click,
+		ClickSingle,
 		Error,
 		Info
 	}

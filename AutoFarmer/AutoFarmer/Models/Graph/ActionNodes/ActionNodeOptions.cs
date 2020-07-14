@@ -27,7 +27,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 				foreach (var name in nodeOptions.Names)
 				{
-					if (nodeOptions.TemplateVariables != null && IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
+					if (nodeOptions.TemplateVariables != null)
 					{
 						for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
 						{

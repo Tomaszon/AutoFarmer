@@ -34,7 +34,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 				foreach (var tuple in edgeOptions.Nodes)
 				{
-					if (edgeOptions.TemplateVariables != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
+					if (edgeOptions.TemplateVariables != null)
 					{
 						for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 						{
@@ -43,7 +43,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 							var condition = edgeOptions.Condition?.Clone();
 
-							if (condition != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
+							if (condition != null)
 							{
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}

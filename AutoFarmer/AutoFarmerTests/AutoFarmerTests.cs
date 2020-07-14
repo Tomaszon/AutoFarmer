@@ -300,5 +300,20 @@ namespace AutoFarmerTests
 
 			ReportBuilder.Generate();
 		}
+
+		[TestMethod]
+		public void TestMethod11()
+		{
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\Configs\config.json");
+
+			Logger.FromConfig();
+
+			MouseSafetyMeasures.FromConfig();
+			MouseSafetyMeasures.Instance.IsEnabled = false;
+
+			InputSimulator.FromConfig();
+
+			InputSimulator.Simulate(new[] { "Move:100,100" }, null);
+		}
 	}
 }

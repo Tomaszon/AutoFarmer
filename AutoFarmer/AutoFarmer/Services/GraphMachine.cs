@@ -5,6 +5,7 @@ using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace AutoFarmer.Services
@@ -85,18 +86,20 @@ namespace AutoFarmer.Services
 				return;
 			}
 
-			if (actionPositions.Length == 0)
+			if(actionPositions.Length > 0)
 			{
-				actionPositions = new[] { MouseSafetyMeasures.GetCursorCurrentPosition() };
+				foreach (var actionPosition in actionPositions)
+				{
+					InputSimulator.MoveMouseTo(actionPosition);
+
+					InputSimulator.Simulate(node.ActionNames, actionPosition, node.AdditionalDelayBetweenActions);
+
+					Thread.Sleep(node.AdditionalDelayAfterLastAction);
+				}
 			}
-
-			foreach (var actionPosition in actionPositions)
+			else
 			{
-				InputSimulator.MoveMouseTo(actionPosition);
-
-				InputSimulator.Simulate(node.ActionNames, actionPosition, node.AdditionalDelayBetweenActions);
-
-				Thread.Sleep(node.AdditionalDelayAfterLastAction);
+				InputSimulator.Simulate(node.ActionNames, null, node.AdditionalDelayBetweenActions);
 			}
 		}
 

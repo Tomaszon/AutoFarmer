@@ -33,7 +33,7 @@ namespace AutoFarmer.Services.InputHandling
 
 			if (inputActionNames is null) return;
 
-			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition;
+			MouseSafetyMeasures.Instance.LastActionPosition = actionPosition ?? MouseSafetyMeasures.Instance.LastActionPosition;
 
 			foreach (var action in inputActionNames)
 			{
@@ -49,15 +49,24 @@ namespace AutoFarmer.Services.InputHandling
 				}
 				else if (TryParse(action, out int l))
 				{
-					HoldEvent(l);
+					if (actionPosition != null)
+					{
+						HoldEvent(l);
+					}
 				}
 				else if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
 				{
-					ClickEvent(mouseAction, additionalDelay);
+					if (actionPosition != null)
+					{
+						ClickEvent(mouseAction, additionalDelay);
+					}
 				}
 				else if (Enum.TryParse<VirtualKeyCode>(action, true, out var keyboardAction))
 				{
-					KeyboardEvent(keyboardAction, additionalDelay);
+					if (actionPosition != null)
+					{
+						KeyboardEvent(keyboardAction, additionalDelay);
+					}
 				}
 				else
 				{

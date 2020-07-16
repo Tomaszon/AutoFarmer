@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutoFarmer.Models.Common;
+using Newtonsoft.Json;
 using System.IO;
 
-namespace AutoFarmer.Models.Common
+namespace AutoFarmer.Services
 {
 	public class Config
 	{
@@ -28,7 +29,7 @@ namespace AutoFarmer.Models.Common
 		{
 			get
 			{
-				return Path.Combine(ConfigDirectory, "Packages", ActivePackage, "actionNodes");
+				return Path.Combine(ActivePackageDirectory, "actionNodes");
 			}
 		}
 
@@ -36,7 +37,7 @@ namespace AutoFarmer.Models.Common
 		{
 			get
 			{
-				return Path.Combine(ConfigDirectory, "Packages", ActivePackage, "conditionEdges");
+				return Path.Combine(ActivePackageDirectory, "conditionEdges");
 			}
 		}
 
@@ -44,7 +45,7 @@ namespace AutoFarmer.Models.Common
 		{
 			get
 			{
-				return Path.Combine(ConfigDirectory, "Packages", ActivePackage, "imageMatchTemplates");
+				return Path.Combine(ActivePackageDirectory, "imageMatchTemplates");
 			}
 		}
 
@@ -64,11 +65,27 @@ namespace AutoFarmer.Models.Common
 			}
 		}
 
+		public string GlobalStateStorageConfigPath
+		{
+			get
+			{
+				return Path.Combine(ActivePackageDirectory, "globalStateStorageConfig.json");
+			}
+		}
+
 		public string ImageMatchTemplateResourcesDirectory
 		{
 			get
 			{
-				return Path.Combine(ConfigDirectory, "Packages", ActivePackage, "Templates");
+				return Path.Combine(ActivePackageDirectory, "Templates");
+			}
+		}
+
+		public string ActivePackageDirectory
+		{
+			get
+			{
+				return Path.Combine(ConfigDirectory, "Packages", ActivePackage);
 			}
 		}
 

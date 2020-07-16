@@ -1,12 +1,10 @@
-﻿using AForge;
-using AutoFarmer.Models.Common;
+﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Logging;
 using System;
-using System.Drawing.Drawing2D;
-using System.Drawing.Printing;
+using System.Collections.Generic;
+using System.Data;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using WindowsInput.Native;
 
 namespace AutoFarmer.Services.InputHandling
@@ -39,19 +37,39 @@ namespace AutoFarmer.Services.InputHandling
 			{
 				MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-				if (TryParse(action, out SerializablePoint p))
+				if (IsSpecialInput(action, out var type, out var commandValue))
 				{
-					MoveMouseTo(p);
-				}
-				else if (TryParse(action, out var stepSize, out var scanSize, out var delay))
-				{
-					ScanScreenForFadedUI(stepSize, scanSize, delay, additionalDelay);
-				}
-				else if (TryParse(action, out int l))
-				{
-					if (actionPosition != null)
+					if (type == SpecialAction.Move && TryParseSpecial(commandValue, 2, out var values))
 					{
-						HoldEvent(l);
+						MoveMouseTo(new SerializablePoint() { X = values[0], Y = values[1] });
+					}
+					else if (type == SpecialAction.LeftHold && TryParseSpecial(commandValue, 1, out values))
+					{
+						if (actionPosition != null)
+						{
+							HoldEvent(values[0]);
+						}
+					}
+					else if (type == SpecialAction.ScanScreenForFadedUI && TryParseSpecial(commandValue, 3, out values))
+					{
+						ScanScreenForFadedUI(values[0], values[1], values[2], additionalDelay);
+					}
+					else if (type == SpecialAction.Multiply && TryParseMultiply(commandValue, out int value, out string multiplyVariable))
+					{
+						if (actionPosition != null)
+						{
+							int variableValue = GlobalStateStorage.Get<int>(multiplyVariable);
+
+							int multipliedValue = value * variableValue;
+
+							var kcs = ConvertValueToVirtualKeyCode(multipliedValue);
+
+							kcs.ForEach(c => KeyboardEvent(c, additionalDelay));
+						}
+					}
+					else
+					{
+						throw new AutoFarmerException($"Unknown special input action: {action}");
 					}
 				}
 				else if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
@@ -75,19 +93,30 @@ namespace AutoFarmer.Services.InputHandling
 			}
 		}
 
-		private static bool TryParse(string value, out int length)
+		private static List<VirtualKeyCode> ConvertValueToVirtualKeyCode(int value)
 		{
-			using var log = Logger.LogBlock();
+			var result = new List<VirtualKeyCode>();
 
-			length = 0;
-
-			Regex regex = new Regex($"{MouseAction.LeftHold}:(?<l>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-
-			var match = regex.Match(value);
-
-			if (match.Success && int.TryParse(match.Groups["l"].Value, out var l))
+			foreach (var c in value.ToString())
 			{
-				length = l;
+				result.Add((VirtualKeyCode)(int.Parse(c.ToString()) + 96));
+			}
+
+			return result;
+		}
+
+		private static bool IsSpecialInput(string value, out SpecialAction specialActionType, out string commandValue)
+		{
+			specialActionType = default;
+			commandValue = default;
+
+			Regex regex = new Regex("(?<type>\\w+):(?<value>\\w+)");
+
+			var result = regex.Match(value);
+
+			if (result.Success && Enum.TryParse(result.Groups["type"].Value, out specialActionType))
+			{
+				commandValue = result.Groups["value"].Value;
 
 				return true;
 			}
@@ -95,39 +124,42 @@ namespace AutoFarmer.Services.InputHandling
 			return false;
 		}
 
-		private static bool TryParse(string value, out int stepSize, out int scanSize, out int delay)
+		private static bool TryParseMultiply(string commandValue, out int value, out string variable)
 		{
-			using var log = Logger.LogBlock();
+			value = default;
+			variable = default;
 
-			stepSize = 0;
-			scanSize = 0;
-			delay = 0;
+			Regex regex = new Regex("(?<value>(\\d)+),(?<variable>(\\w)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-			Regex regex = new Regex($"{MouseAction.ScanScreenForFadedUI}:(?<w>(\\d)+),(?<h>(\\d)+),(?<d>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+			var match = regex.Match(commandValue);
 
-			var match = regex.Match(value);
-
-			if (match.Success && int.TryParse(match.Groups["w"].Value, out stepSize) && int.TryParse(match.Groups["h"].Value, out scanSize) && int.TryParse(match.Groups["d"].Value, out delay))
+			if (match.Success && int.TryParse(match.Groups["value"].Value, out value))
 			{
+				variable = match.Groups["variable"].Value;
+
 				return true;
 			}
 
 			return false;
 		}
 
-		private static bool TryParse(string value, out SerializablePoint point)
+		private static bool TryParseSpecial(string commandValue, int expectedCount, out List<int> values)
 		{
-			using var log = Logger.LogBlock();
+			values = new List<int>();
 
-			point = null;
+			Regex regex = new Regex("\\d+");
 
-			Regex regex = new Regex($"{MouseAction.Move}:(?<x>(\\d)+),(?<y>(\\d)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+			var match = regex.Match(commandValue);
 
-			var match = regex.Match(value);
-
-			if (match.Success && int.TryParse(match.Groups["x"].Value, out var x) && int.TryParse(match.Groups["y"].Value, out var y))
+			if (match.Success && match.Captures.Count == expectedCount)
 			{
-				point = new SerializablePoint { X = x, Y = y };
+				for (int i = 0; i < match.Captures.Count; i++)
+				{
+					if (int.TryParse(match.Captures[i].Value, out var v))
+					{
+						values.Add(v);
+					}
+				}
 
 				return true;
 			}

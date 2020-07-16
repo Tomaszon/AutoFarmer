@@ -99,7 +99,7 @@ namespace AutoFarmer.Services.ReportBuilder
 			{
 				Instance = JsonConvert.DeserializeObject<ReportBuilder>(File.ReadAllText(path));
 
-				Instance.ReportDirectory = Instance.ReportDirectory ?? Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");
+				Instance.ReportDirectory ??= Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "Reports");
 			});
 		}
 	}

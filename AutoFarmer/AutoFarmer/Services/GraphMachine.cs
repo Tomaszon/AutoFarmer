@@ -5,7 +5,6 @@ using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace AutoFarmer.Services

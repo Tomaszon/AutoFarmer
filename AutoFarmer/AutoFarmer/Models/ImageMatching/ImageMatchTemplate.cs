@@ -1,5 +1,4 @@
-﻿using AutoFarmer.Models.Common;
-using AutoFarmer.Services.Logging;
+﻿using AutoFarmer.Services;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;

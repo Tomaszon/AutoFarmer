@@ -6,7 +6,9 @@ using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -61,6 +63,12 @@ namespace AutoFarmer
 
 				machine = new GraphMachine(graph);
 
+				var generatedConfigsDirectory = Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "GeneratedConfigs");
+
+				SaveToFile(generatedConfigsDirectory, "edges.json", graph.ConditionEdges.OrderBy(e => e.StartNodeName).ThenBy(e => e.EndNodeName));
+
+				SaveToFile(generatedConfigsDirectory, "nodes.json", graph.ActionNodes.OrderBy(e => e.Name));
+
 				Logger.GraphicalLogTemplates(ImageMatchFinder.Instance.Templates);
 
 				Logger.Log($"Configs loaded, templates generated!");
@@ -76,18 +84,10 @@ namespace AutoFarmer
 							return true;
 						}
 
-						case BeforeCommand.Nodes://TODO save to file
+						case BeforeCommand.Nodes:
+						case BeforeCommand.Edges:
 						{
-							Console.WriteLine(JsonConvert.SerializeObject(graph.ActionNodes.OrderBy(e => 
-								e.Name), Formatting.Indented));
-
-							return true;
-						}
-
-						case BeforeCommand.Edges://TODO save to file
-						{
-							Console.WriteLine(JsonConvert.SerializeObject(graph.ConditionEdges.OrderBy(e => 
-								e.StartNodeName).ThenBy(e => e.EndNodeName), Formatting.Indented));
+							OpenFolder(generatedConfigsDirectory);
 
 							return true;
 						}
@@ -246,6 +246,13 @@ namespace AutoFarmer
 			Console.WriteLine("\n");
 
 			Logger.Log("Processing", NotificationType.Info);
+		}
+
+		private static void SaveToFile(string directory, string fileName, object content)
+		{
+			Directory.CreateDirectory(directory);
+
+			File.WriteAllText(Path.Combine(directory, fileName), JsonConvert.SerializeObject(content, Formatting.Indented));
 		}
 
 		private static void CopyConfigDirectory()

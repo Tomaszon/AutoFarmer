@@ -12,10 +12,15 @@
 	public enum MouseAction
 	{
 		LeftClick,
-		LeftHold,
 		LeftDoubleClick,
+	}
+
+	public enum SpecialAction
+	{
+		LeftHold,
 		ScanScreenForFadedUI,
-		Move
+		Move,
+		Multiply
 	}
 
 	public enum MatchOrderBy

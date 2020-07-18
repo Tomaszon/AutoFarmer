@@ -68,7 +68,7 @@ namespace AutoFarmer.Services
 
 				ProcessNode(currentNode);
 
-				Graph.ResetStates();
+				Graph.Reset();
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace AutoFarmer.Services
 			{
 				foreach (var actionPosition in actionPositions)
 				{
-					InputSimulator.MoveMouseTo(actionPosition);
+					InputSimulator.MoveEvent(actionPosition);
 
 					InputSimulator.Simulate(node.ActionNames, actionPosition, node.AdditionalDelayBetweenActions);
 

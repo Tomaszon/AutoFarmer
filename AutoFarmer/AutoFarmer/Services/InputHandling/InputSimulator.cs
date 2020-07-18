@@ -41,7 +41,7 @@ namespace AutoFarmer.Services.InputHandling
 				{
 					if (type == SpecialAction.Move && TryParseSpecial(commandValue, 2, out var values))
 					{
-						MoveMouseTo(new SerializablePoint() { X = values[0], Y = values[1] });
+						MoveEvent(new SerializablePoint() { X = values[0], Y = values[1] });
 					}
 					else if (type == SpecialAction.LeftHold && TryParseSpecial(commandValue, 1, out values))
 					{
@@ -52,19 +52,13 @@ namespace AutoFarmer.Services.InputHandling
 					}
 					else if (type == SpecialAction.ScanScreenForFadedUI && TryParseSpecial(commandValue, 3, out values))
 					{
-						ScanScreenForFadedUI(values[0], values[1], values[2], additionalDelay);
+						ScanEvent(values[0], values[1], values[2], additionalDelay);
 					}
-					else if (type == SpecialAction.Multiply && TryParseMultiply(commandValue, out int value, out string multiplyVariable))
+					else if (type == SpecialAction.Multiply && TryParseMultiply(commandValue, out int value, out string variableName))
 					{
 						if (actionPosition != null)
 						{
-							int variableValue = GlobalStateStorage.Get<int>(multiplyVariable);
-
-							int multipliedValue = value * variableValue;
-
-							var kcs = ConvertValueToVirtualKeyCode(multipliedValue);
-
-							kcs.ForEach(c => KeyboardEvent(c, additionalDelay));
+							MultiplyKeyboardEvent(variableName, value);
 						}
 					}
 					else
@@ -110,7 +104,7 @@ namespace AutoFarmer.Services.InputHandling
 			specialActionType = default;
 			commandValue = default;
 
-			Regex regex = new Regex("(?<type>\\w+):(?<value>\\w+)");
+			Regex regex = new Regex("(?<type>\\w+):(?<value>(\\w|,)+)");
 
 			var result = regex.Match(value);
 
@@ -124,10 +118,10 @@ namespace AutoFarmer.Services.InputHandling
 			return false;
 		}
 
-		private static bool TryParseMultiply(string commandValue, out int value, out string variable)
+		private static bool TryParseMultiply(string commandValue, out int value, out string variableName)
 		{
 			value = default;
-			variable = default;
+			variableName = default;
 
 			Regex regex = new Regex("(?<value>(\\d)+),(?<variable>(\\w)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
@@ -135,7 +129,7 @@ namespace AutoFarmer.Services.InputHandling
 
 			if (match.Success && int.TryParse(match.Groups["value"].Value, out value))
 			{
-				variable = match.Groups["variable"].Value;
+				variableName = match.Groups["variable"].Value;
 
 				return true;
 			}
@@ -149,13 +143,13 @@ namespace AutoFarmer.Services.InputHandling
 
 			Regex regex = new Regex("\\d+");
 
-			var match = regex.Match(commandValue);
+			var matches = regex.Matches(commandValue);
 
-			if (match.Success && match.Captures.Count == expectedCount)
+			if (matches.Count == expectedCount)
 			{
-				for (int i = 0; i < match.Captures.Count; i++)
+				for (int i = 0; i < matches.Count; i++)
 				{
-					if (int.TryParse(match.Captures[i].Value, out var v))
+					if (int.TryParse(matches[i].Value, out var v))
 					{
 						values.Add(v);
 					}
@@ -229,7 +223,7 @@ namespace AutoFarmer.Services.InputHandling
 		/// </summary>
 		/// <param name="point"></param>
 		/// <param name="additionalDelay"></param>
-		public static void MoveMouseTo(SerializablePoint point, int additionalDelay = 0)
+		public static void MoveEvent(SerializablePoint point, int additionalDelay = 0)
 		{
 			using var log = Logger.LogBlock();
 
@@ -242,7 +236,7 @@ namespace AutoFarmer.Services.InputHandling
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		public static void ScanScreenForFadedUI(int stepSize, int scanSize, int delay, int additionalDelay = 0)
+		public static void ScanEvent(int stepSize, int scanSize, int delay, int additionalDelay = 0)
 		{
 			using var log = Logger.LogBlock();
 
@@ -264,6 +258,19 @@ namespace AutoFarmer.Services.InputHandling
 			NormalizedMouseMove(MouseSafetyMeasures.Instance.LastActionPosition);
 
 			Thread.Sleep(Instance.Delay + additionalDelay);
+		}
+
+		private static void MultiplyKeyboardEvent(string variableName, int value, int additionalDelay = 0)
+		{
+			var variable = GlobalStateStorage.Get(variableName);
+
+			int multipliedValue = value * variable.Value;
+
+			var kcs = ConvertValueToVirtualKeyCode(multipliedValue);
+
+			kcs.ForEach(c => KeyboardEvent(c, additionalDelay));
+
+			variable.Increase();
 		}
 
 		private static void SmoothMouseMove(SerializablePoint to, int stepSize = 60, int delay = 10)

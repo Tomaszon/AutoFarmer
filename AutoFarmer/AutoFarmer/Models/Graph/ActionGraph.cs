@@ -79,7 +79,7 @@ namespace AutoFarmer.Models.Graph
 			return nextStartNode != null;
 		}
 
-		public void ResetStates(bool complete = false)
+		public void Reset(bool complete = false)
 		{
 			using var log = Logger.LogBlock();
 

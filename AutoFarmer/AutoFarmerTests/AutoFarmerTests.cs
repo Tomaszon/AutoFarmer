@@ -16,6 +16,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace AutoFarmerTests
 {
@@ -314,6 +315,27 @@ namespace AutoFarmerTests
 			InputSimulator.FromConfig();
 
 			InputSimulator.Simulate(new[] { "Move:100,100" }, null);
+		}
+
+		[TestMethod]
+		public void TestMethod12()
+		{
+			Thread.Sleep(2500);
+
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\Configs\config.json");
+
+			Logger.FromConfig();
+
+			MouseSafetyMeasures.FromConfig();
+			MouseSafetyMeasures.Instance.IsEnabled = false;
+
+			InputSimulator.FromConfig();
+
+			GlobalStateStorage.FromConfig();
+
+			InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
+			InputSimulator.Simulate(new[] { "SPACE" }, new SerializablePoint() { X = 960, Y = 540 });
+			InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
 		}
 	}
 }

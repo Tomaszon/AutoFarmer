@@ -59,6 +59,8 @@ namespace AutoFarmer
 
 				ImageMatchFinder.FromConfig();
 
+				GlobalStateStorage.FromConfig();
+
 				graph = ActionGraph.FromConfig();
 
 				machine = new GraphMachine(graph);

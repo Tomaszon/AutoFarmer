@@ -106,14 +106,7 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
-			if (edge.Condition is null)
-			{
-				actionPoints.Clear();
-
-				return true;
-			}
-
-			return edge.ProcessCondition(actionPoints);
+			return edge.Condition is null || edge.ProcessCondition(actionPoints);
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace AutoFarmer.Services.Imaging
 	{
 		public static Bitmap CreateScreenshot()
 		{
-			using var log = Logger.LogBlock();
+			Logger.Log("Create screenshot");
 
 			var bmp = new Bitmap(Config.Instance.ScreenSize.W, Config.Instance.ScreenSize.H, PixelFormat.Format24bppRgb);
 
@@ -23,8 +23,6 @@ namespace AutoFarmer.Services.Imaging
 
 		public static Bitmap ConvertBitmap(Bitmap original)
 		{
-			using var log = Logger.LogBlock();
-
 			Bitmap clone = new Bitmap(original.Width, original.Height, PixelFormat.Format24bppRgb);
 
 			using (Graphics g = Graphics.FromImage(clone))

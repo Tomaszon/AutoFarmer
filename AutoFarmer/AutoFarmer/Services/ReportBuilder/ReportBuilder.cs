@@ -25,8 +25,6 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public static void AddRange(Dictionary<string, string> keyValuePairs, ReportMessageType type)
 		{
-			using var log = Logger.LogBlock();
-
 			foreach (var t in keyValuePairs)
 			{
 				Add(t.Key, t.Value, type);
@@ -35,15 +33,11 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public static void Add(string key, string value, ReportMessageType type)
 		{
-			using var log = Logger.LogBlock();
-
 			Instance.Container.AddToBuffer(key, type, value);
 		}
 
 		public static void Commit(ReportMessageType type)
 		{
-			using var log = Logger.LogBlock();
-
 			Instance.Container.Commit(type);
 		}
 
@@ -52,7 +46,7 @@ namespace AutoFarmer.Services.ReportBuilder
 		{
 			if (Instance.GenerateReport)
 			{
-				using var log = Logger.LogBlock();
+				Logger.Log("Generating report");
 
 				if (Instance.Container.Messages.Count > 0)
 				{

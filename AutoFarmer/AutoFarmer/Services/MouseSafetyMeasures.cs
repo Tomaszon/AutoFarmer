@@ -28,8 +28,6 @@ namespace AutoFarmer.Services
 
 		public static SerializablePoint GetCursorCurrentPosition()
 		{
-			using var log = Logger.LogBlock();
-
 			GetCursorPos(out Point currentPosition);
 
 			return (SerializablePoint)currentPosition;

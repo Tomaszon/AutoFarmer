@@ -1,4 +1,5 @@
-﻿using AutoFarmer.Models.Graph.ActionNodes;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services;
 using AutoFarmer.Services.Logging;
@@ -16,6 +17,11 @@ namespace AutoFarmer.Models.Graph
 			get
 			{
 				var activeStartNodes = ActionNodes.Where(a => a.IsStartNode && Config.Instance.ActiveStartNodes.Contains(a.Name));
+
+				if (activeStartNodes.Count() == 0)
+				{
+					throw new AutoFarmerException("Start node not found!");
+				}
 
 				return activeStartNodes.OrderBy(n => Config.Instance.ActiveStartNodes.ToList().IndexOf(n.Name)).ToList();
 			}

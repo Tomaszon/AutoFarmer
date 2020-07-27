@@ -6,9 +6,7 @@ using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -39,76 +37,44 @@ namespace AutoFarmer
 
 		private static void WorkMethod()
 		{
-			ActionGraph graph = null;
+			Configure(out ActionGraph graph, out GraphMachine machine, out string generatedConfigsDirectory);
 
-			GraphMachine machine = null;
-
-			try
+			HandleCommand<BeforeCommand>(c =>
 			{
-				Config.FromJsonFile(@".\configs\config.json");
-
-				Logger.FromConfig();
-
-				using var log = Logger.LogBlock();
-
-				ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
-
-				InputSimulator.FromConfig();
-
-				MouseSafetyMeasures.FromConfig();
-
-				ImageMatchFinder.FromConfig();
-
-				GlobalStateStorage.FromConfig();
-
-				graph = ActionGraph.FromConfig();
-
-				machine = new GraphMachine(graph);
-
-				var generatedConfigsDirectory = Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "GeneratedConfigs");
-
-				SaveToFile(generatedConfigsDirectory, "edges.json", graph.ConditionEdges.OrderBy(e => e.StartNodeName).ThenBy(e => e.EndNodeName));
-
-				SaveToFile(generatedConfigsDirectory, "nodes.json", graph.ActionNodes.OrderBy(e => e.Name));
-
-				Logger.GraphicalLogTemplates(ImageMatchFinder.Instance.Templates);
-
-				Logger.Log($"Configs loaded, templates generated!");
-
-				HandleCommand<BeforeCommand>(c =>
+				switch (c)
 				{
-					switch (c)
+					case BeforeCommand.Logs:
 					{
-						case BeforeCommand.Logs:
-						{
-							OpenFolder(Logger.Instance.LogDirectory);
+						OpenFolder(Logger.Instance.LogDirectory);
 
-							return true;
-						}
-
-						case BeforeCommand.Nodes:
-						case BeforeCommand.Edges:
-						{
-							OpenFolder(generatedConfigsDirectory);
-
-							return true;
-						}
-
-						case BeforeCommand.Exit:
-						{
-							Environment.Exit(0);
-
-							goto default;
-						}
-
-						default: return false;
+						return true;
 					}
-				});
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
+
+					case BeforeCommand.Nodes:
+					case BeforeCommand.Edges:
+					{
+						OpenFolder(generatedConfigsDirectory);
+
+						return true;
+					}
+
+					case BeforeCommand.Reconfig:
+					{
+						Configure(out graph, out machine, out generatedConfigsDirectory);
+
+						return true;
+					}
+
+					case BeforeCommand.Exit:
+					{
+						Environment.Exit(0);
+
+						goto default;
+					}
+
+					default: return false;
+				}
+			});
 
 			do
 			{
@@ -156,6 +122,13 @@ namespace AutoFarmer
 						case AfterCommand.Reports:
 						{
 							OpenFolder(ReportBuilder.Instance.ReportDirectory);
+
+							return true;
+						}
+
+						case AfterCommand.Reconfig:
+						{
+							Configure(out graph, out machine, out generatedConfigsDirectory);
 
 							return true;
 						}
@@ -301,9 +274,43 @@ namespace AutoFarmer
 			}
 		}
 
+		private static void Configure(out ActionGraph graph, out GraphMachine machine, out string generatedConfigsDirectory)
+		{
+			Config.FromJsonFile(@".\configs\config.json");
+
+			Logger.FromConfig();
+
+			using var log = Logger.LogBlock();
+
+			ReportBuilder.FromJsonFileWithConfig(Path.Combine(Config.Instance.ConfigDirectory, "reportBuilderConfig.json"));
+
+			InputSimulator.FromConfig();
+
+			MouseSafetyMeasures.FromConfig();
+
+			ImageMatchFinder.FromConfig();
+
+			GlobalStateStorage.FromConfig();
+
+			graph = ActionGraph.FromConfig();
+
+			machine = new GraphMachine(graph);
+
+			generatedConfigsDirectory = Path.Combine(Directory.GetParent(Config.Instance.ConfigDirectory).FullName, "GeneratedConfigs");
+
+			SaveToFile(generatedConfigsDirectory, "edges.json", graph.ConditionEdges.OrderBy(e => e.StartNodeName).ThenBy(e => e.EndNodeName));
+
+			SaveToFile(generatedConfigsDirectory, "nodes.json", graph.ActionNodes.OrderBy(e => e.Name));
+
+			Logger.GraphicalLogTemplates(ImageMatchFinder.Instance.Templates);
+
+			Logger.Log($"Configs loaded, templates generated!");
+		}
+
 		private enum AfterCommand
 		{
 			Restart,
+			Reconfig,
 			Logs,
 			Reports,
 			Exit
@@ -312,6 +319,7 @@ namespace AutoFarmer
 		private enum BeforeCommand
 		{
 			Start,
+			Reconfig,
 			Nodes,
 			Edges,
 			Logs,

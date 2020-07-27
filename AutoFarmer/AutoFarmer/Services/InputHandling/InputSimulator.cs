@@ -273,7 +273,7 @@ namespace AutoFarmer.Services.InputHandling
 			variable.Increase();
 		}
 
-		private static void SmoothMouseMove(SerializablePoint to, int stepSize = 60, int delay = 10)
+		private static void SmoothMouseMove(SerializablePoint to, int stepSize = 75, int delay = 10)
 		{
 			var from = MouseSafetyMeasures.GetCursorCurrentPosition();
 

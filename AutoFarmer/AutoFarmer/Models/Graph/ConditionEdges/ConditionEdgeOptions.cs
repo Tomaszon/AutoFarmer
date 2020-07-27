@@ -43,7 +43,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 							var condition = edgeOptions.Condition?.Clone();
 
-							if (condition != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), condition.TemplateName))
+							if (condition != null)
 							{
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}

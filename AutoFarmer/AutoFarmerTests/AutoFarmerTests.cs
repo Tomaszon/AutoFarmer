@@ -33,12 +33,11 @@ namespace AutoFarmerTests
 		{
 			TestMethod2(
 				0.99f,
-				"assignmentsCompleted",
+				"assignments",
 				new[] { "collectButton" },
 				"completedTab-collectButtons",
-				NamedSearchArea.Right,
-				new SerializablePoint() { X = 1388, Y = 527 },
-				new SerializablePoint() { X = 1388, Y = 393 });
+				NamedSearchArea.Top,
+				new SerializablePoint() { X = 76, Y = 169 });
 		}
 
 		[TestMethod]
@@ -46,30 +45,18 @@ namespace AutoFarmerTests
 		{
 			TestMethod2(
 				0.99f,
-				"assignmentsCompleted",
-				new[] { "collectButton" },
-				"completedTab-collectButtons",
-				NamedSearchArea.Left,
-				new SerializablePoint() { X = 1388, Y = 527 },
-				new SerializablePoint() { X = 1388, Y = 393 });
-		}
-
-		[TestMethod]
-		public void TestMethod2v3()
-		{
-			TestMethod2(
-				0.99f,
-				"assignmentsCompleted",
+				"assignments",
 				new[] { "collectButton" },
 				"completedTab-collectButtons",
 				NamedSearchArea.Full,
-				new SerializablePoint() { X = 1388, Y = 527 },
-				new SerializablePoint() { X = 1388, Y = 393 });
+				new SerializablePoint() { X = 76, Y = 169 });
 		}
 
 		private void TestMethod2(float similiarityThreshold, string templateName, string[] searchRectangleNames, string conditionEdgeName, NamedSearchArea namedSearchArea, params SerializablePoint[] expectedPoints)
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
+
+			Config.Instance.ScreenSize = new SerializableSize() { W = 200, H = 500 };
 
 			Logger.FromConfig();
 
@@ -88,7 +75,6 @@ namespace AutoFarmerTests
 			ActionGraph graph = ActionGraph.FromConfig();
 
 			var condition = graph.ConditionEdges.Single(e => e.Name == conditionEdgeName).Condition;
-			condition.MinimumOccurrence = 2;
 
 			Bitmap sourceImage = (Bitmap)Image.FromFile(Path.Combine(Config.Instance.ImageMatchTemplateResourcesDirectory, $"{templateName}.png"));
 
@@ -111,11 +97,11 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod3()
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
-			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
+			List<ActionNode> a = ActionNodeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\Configs\Packages\STO\actionNodes\startScrollUpButtons.json");
 
 			Assert.AreEqual(a.Count, 10);
 
@@ -128,11 +114,11 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod4()
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
-			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
+			List<ConditionEdge> a = ConditionEdgeOptions.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\Configs\Packages\STO\conditionEdges\startScrollButtons.json");
 
 			Assert.AreEqual(a.Count, 20);
 
@@ -211,7 +197,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod8()
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
@@ -232,7 +218,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod9()
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
@@ -260,7 +246,7 @@ namespace AutoFarmerTests
 
 		private void Test9(NamedSearchArea area, int refX, int refY, int refW, int refH, out SerializableRectangle a, out SerializableRectangle refA)
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
@@ -284,7 +270,7 @@ namespace AutoFarmerTests
 		[TestMethod]
 		public void TestMethod10()
 		{
-			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmer\AutoFarmer\AutoFarmer\configs\config.json");
+			Config.FromJsonFile(@$"C:\Users\{UserName}\Documents\GitHub\AutoFarmerConfigs\configs\config.json");
 
 			Logger.FromConfig();
 
@@ -333,9 +319,9 @@ namespace AutoFarmerTests
 
 			GlobalStateStorage.FromConfig();
 
-			InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
-			InputSimulator.Simulate(new[] { "SPACE" }, new SerializablePoint() { X = 960, Y = 540 });
-			InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
+			//InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
+			//InputSimulator.Simulate(new[] { "SPACE" }, new SerializablePoint() { X = 960, Y = 540 });
+			//InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
 		}
 	}
 }

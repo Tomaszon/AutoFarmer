@@ -128,7 +128,7 @@ namespace AutoFarmer.Services.Logging
 
 		private static void DrawLabel(Graphics g, Size bitmapSize, string text, SerializableRectangle rectangle)
 		{
-			var font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular);
+			var font = new Font(FontFamily.GenericSansSerif, 3, FontStyle.Regular);
 
 			var labelSize = g.MeasureString(text, font).ToSize();
 
@@ -177,7 +177,7 @@ namespace AutoFarmer.Services.Logging
 
 		private static void DrawRectangleWithClickPoint(Graphics g, SerializableRectangle rectangle, SerializablePoint clickPoint)
 		{
-			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 3), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
+			g.DrawRectangle(new Pen(new SolidBrush(Color.Red), 1), new Rectangle(rectangle.Position.X, rectangle.Position.Y, rectangle.Size.W - 1, rectangle.Size.H - 1));
 
 			g.DrawRectangle(Pens.Red, new Rectangle(clickPoint.X - 1, clickPoint.Y - 1, 2, 2));
 		}

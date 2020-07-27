@@ -124,7 +124,7 @@ namespace AutoFarmer
 
 					Thread.Sleep(1000);
 
-					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info);
+					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info, 3);
 				}
 				catch (AutoFarmerException ex)
 				{

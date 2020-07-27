@@ -60,8 +60,6 @@ namespace AutoFarmer.Services
 						}
 					}
 
-					Logger.Log($"No edge left to select!");
-
 					if (!currentNode.IsEndNode && currentEdge is null) throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}!");
 				}
 				while (!currentNode.IsEndNode);
@@ -106,7 +104,14 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
-			return edge.Condition is null || edge.ProcessCondition(actionPoints);
+			if(edge.Condition is null)
+			{
+				actionPoints.Clear();
+
+				return true;
+			}
+
+			return edge.ProcessCondition(actionPoints);
 		}
 	}
 }

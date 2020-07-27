@@ -71,8 +71,6 @@ namespace AutoFarmer.Services.Logging
 
 		public static void GraphicalLog(ImageMatchResult matchCollection, string templateName, string searchRectangleName)
 		{
-			using var log = LogBlock();
-
 			try
 			{
 				if (Instance.GraphicalLogging)

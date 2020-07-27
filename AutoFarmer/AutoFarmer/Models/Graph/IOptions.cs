@@ -7,6 +7,11 @@ namespace AutoFarmer.Models.Graph
 {
 	public interface IOptions
 	{
+		protected static bool IsContainVariable(List<string> parameterNames, params string[] values)
+		{
+			return parameterNames.Any(p => values.Any(a => a.Contains($"{{{p}}}")));
+		}
+
 		protected static string ReplaceVariables(string value, Dictionary<string, List<object>> varables, int index)
 		{
 			foreach (var t in varables)

@@ -107,6 +107,8 @@ namespace AutoFarmer.Services.Imaging
 
 			ExhaustiveTemplateMatching matching = new ExhaustiveTemplateMatching(similiarityThreshold);
 
+			Logger.Log($"Processing image, searching for {searchRectangleName} of {templateName}");
+
 			var findResult = area is null ? matching.ProcessImage(source, searchImage) : matching.ProcessImage(source, searchImage, (Rectangle)area);
 
 			var result = findResult.Select(tm =>
@@ -135,8 +137,6 @@ namespace AutoFarmer.Services.Imaging
 
 		private static List<SerializablePoint> OrderResults(IEnumerable<SerializablePoint> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
 		{
-			using var log = Logger.LogBlock();
-
 			if (orderBy is null) return points.ToList();
 
 			var result = orderBy.TryGetValue(MatchOrderBy.X, out var orderLike) && orderLike == MatchOrderLike.Descending

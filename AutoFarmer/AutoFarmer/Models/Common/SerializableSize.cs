@@ -8,11 +8,11 @@ namespace AutoFarmer.Models.Common
 
 		public int H { get; set; }
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			if (obj is SerializableSize p)
 			{
-				return W == p.W && H == p.H;
+				return W.Equals(p.W) && H.Equals(p.H);
 			}
 
 			return false;

@@ -13,7 +13,7 @@ namespace AutoFarmer.Models.Common
 			return ((Rectangle)this).ToString();
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			if (obj is SerializableRectangle r)
 			{

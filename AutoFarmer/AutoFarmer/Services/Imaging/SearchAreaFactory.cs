@@ -70,7 +70,7 @@ namespace AutoFarmer.Services.Imaging
 			return rec;
 		}
 
-		public static List<SerializableRectangle> FromEnums(params NamedSearchArea[] searchAreas)
+		public static List<SerializableRectangle> FromEnums(List<NamedSearchArea> searchAreas)
 		{
 			return searchAreas.Select(a => FromEnum(a)).ToList();
 		}

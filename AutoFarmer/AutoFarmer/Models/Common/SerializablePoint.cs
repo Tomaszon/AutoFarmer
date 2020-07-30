@@ -9,7 +9,7 @@ namespace AutoFarmer.Models.Common
 
 		public int Y { get; set; }
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			if (obj is SerializablePoint p)
 			{

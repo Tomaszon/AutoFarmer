@@ -11,7 +11,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public string EndNodeName { get; set; }
 
-		public Condition Condition { get; set; }
+		public Condition? Condition { get; set; }
 
 		public bool IsEnabled
 		{

@@ -26,8 +26,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 		public float SimiliarityThresholdStep { get; set; }
 
-		public Dictionary<MatchOrderBy, MatchOrderLike> OrderBy { get; set; }
+		public Dictionary<MatchOrderBy, MatchOrderLike>? OrderBy { get; set; }
 
-		public ReportMessages ReportMessages { get; set; }
+		public ReportMessages? ReportMessages { get; set; }
 	}
 }

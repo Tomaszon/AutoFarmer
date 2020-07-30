@@ -1,5 +1,4 @@
 ﻿using AutoFarmer.Models.Graph;
-using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -8,18 +7,19 @@ using static AutoFarmer.Models.Graph.IOptions;
 
 namespace AutoFarmer.Models.ImageMatching
 {
-	public class ImageMatchTemplateOptions : IOptions
+	public class ImageMatchTemplateOptions : ImageMatchTemplateBase, IOptions
 	{
-		public string Name { get; set; }
+		public Dictionary<string, SearchRectangleOptions>? SearchRectangles { get; set; }
 
-		public Dictionary<string, SearchRectangleOptions> SearchRectangles { get; set; }
+		public ImageMatchTemplateOptions(string name) : base(name) { }
 
 		public static ImageMatchTemplateOptions FromJsonFile(string path)
 		{
 			return FromJsonFileWrapper(() =>
 			{
-				var templateOptions = JsonConvert.DeserializeObject<ImageMatchTemplateOptions>(File.ReadAllText(path));
-				templateOptions.Name = Path.GetFileNameWithoutExtension(path);
+				var templateOptions = new ImageMatchTemplateOptions(Path.GetFileNameWithoutExtension(path));
+
+				JsonConvert.PopulateObject(File.ReadAllText(path), templateOptions);
 
 				return templateOptions;
 			});
@@ -27,15 +27,7 @@ namespace AutoFarmer.Models.ImageMatching
 
 		public ImageMatchTemplate ToImageMatchTemplate()
 		{
-			var template = new ImageMatchTemplate()
-			{
-				Name = Name,
-				SearchRectangles = SearchRectangles.ToDictionary(t => t.Key, v => v.Value.ToSearchRectangle())
-			};
-
-			template.Init();
-
-			return template;
+			return new ImageMatchTemplate(Name, SearchRectangles.ToDictionary(t => t.Key, v => v.Value.ToSearchRectangle()));
 		}
 	}
 }

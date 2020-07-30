@@ -64,15 +64,10 @@ namespace AutoFarmer.Services.Imaging
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
 			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
 
-			using var templateImage = ImageFactory.ConvertBitmap(template.LoadBitmap());
+			using var templateImage = ImageFactory.ConvertBitmap(template.GetBitmap());
 			using var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle.Rectangle);
 
-			var result = new ImageMatchResult()
-			{
-				SearchAreas = searchRectangle.SearchAreas,
-				Source = source,
-				SearchImage = searchImage
-			};
+			var result = new ImageMatchResult(searchRectangle.SearchAreas, source, searchImage);
 
 			_PERFORMANCE_MONITOR.Start();
 

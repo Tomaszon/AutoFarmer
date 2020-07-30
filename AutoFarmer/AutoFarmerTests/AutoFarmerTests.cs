@@ -67,9 +67,7 @@ namespace AutoFarmerTests
 			foreach (var srName in searchRectangleNames)
 			{
 				var sr = ImageMatchFinder.Instance.Templates.Single(t => t.Name == templateName).SearchRectangles.Single(t => t.Key == srName).Value;
-				sr.NamedSearchAreas = new[] { namedSearchArea };
-				sr.SearchAreas.Clear();
-				sr.Init();
+				sr.SearchAreas = new List<SerializableRectangle>(new[] { SearchAreaFactory.FromEnum(namedSearchArea) });
 			}
 
 			ActionGraph graph = ActionGraph.FromConfig();
@@ -138,60 +136,6 @@ namespace AutoFarmerTests
 			Assert.AreEqual(p1, p2);
 			Assert.AreNotEqual(p1, p3);
 			Assert.AreNotEqual(p1, p4);
-		}
-
-		[TestMethod]
-		public void TestMethod7()
-		{
-			var customSearchAreas = new[]
-			{
-				new SerializableRectangle()
-				{
-					Position = new SerializablePoint()
-					{
-						X = 898,
-						Y = 0
-					},
-					Size = new SerializableSize()
-					{
-						H = 1080,
-						W = 1022
-					}
-				},
-				new SerializableRectangle()
-				{
-					Position = new SerializablePoint()
-					{
-						X = 850,
-						Y = 100
-					},
-					Size = new SerializableSize()
-					{
-						W = 500,
-						H = 500
-					}
-				}
-			};
-
-			var sr = new SearchRectangle()
-			{
-				Rectangle = new SerializableRectangle()
-				{
-					Position = new SerializablePoint()
-					{
-						X = 1322,
-						Y = 383
-					},
-					Size = new SerializableSize()
-					{
-						W = 132,
-						H = 20
-					}
-				},
-				SearchAreas = new List<SerializableRectangle>(customSearchAreas)
-			};
-
-			Assert.ThrowsException<AutoFarmerException>(() => sr.Init());
 		}
 
 		[TestMethod]

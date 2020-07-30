@@ -58,7 +58,7 @@ namespace AutoFarmer.Models.Graph
 
 			nextNode = ActionNodes.FirstOrDefault(n => conditionEdge.EndNodeName == n.Name);
 
-			return nextNode != null;
+			return nextNode is { };
 		}
 
 		public bool TryGetNextEdge(ActionNode actionNode, out ConditionEdge nextEdge)
@@ -75,14 +75,14 @@ namespace AutoFarmer.Models.Graph
 				e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
 					e.Order).FirstOrDefault();
 
-			return nextEdge != null;
+			return nextEdge is { };
 		}
 
 		public bool TryGetNextStartNode(out ActionNode nextStartNode)
 		{
 			nextStartNode = ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
 
-			return nextStartNode != null;
+			return nextStartNode is { };
 		}
 
 		public void Reset(bool complete = false)

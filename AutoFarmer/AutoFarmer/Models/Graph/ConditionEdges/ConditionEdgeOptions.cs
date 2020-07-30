@@ -14,11 +14,11 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public Dictionary<string, string> Nodes { get; set; }
 
-		public ConditionOptions Condition { get; set; }
+		public ConditionOptions? Condition { get; set; }
 
 		public static List<ConditionEdge> FromJsonFile(string path)
 		{
-			return FromJsonFileWrapper(() =>
+			return FromJsonFileWrapper<List<ConditionEdge>>(() =>
 			{
 				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
 				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
@@ -34,7 +34,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 				foreach (var tuple in edgeOptions.Nodes)
 				{
-					if (edgeOptions.TemplateVariables != null && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
+					if (edgeOptions.TemplateVariables is { } && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
 					{
 						for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 						{
@@ -43,7 +43,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 							var condition = edgeOptions.Condition?.Clone();
 
-							if (condition != null)
+							if (condition is { })
 							{
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}

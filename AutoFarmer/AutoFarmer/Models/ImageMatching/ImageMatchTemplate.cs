@@ -2,29 +2,22 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 
 namespace AutoFarmer.Models.ImageMatching
 {
-	public class ImageMatchTemplate
+	public class ImageMatchTemplate : ImageMatchTemplateBase
 	{
-		private string _bitmapName;
-
-		public string Name { get; set; }
+		private readonly string _bitmapName;
 
 		public Dictionary<string, SearchRectangle> SearchRectangles { get; set; }
 
-		public void Init()
+		public ImageMatchTemplate(string name, Dictionary<string, SearchRectangle> searchRectangles) : base(name)
 		{
-			foreach (var searchRectangle in SearchRectangles)
-			{
-				searchRectangle.Value.Init();
-			}
-
-			_bitmapName = Directory.GetFiles(Config.Instance.ImageMatchTemplateResourcesDirectory).First(e => Path.GetFileNameWithoutExtension(e) == Name);
+			_bitmapName = Path.Combine(Config.Instance.ImageMatchTemplateResourcesDirectory, $"{name}.png");
+			SearchRectangles = searchRectangles;
 		}
 
-		public Bitmap LoadBitmap()
+		public Bitmap GetBitmap()
 		{
 			return (Bitmap)Image.FromFile(_bitmapName);
 		}

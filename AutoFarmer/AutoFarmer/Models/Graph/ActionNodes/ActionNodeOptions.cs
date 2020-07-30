@@ -8,13 +8,13 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public class ActionNodeOptions : ActionNodeBase, IOptions
 	{
-		public Dictionary<string, List<object>> TemplateVariables { get; set; }
+		public Dictionary<string, List<object>>? TemplateVariables { get; set; }
 
-		public string[] Names { get; set; }
+		public string[]? Names { get; set; }
 
 		public static List<ActionNode> FromJsonFile(string path)
 		{
-			return FromJsonFileWrapper(() =>
+			return FromJsonFileWrapper<List<ActionNode>>(() =>
 			{
 				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
@@ -27,7 +27,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 				foreach (var name in nodeOptions.Names)
 				{
-					if ( nodeOptions.TemplateVariables != null && IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
+					if (nodeOptions.TemplateVariables is { } && IsContainVariable(nodeOptions.TemplateVariables.Keys.ToList(), name))
 					{
 						for (int j = 0; j < nodeOptions.TemplateVariables.First().Value.Count; j++)
 						{

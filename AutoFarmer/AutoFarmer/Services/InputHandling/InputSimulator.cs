@@ -45,7 +45,7 @@ namespace AutoFarmer.Services.InputHandling
 					}
 					else if (type == SpecialAction.LeftHold && TryParseSpecial(commandValue, 1, out values))
 					{
-						if (actionPosition != null)
+						if (actionPosition is { })
 						{
 							HoldEvent(values[0]);
 						}
@@ -56,7 +56,7 @@ namespace AutoFarmer.Services.InputHandling
 					}
 					else if (type == SpecialAction.Multiply && TryParseMultiply(commandValue, out int value, out string variableName))
 					{
-						if (actionPosition != null)
+						if (actionPosition is { })
 						{
 							MultiplyKeyboardEvent(variableName, value);
 						}
@@ -68,14 +68,14 @@ namespace AutoFarmer.Services.InputHandling
 				}
 				else if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
 				{
-					if (actionPosition != null)
+					if (actionPosition is { })
 					{
 						ClickEvent(mouseAction, additionalDelay);
 					}
 				}
 				else if (Enum.TryParse<VirtualKeyCode>(action, true, out var keyboardAction))
 				{
-					if (actionPosition != null)
+					if (actionPosition is { })
 					{
 						KeyboardEvent(keyboardAction, additionalDelay);
 					}

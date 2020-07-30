@@ -22,18 +22,6 @@ namespace AutoFarmer.Models.Graph
 			return value;
 		}
 
-		protected static List<T> FromJsonFileWrapper<T>(Func<List<T>> func)
-		{
-			try
-			{
-				return func();
-			}
-			catch (Exception ex)
-			{
-				throw new AutoFarmerException("Configuration error!", ex);
-			}
-		}
-
 		protected static T FromJsonFileWrapper<T>(Func<T> func)
 		{
 			try

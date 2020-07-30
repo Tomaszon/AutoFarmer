@@ -13,5 +13,10 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 				IsVisited = false;
 			}
 		}
+
+		public ActionNode()
+		{
+
+		}
 	}
 }

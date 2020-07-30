@@ -12,30 +12,30 @@ namespace AutoFarmer.Models.Graph.Conditions
 	{
 		public ResultAppendMode AppendMode { get; set; }
 
-		public List<Condition> AndConditions { get; set; }
+		public List<Condition>? AndConditions { get; set; }
 
-		public List<Condition> OrConditions { get; set; }
+		public List<Condition>? OrConditions { get; set; }
 
 		public ConditionMode ConditionMode
 		{
 			get
 			{
-				if (AndConditions != null || OrConditions != null)
+				if (AndConditions is { } || OrConditions is { })
 				{
-					return AndConditions != null ? ConditionMode.And : ConditionMode.Or;
+					return AndConditions is { } ? ConditionMode.And : ConditionMode.Or;
 				}
 
 				return ConditionMode.Primitive;
 			}
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			if (obj is null) return false;
 
 			if (obj is Condition c)
 			{
-				return TemplateName == c.TemplateName && SearchRectangleName == c.SearchRectangleName;
+				return TemplateName.Equals(c.TemplateName) && SearchRectangleName.Equals(c.SearchRectangleName);
 			}
 
 			return false;
@@ -57,7 +57,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 		{
 			var startState = ConditionMode == ConditionMode.And;
 
-			foreach (var condition in AndConditions ?? OrConditions)
+			foreach (var condition in AndConditions ?? OrConditions!)
 			{
 				var lastProcessState = condition.Process(actionPoints);
 
@@ -115,7 +115,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 						MouseSafetyMeasures.CheckForIntentionalEmergencyStop();
 
-						if(ReportMessages != null)
+						if (ReportMessages is { })
 						{
 							ReportBuilder.AddRange(ReportMessages.Success, ReportMessageType.Success);
 						}
@@ -139,7 +139,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 				current -= thresholdStep;
 			}
 
-			if (ReportMessages != null)
+			if (ReportMessages is { })
 			{
 				ReportBuilder.AddRange(ReportMessages.Fail, ReportMessageType.Fail);
 			}

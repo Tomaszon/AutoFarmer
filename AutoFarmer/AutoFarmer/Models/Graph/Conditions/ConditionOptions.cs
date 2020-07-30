@@ -1,5 +1,4 @@
 ﻿using AutoFarmer.Models.Common;
-using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +10,17 @@ namespace AutoFarmer.Models.Graph.Conditions
 	{
 		public ResultAppendMode Result { get; set; }
 
-		public List<ConditionOptions> And { get; set; }
+		public List<ConditionOptions>? And { get; set; }
 
-		public List<ConditionOptions> Or { get; set; }
+		public List<ConditionOptions>? Or { get; set; }
 
 		public ConditionMode Mode
 		{
 			get
 			{
-				if (And != null || Or != null)
+				if (And is { } || Or is { })
 				{
-					return And != null ? ConditionMode.And : ConditionMode.Or;
+					return And is { } ? ConditionMode.And : ConditionMode.Or;
 				}
 
 				return ConditionMode.Primitive;
@@ -42,7 +41,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 					TemplateName = ReplaceVariables(TemplateName, templateVariables, index);
 					SearchRectangleName = ReplaceVariables(SearchRectangleName, templateVariables, index);
 
-					if (ReportMessages != null)
+					if (ReportMessages is { })
 					{
 						ReportMessages.Success = ReportMessages.Success.Select(t =>
 							new KeyValuePair<string, string>(t.Key, ReplaceVariables(t.Value, templateVariables, index))).ToDictionary(t =>
@@ -57,7 +56,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 				case ConditionMode.Or:
 				{
-					foreach (var condition in Or)
+					foreach (var condition in Or!)
 					{
 						condition.ReplaceVariablesInCondition(templateVariables, index);
 					}
@@ -66,7 +65,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 				case ConditionMode.And:
 				{
-					foreach (var condition in And)
+					foreach (var condition in And!)
 					{
 						condition.ReplaceVariablesInCondition(templateVariables, index);
 					}

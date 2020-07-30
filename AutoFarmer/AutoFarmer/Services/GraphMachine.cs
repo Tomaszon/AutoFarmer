@@ -36,7 +36,7 @@ namespace AutoFarmer.Services
 				{
 					ProcessNode(currentNode, actionPoints.ToArray());
 
-					ConditionEdge currentEdge = null;
+					ConditionEdge? currentEdge = null;
 
 					while (Graph.TryGetNextEdge(currentNode, out currentEdge))
 					{

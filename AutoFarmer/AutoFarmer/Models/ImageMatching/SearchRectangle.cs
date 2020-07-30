@@ -1,22 +1,14 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Imaging;
-using AutoFarmer.Services.Logging;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AutoFarmer.Models.ImageMatching
 {
-	public class SearchRectangle
+	public class SearchRectangle : SearchRectangleBase
 	{
 		public SerializableRectangle Rectangle { get; set; }
 
-		public SerializablePoint ClickPoint { get; set; }
-
-		public List<SerializableRectangle> SearchAreas { get; set; } = new List<SerializableRectangle>();
-
-		public NamedSearchArea[] NamedSearchAreas { get; set; }
+		public List<SerializableRectangle> SearchAreas { get; set; }
 
 		public SerializableSize RelativeClickPoint
 		{
@@ -26,50 +18,39 @@ namespace AutoFarmer.Models.ImageMatching
 			}
 		}
 
-		public void Init()
+		public SearchRectangle(SerializablePoint? clickPoint, List<SerializableRectangle>? searchAreas, List<NamedSearchArea>? namedSearchAreas, int x, int y, int w, int h)
 		{
-			if (SearchAreas.Count != 0)
+			ClickPoint = clickPoint;
+			Rectangle = new SerializableRectangle()
 			{
-				if (IsOverlaping(out var intersectingRectangles))
+				Position = new SerializablePoint()
 				{
-					throw new AutoFarmerException($"Custom search areas overlapping: {JsonConvert.SerializeObject(intersectingRectangles, Formatting.Indented)}");
-				}
-			}
-			else if (NamedSearchAreas != null)
-			{
-				SearchAreas.AddRange(SearchAreaFactory.FromEnums(NamedSearchAreas));
-			}
-			else
-			{
-				SearchAreas.AddRange(SearchAreaFactory.FromEnums(NamedSearchArea.Full));
-			}
-		}
-
-		private bool IsOverlaping(out List<Tuple<SerializableRectangle, List<SerializableRectangle>>> intersectingRectangles)
-		{
-			using var log = Logger.LogBlock();
-
-			intersectingRectangles = new List<Tuple<SerializableRectangle, List<SerializableRectangle>>>();
-
-			foreach (var a1 in SearchAreas)
-			{
-				foreach (var a2 in SearchAreas)
+					X = x,
+					Y = y
+				},
+				Size = new SerializableSize()
 				{
-					if (!a1.Equals(a2))
-					{
-						if (intersectingRectangles.FirstOrDefault(e => e.Item1.Equals(a1)) is var a && a != null)
-						{
-							a.Item2.Add(a2);
-						}
-						else
-						{
-							intersectingRectangles.Add(new Tuple<SerializableRectangle, List<SerializableRectangle>>(a1, new List<SerializableRectangle>() { a2 }));
-						}
-					}
+					W = w,
+					H = h
 				}
+			};
+
+			SearchAreas ??= new List<SerializableRectangle>();
+
+			if (searchAreas is { })
+			{
+				SearchAreas.AddRange(searchAreas);
 			}
 
-			return intersectingRectangles.Count > 0;
+			if (namedSearchAreas is { })
+			{
+				SearchAreas.AddRange(SearchAreaFactory.FromEnums(namedSearchAreas));
+			}
+
+			if (SearchAreas.Count == 0)
+			{
+				SearchAreas.Add(SearchAreaFactory.FromEnum(NamedSearchArea.Full));
+			}
 		}
 	}
 }

@@ -107,7 +107,7 @@ namespace AutoFarmer.Services.Logging
 
 			foreach (var template in templates)
 			{
-				using Bitmap b = template.LoadBitmap();
+				using Bitmap b = template.GetBitmap();
 
 				using Graphics g = Graphics.FromImage(b);
 

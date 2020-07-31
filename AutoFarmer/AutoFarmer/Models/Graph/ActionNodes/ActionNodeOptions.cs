@@ -14,7 +14,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 		public static List<ActionNode> FromJsonFile(string path)
 		{
-			return FromJsonFileWrapper<List<ActionNode>>(() =>
+			return FromJsonFileWrapper(() =>
 			{
 				var nodeOptions = JsonConvert.DeserializeObject<ActionNodeOptions>(File.ReadAllText(path));
 
@@ -48,9 +48,8 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 		private ActionNode ToActionNode(string name)
 		{
-			return new ActionNode()
+			return new ActionNode(name)
 			{
-				Name = name,
 				ActionNames = ActionNames,
 				AdditionalDelayAfterLastAction = AdditionalDelayAfterLastAction,
 				AdditionalDelayBetweenActions = AdditionalDelayBetweenActions,

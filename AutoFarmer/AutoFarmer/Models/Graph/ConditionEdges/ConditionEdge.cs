@@ -7,6 +7,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdge : ConditionEdgeBase
 	{
+		public string Name { get; set; }
+
 		public string StartNodeName { get; set; }
 
 		public string EndNodeName { get; set; }
@@ -16,6 +18,17 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		public bool IsEnabled
 		{
 			get { return CurrentCrossing < MaxCrossing; }
+		}
+
+		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability)
+		{
+			StartNodeName = startNodeName;
+			EndNodeName = endNodeName;
+			Name = $"{startNodeName}-{endNodeName}";
+			Order = order;
+			MaxCrossing = maxCrossing;
+			ConsiderationProbability = considerationProbability;
+			Condition = condition;
 		}
 
 		public void Disable()
@@ -33,6 +46,13 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 		public bool ProcessCondition(List<SerializablePoint> actionPoints)
 		{
 			Logger.Log($"Processing condition of {Name}");
+
+			if (Condition is null)
+			{
+				actionPoints.Clear();
+
+				return true;
+			}
 
 			var result = Condition.Process(actionPoints);
 

@@ -19,7 +19,7 @@ namespace AutoFarmer.Services.ReportBuilder
 
 		public bool SaveToFile { get; set; } = true;
 
-		public static ReportBuilder Instance { get; set; }
+		public static ReportBuilder Instance { get; set; } = null!;
 
 		public ReportBuilderMessageContainer Container { get; set; } = new ReportBuilderMessageContainer();
 

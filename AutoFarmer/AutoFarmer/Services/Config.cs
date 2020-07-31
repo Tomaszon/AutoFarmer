@@ -19,11 +19,11 @@ namespace AutoFarmer.Services
 			//return (SerializableSize)Screen.FromPoint(p).Bounds.Size;
 			//}
 			set;
-		}
+		} = null!;
 
 		public bool ActionSounds { get; set; }
 
-		public string ConfigDirectory { get; set; }
+		public string ConfigDirectory { get; set; } = null!;
 
 		public string ActionNodesDirectory
 		{
@@ -91,16 +91,16 @@ namespace AutoFarmer.Services
 
 		public int ProcessCountdown { get; set; }
 
-		public string ActivePackage { get; set; }
+		public string ActivePackage { get; set; } = null!;
 
-		public string[] ActiveStartNodes { get; set; }
+		public string[] ActiveStartNodes { get; set; } = null!;
 
-		public static Config Instance { get; set; }
+		public static Config Instance { get; set; } = null!;
 
 		public static void FromJsonFile(string path)
 		{
 			Instance = JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
-			Instance.ConfigDirectory = Path.GetDirectoryName(path);
+			Instance.ConfigDirectory = Path.GetDirectoryName(path)!;
 		}
 	}
 }

@@ -14,9 +14,9 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 			}
 		}
 
-		public ActionNode()
+		public ActionNode(string name)
 		{
-
+			Name = name;
 		}
 	}
 }

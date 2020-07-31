@@ -6,7 +6,7 @@ namespace AutoFarmer.Services.Logging
 {
 	public class LoggerOptions : LoggerBase
 	{
-		public LogFormatterOptions Format { get; set; }
+		public LogFormatterOptions Format { get; set; } = new LogFormatterOptions();
 
 		public static Logger FromJsonFile(string path)
 		{

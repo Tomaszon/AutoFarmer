@@ -2,7 +2,7 @@
 {
 	public abstract class ActionNodeBase
 	{
-		public string[] ActionNames { get; set; }
+		public string[]? ActionNames { get; set; }
 
 		public int AdditionalDelayBetweenActions { get; set; }
 

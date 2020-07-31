@@ -76,7 +76,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 		public Condition ToCondition()
 		{
-			return new Condition()
+			return new Condition(TemplateName, SearchRectangleName)
 			{
 				AndConditions = And?.Select(c => c.ToCondition()).ToList(),
 				AppendMode = Result,
@@ -89,9 +89,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 				OrConditions = Or?.Select(c => c.ToCondition()).ToList(),
 				OrderBy = OrderBy,
 				RetryDelay = RetryDelay,
-				SearchRectangleName = SearchRectangleName,
 				SimiliarityThresholdStep = SimiliarityThresholdStep,
-				TemplateName = TemplateName,
 				ReportMessages = ReportMessages
 			};
 		}

@@ -13,9 +13,9 @@ namespace AutoFarmer.Services.Logging
 {
 	public class Logger : LoggerBase
 	{
-		public static Logger Instance { get; set; }
+		public static Logger Instance { get; set; } = null!;
 
-		public string SessionId { get; private set; }
+		public string SessionId { get; private set; } = null!;
 
 		public LogFormatter Formatter { get; set; } = new LogFormatter();
 
@@ -41,12 +41,12 @@ namespace AutoFarmer.Services.Logging
 			Instance.Formatter.Level--;
 		}
 
-		public static LogBlock LogBlock(string name = default, [CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
+		public static LogBlock LogBlock(string name = null!, [CallerFilePath] string file = null!, [CallerMemberName] string method = null!, [CallerLineNumber] int line = default)
 		{
 			return new LogBlock(name, file, method, line);
 		}
 
-		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = default, [CallerLineNumber] int line = default, bool fileLog = true)
+		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = null!, [CallerLineNumber] int line = default, bool fileLog = true)
 		{
 			try
 			{

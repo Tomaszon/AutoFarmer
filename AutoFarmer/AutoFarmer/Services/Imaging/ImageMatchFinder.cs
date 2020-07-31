@@ -24,7 +24,7 @@ namespace AutoFarmer.Services.Imaging
 
 		public List<ImageMatchTemplate> Templates { get; set; } = new List<ImageMatchTemplate>();
 
-		public static ImageMatchFinder Instance { get; set; }
+		public static ImageMatchFinder Instance { get; set; } = null!;
 
 		public static void FromConfig()
 		{

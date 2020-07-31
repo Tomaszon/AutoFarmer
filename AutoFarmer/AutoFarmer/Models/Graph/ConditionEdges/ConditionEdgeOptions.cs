@@ -1,5 +1,4 @@
 ﻿using AutoFarmer.Models.Graph.Conditions;
-using AutoFarmer.Services.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -10,22 +9,21 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdgeOptions : ConditionEdgeBase, IOptions
 	{
-		public Dictionary<string, List<object>> TemplateVariables { get; set; }
+		public Dictionary<string, List<object>>? TemplateVariables { get; set; }
 
-		public Dictionary<string, string> Nodes { get; set; }
+		public Dictionary<string, string>? Nodes { get; set; }
 
 		public ConditionOptions? Condition { get; set; }
 
 		public static List<ConditionEdge> FromJsonFile(string path)
 		{
-			return FromJsonFileWrapper<List<ConditionEdge>>(() =>
+			return FromJsonFileWrapper(() =>
 			{
 				var edgeOptions = JsonConvert.DeserializeObject<ConditionEdgeOptions>(File.ReadAllText(path));
-				edgeOptions.Name = Path.GetFileNameWithoutExtension(path);
 
 				if (edgeOptions.Nodes is null)
 				{
-					var arr = edgeOptions.Name.Split('-');
+					var arr = Path.GetFileNameWithoutExtension(path).Split('-');
 
 					edgeOptions.Nodes = new Dictionary<string, string>() { { arr[0], arr[1] } };
 				}
@@ -48,12 +46,12 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}
 
-							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, edgeOptions.Order, edgeOptions.MaxCrossing, condition));
+							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, condition));
 						}
 					}
 					else
 					{
-						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Order, edgeOptions.MaxCrossing, edgeOptions.Condition));
+						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Condition));
 					}
 				}
 
@@ -61,18 +59,9 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			});
 		}
 
-		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, int order, int maxCrossing, ConditionOptions conditionOptions)
+		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions)
 		{
-			return new ConditionEdge()
-			{
-				Condition = conditionOptions?.ToCondition(),
-				MaxCrossing = maxCrossing,
-				Order = order,
-				StartNodeName = startNodeName,
-				EndNodeName = endNodeName,
-				Name = $"{startNodeName}-{endNodeName}",
-				ConsiderationProbability = ConsiderationProbability
-			};
+			return new ConditionEdge(startNodeName, endNodeName, Order, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability);
 		}
 	}
 }

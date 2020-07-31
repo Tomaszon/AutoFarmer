@@ -15,7 +15,7 @@ namespace AutoFarmer.Services.InputHandling
 
 		public SerializableSize ScreenSize { get; set; }
 
-		public static InputSimulator Instance { get; set; }
+		public static InputSimulator Instance { get; set; } = null!;
 
 		public static void FromConfig()
 		{

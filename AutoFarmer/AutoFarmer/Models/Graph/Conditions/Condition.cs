@@ -29,6 +29,12 @@ namespace AutoFarmer.Models.Graph.Conditions
 			}
 		}
 
+		public Condition(string templateName, string searchRectangleName)
+		{
+			TemplateName = templateName;
+			SearchRectangleName = searchRectangleName;
+		}
+
 		public override bool Equals(object? obj)
 		{
 			if (obj is null) return false;

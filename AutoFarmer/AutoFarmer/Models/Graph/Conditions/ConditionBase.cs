@@ -6,9 +6,9 @@ namespace AutoFarmer.Models.Graph.Conditions
 {
 	public class ConditionBase
 	{
-		public string TemplateName { get; set; }
+		public string TemplateName { get; set; } = null!;
 
-		public string SearchRectangleName { get; set; }
+		public string SearchRectangleName { get; set; } = null!;
 
 		public int MaximumOccurrence { get; set; } = 1;
 

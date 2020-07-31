@@ -6,6 +6,6 @@
 
 		public bool GraphicalLogging { get; set; }
 
-		public string LogDirectory { get; set; }
+		public string LogDirectory { get; set; } = null!;
 	}
 }

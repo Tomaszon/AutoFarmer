@@ -9,7 +9,7 @@ namespace AutoFarmer.Services
 	{
 		public Dictionary<string, GlobalStateStorageVariable> Variables { get; set; } = new Dictionary<string, GlobalStateStorageVariable>();
 
-		public static GlobalStateStorage Instance { get; set; }
+		public static GlobalStateStorage Instance { get; set; } = null!;
 
 		public static GlobalStateStorageVariable Get(string variableName)
 		{

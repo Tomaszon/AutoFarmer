@@ -11,9 +11,9 @@ namespace AutoFarmer.Services.Logging
 
 		private readonly int _line;
 
-		public LogBlock(string name = default, [CallerFilePath] string file = default, [CallerMemberName] string method = default, [CallerLineNumber] int line = default)
+		public LogBlock(string? name = null, [CallerFilePath] string file = null!, [CallerMemberName] string method = null!, [CallerLineNumber] int line = default)
 		{
-			_name = $"{method}{(name != default ? $": {name}" : "")}";
+			_name = $"{method}{(name is { } ? $": {name}" : "")}";
 
 			_line = line;
 

@@ -150,7 +150,12 @@ namespace AutoFarmerTests
 
 			InputSimulator.FromConfig();
 
+			GlobalStateStorage.FromConfig();
+
 			InputSimulator.Simulate(new[] { "Move:960,540" }, null);
+			//InputSimulator.Simulate(new[] { "Value:2110" }, new SerializablePoint() { X = 0, Y = 0 });
+			//InputSimulator.Simulate(new[] { "Value:singleDilithiumValue" }, new SerializablePoint() { X = 0, Y = 0 });
+			//InputSimulator.Simulate(new[] { "Multiply:singleDilithiumValue,2" }, new SerializablePoint() { X = 0, Y = 0 });
 
 			GetCursorPos(out var refP);
 

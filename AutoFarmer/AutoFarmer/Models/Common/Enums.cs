@@ -20,7 +20,8 @@
 		LeftHold,
 		ScanScreenForFadedUI,
 		Move,
-		Multiply
+		Multiply,
+		Value
 	}
 
 	public enum MatchOrderBy

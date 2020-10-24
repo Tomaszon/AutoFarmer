@@ -1,8 +1,11 @@
-﻿using AutoFarmer.Models.Common;
+﻿using AForge.Math.Geometry;
+using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using WindowsInput.Native;
@@ -13,7 +16,7 @@ namespace AutoFarmer.Services.InputHandling
 	{
 		public int Delay { get; set; } = 250;
 
-		public SerializableSize ScreenSize { get; set; }
+		public SerializableSize ScreenSize { get; set; } = null!;
 
 		public static InputSimulator Instance { get; set; } = null!;
 
@@ -39,31 +42,56 @@ namespace AutoFarmer.Services.InputHandling
 
 				if (IsSpecialInput(action, out var type, out var commandValue))
 				{
-					if (type == SpecialAction.Move && TryParseSpecial(commandValue, 2, out var values))
+					switch (type)
 					{
-						MoveEvent(new SerializablePoint() { X = values[0], Y = values[1] });
-					}
-					else if (type == SpecialAction.LeftHold && TryParseSpecial(commandValue, 1, out values))
-					{
-						if (actionPosition is { })
+						case SpecialAction.LeftHold:
 						{
-							HoldEvent(values[0]);
+							if (!TryParseSpecial(commandValue, 1, out var values)) goto default;
+
+							if (actionPosition is { })
+							{
+								HoldEvent(values[0]);
+							}
 						}
-					}
-					else if (type == SpecialAction.ScanScreenForFadedUI && TryParseSpecial(commandValue, 3, out values))
-					{
-						ScanEvent(values[0], values[1], values[2], additionalDelay);
-					}
-					else if (type == SpecialAction.Multiply && TryParseMultiply(commandValue, out int value, out string variableName))
-					{
-						if (actionPosition is { })
+						break;
+						case SpecialAction.ScanScreenForFadedUI:
 						{
-							MultiplyKeyboardEvent(variableName, value);
+							if (!TryParseSpecial(commandValue, 3, out var values)) goto default;
+
+							ScanEvent(values[0], values[1], values[2], additionalDelay);
 						}
-					}
-					else
-					{
-						throw new AutoFarmerException($"Unknown special input action: {action}");
+						break;
+						case SpecialAction.Move:
+						{
+							if (!TryParseSpecial(commandValue, 2, out var values)) goto default;
+
+							MoveEvent(new SerializablePoint() { X = values[0], Y = values[1] });
+						}
+						break;
+						case SpecialAction.Multiply:
+						{
+							if (!TryParseMultiply(commandValue, out var value1, out var value2)) goto default;
+
+							if (actionPosition is { })
+							{
+								MultiplyKeyboardEvent(value1, value2);
+							}
+						}
+						break;
+						case SpecialAction.Value:
+						{
+							if (!TryParseValue(commandValue, out var value)) goto default;
+
+							if (actionPosition is { })
+							{
+								ValueKeyboardEvent(value);
+							}
+						}
+						break;
+						default:
+						{
+							throw new AutoFarmerException($"Unknown special input action: {action}");
+						}
 					}
 				}
 				else if (Enum.TryParse<MouseAction>(action, true, out var mouseAction))
@@ -87,7 +115,7 @@ namespace AutoFarmer.Services.InputHandling
 			}
 		}
 
-		private static List<VirtualKeyCode> ConvertValueToVirtualKeyCode(int value)
+		private static List<VirtualKeyCode> ConvertValueToVirtualKeyCode(long value)
 		{
 			var result = new List<VirtualKeyCode>();
 
@@ -99,7 +127,7 @@ namespace AutoFarmer.Services.InputHandling
 			return result;
 		}
 
-		private static bool IsSpecialInput(string value, out SpecialAction specialActionType, out string commandValue)
+		private static bool IsSpecialInput(string value, out SpecialAction specialActionType, [NotNullWhen(true)] out string? commandValue)
 		{
 			specialActionType = default;
 			commandValue = default;
@@ -118,18 +146,46 @@ namespace AutoFarmer.Services.InputHandling
 			return false;
 		}
 
-		private static bool TryParseMultiply(string commandValue, out int value, out string variableName)
+		private static bool TryParseValue(string commandValue, [NotNullWhen(true)] out GlobalStateStorageValue? value)
 		{
 			value = default;
-			variableName = default;
 
-			Regex regex = new Regex("(?<value>(\\d)+),(?<variable>(\\w)+)", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+			string formattedGlobalStateValues = FormatArrayForRegexSearch(GlobalStateStorage.GetValueNames(), "|", "|");
+
+			Regex regex = new Regex($"(?<value>(\\d)+{formattedGlobalStateValues})", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
 			var match = regex.Match(commandValue);
 
-			if (match.Success && int.TryParse(match.Groups["value"].Value, out value))
+			if (match.Success)
 			{
-				variableName = match.Groups["variable"].Value;
+				var v = match.Groups["value"].Value;
+
+				value = int.TryParse(v, out var x) ? x : GlobalStateStorage.Get(v);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool TryParseMultiply(string commandValue, [NotNullWhen(true)] out GlobalStateStorageValue? value1, [NotNullWhen(true)] out GlobalStateStorageValue? value2)
+		{
+			value1 = default;
+			value2 = default;
+
+			string formattedGlobalStateValues = FormatArrayForRegexSearch(GlobalStateStorage.GetValueNames(), "|", "|");
+
+			Regex regex = new Regex($"(?<value1>(\\d)+{formattedGlobalStateValues}),(?<value2>(\\d)+{formattedGlobalStateValues})", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
+			var match = regex.Match(commandValue);
+
+			if (match.Success)
+			{
+				var v1 = match.Groups["value1"].Value;
+				var v2 = match.Groups["value2"].Value;
+
+				value1 = int.TryParse(v1, out var x) ? x : GlobalStateStorage.Get(v1);
+				value2 = int.TryParse(v2, out x) ? x : GlobalStateStorage.Get(v2);
 
 				return true;
 			}
@@ -260,17 +316,25 @@ namespace AutoFarmer.Services.InputHandling
 			Thread.Sleep(Instance.Delay + additionalDelay);
 		}
 
-		private static void MultiplyKeyboardEvent(string variableName, int value, int additionalDelay = 0)
+		private static void ValueKeyboardEvent(GlobalStateStorageValue value)
 		{
-			var variable = GlobalStateStorage.Get(variableName);
+			var kcs = ConvertValueToVirtualKeyCode(value.Value);
 
-			int multipliedValue = value * variable.Value;
+			kcs.ForEach(c => KeyboardEvent(c, 0));
+			
+			value.Increase();
+		}
+
+		private static void MultiplyKeyboardEvent(GlobalStateStorageValue value1, GlobalStateStorageValue value2)
+		{
+			long multipliedValue = value1.Value * value2.Value;
 
 			var kcs = ConvertValueToVirtualKeyCode(multipliedValue);
 
-			kcs.ForEach(c => KeyboardEvent(c, additionalDelay));
+			kcs.ForEach(c => KeyboardEvent(c, 0));
 
-			variable.Increase();
+			value1.Increase();
+			value2.Increase();
 		}
 
 		private static void SmoothMouseMove(SerializablePoint to, int stepSize = 75, int delay = 10)
@@ -296,6 +360,11 @@ namespace AutoFarmer.Services.InputHandling
 		private static void NormalizedMouseMove(SerializablePoint point)
 		{
 			new WindowsInput.InputSimulator().Mouse.MoveMouseTo(point.X * (65536.0 / Instance.ScreenSize.W) + 1, point.Y * (65536.0 / Instance.ScreenSize.H) + 1);
+		}
+
+		private static string FormatArrayForRegexSearch(IEnumerable<object> values, string separators, string? begining = "", string? ending = "")
+		{
+			return begining + string.Join(separators, values) + ending;
 		}
 	}
 }

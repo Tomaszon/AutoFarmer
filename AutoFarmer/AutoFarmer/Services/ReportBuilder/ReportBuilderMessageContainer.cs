@@ -3,6 +3,7 @@ using AutoFarmer.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace AutoFarmer.Services.ReportBuilder
 {
@@ -43,7 +44,7 @@ namespace AutoFarmer.Services.ReportBuilder
 			_buffer.Where(t =>
 				t.Key.Item2 == type).Select(t =>
 					new KeyValuePair<string, List<string>>(t.Key.Item1, t.Value)).ToList().ForEach(t =>
-						Messages.Add(t.Key, t.Value));
+						t.Value.ForEach(v => AddToMessages(t.Key, v)));
 
 			ClearBuffer();
 		}

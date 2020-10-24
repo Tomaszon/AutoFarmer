@@ -76,7 +76,7 @@ namespace AutoFarmer.Services
 
 			node.IsVisited = true;
 
-			if (node.ActionNames is null)
+			if (node.Actions is null)
 			{
 				Thread.Sleep(node.AdditionalDelayAfterLastAction);
 
@@ -89,14 +89,14 @@ namespace AutoFarmer.Services
 				{
 					InputSimulator.MoveEvent(actionPosition);
 
-					InputSimulator.Simulate(node.ActionNames, actionPosition, node.AdditionalDelayBetweenActions);
+					InputSimulator.Simulate(node.Actions, actionPosition, node.AdditionalDelayBetweenActions);
 
 					Thread.Sleep(node.AdditionalDelayAfterLastAction);
 				}
 			}
 			else
 			{
-				InputSimulator.Simulate(node.ActionNames, null, node.AdditionalDelayBetweenActions);
+				InputSimulator.Simulate(node.Actions, null, node.AdditionalDelayBetweenActions);
 			}
 		}
 

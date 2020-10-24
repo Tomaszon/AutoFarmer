@@ -62,7 +62,7 @@ namespace AutoFarmer.Services.Imaging
 			using var log = Logger.LogBlock();
 
 			var template = Instance.Templates.Single(t => t.Name == condition.TemplateName);
-			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName];
+			var searchRectangle = template.SearchRectangles[condition.SearchRectangleName!];
 
 			using var templateImage = ImageFactory.ConvertBitmap(template.GetBitmap());
 			using var searchImage = CropTemplateImage(templateImage, (Rectangle)searchRectangle.Rectangle);
@@ -130,7 +130,7 @@ namespace AutoFarmer.Services.Imaging
 			return searchImage;
 		}
 
-		private static List<SerializablePoint> OrderResults(IEnumerable<SerializablePoint> points, Dictionary<MatchOrderBy, MatchOrderLike> orderBy)
+		private static List<SerializablePoint> OrderResults(IEnumerable<SerializablePoint> points, Dictionary<MatchOrderBy, MatchOrderLike>? orderBy)
 		{
 			if (orderBy is null) return points.ToList();
 

@@ -1,14 +1,15 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.Graph.ConditionEdges;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AutoFarmer.Models.Graph.Conditions
 {
 	public class ConditionBase
 	{
-		public string TemplateName { get; set; } = null!;
+		public string? TemplateName { get; set; } = null;
 
-		public string SearchRectangleName { get; set; } = null!;
+		public string? SearchRectangleName { get; set; } = null;
 
 		public int MaximumOccurrence { get; set; } = 1;
 

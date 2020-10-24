@@ -50,7 +50,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 		{
 			return new ActionNode(name)
 			{
-				ActionNames = ActionNames,
+				Actions = Actions,
 				AdditionalDelayAfterLastAction = AdditionalDelayAfterLastAction,
 				AdditionalDelayBetweenActions = AdditionalDelayBetweenActions,
 				IsStartNode = IsStartNode,

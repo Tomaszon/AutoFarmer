@@ -2,23 +2,24 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace AutoFarmer.Services
 {
 	public class GlobalStateStorage
 	{
-		public Dictionary<string, GlobalStateStorageVariable> Variables { get; set; } = new Dictionary<string, GlobalStateStorageVariable>();
+		public Dictionary<string, GlobalStateStorageValue> Values { get; set; } = new Dictionary<string, GlobalStateStorageValue>();
 
 		public static GlobalStateStorage Instance { get; set; } = null!;
 
-		public static GlobalStateStorageVariable Get(string variableName)
+		public static GlobalStateStorageValue Get(string variableName)
 		{
-			return Instance.Variables[variableName];
+			return Instance.Values[variableName];
 		}
 
 		public static void Reset()
 		{
-			foreach (var t in Instance.Variables)
+			foreach (var t in Instance.Values)
 			{
 				t.Value.Reset();
 			}
@@ -28,6 +29,16 @@ namespace AutoFarmer.Services
 		{
 			Instance = JsonConvert.DeserializeObject<GlobalStateStorage>(File.ReadAllText(Config.Instance.GlobalStateStorageConfigPath));
 			Reset();
+		}
+
+		public static IEnumerable<string> GetValueNames()
+		{
+			return Instance.Values.Select(v => v.Key);
+		}
+
+		public static IEnumerable<long> GetValues()
+		{
+			return Instance.Values.Select(v => v.Value.Value);
 		}
 	}
 }

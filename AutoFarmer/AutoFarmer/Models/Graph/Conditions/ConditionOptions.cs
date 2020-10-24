@@ -38,8 +38,8 @@ namespace AutoFarmer.Models.Graph.Conditions
 			{
 				case ConditionMode.Primitive:
 				{
-					TemplateName = ReplaceVariables(TemplateName, templateVariables, index);
-					SearchRectangleName = ReplaceVariables(SearchRectangleName, templateVariables, index);
+					TemplateName = ReplaceVariables(TemplateName!, templateVariables, index);
+					SearchRectangleName = ReplaceVariables(SearchRectangleName!, templateVariables, index);
 
 					if (ReportMessages is { })
 					{

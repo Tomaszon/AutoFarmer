@@ -29,7 +29,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 			}
 		}
 
-		public Condition(string templateName, string searchRectangleName)
+		public Condition(string? templateName, string? searchRectangleName)
 		{
 			TemplateName = templateName;
 			SearchRectangleName = searchRectangleName;
@@ -41,7 +41,7 @@ namespace AutoFarmer.Models.Graph.Conditions
 
 			if (obj is Condition c)
 			{
-				return TemplateName.Equals(c.TemplateName) && SearchRectangleName.Equals(c.SearchRectangleName);
+				return TemplateName is { } && TemplateName.Equals(c.TemplateName) && SearchRectangleName is { } && SearchRectangleName.Equals(c.SearchRectangleName);
 			}
 
 			return false;

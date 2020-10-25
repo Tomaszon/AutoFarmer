@@ -13,7 +13,7 @@ namespace AutoFarmer.Services.ReportBuilder
 {
 	public class ReportBuilder : IOptions
 	{
-		public string ReportDirectory { get; set; }
+		public string ReportDirectory { get; set; } = null!;
 
 		public bool GenerateReport { get; set; } = true;
 
@@ -41,7 +41,6 @@ namespace AutoFarmer.Services.ReportBuilder
 			Instance.Container.Commit(type);
 		}
 
-		//TODO
 		public static void Generate()
 		{
 			if (Instance.GenerateReport)

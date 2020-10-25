@@ -1,4 +1,7 @@
-﻿namespace AutoFarmer.Models.Graph.ActionNodes
+﻿using AutoFarmer.Models.Common;
+using System.Runtime.InteropServices.ComTypes;
+
+namespace AutoFarmer.Models.Graph.ActionNodes
 {
 	public abstract class ActionNodeBase
 	{
@@ -8,10 +11,28 @@
 
 		public int AdditionalDelayAfterLastAction { get; set; } = 1000;
 
-		public bool IsStartNode { get; set; }
+		public int MaxCrossing { get; set; } = 1;
 
-		public bool IsEndNode { get; set; }
+		public ActionNodeFlags Flags { get; set; }
 
-		public bool IsVisited { get; set; }
+		public bool Is(ActionNodeFlags flags)
+		{
+			return ((int)Flags & (int)flags) == (int)flags;
+		}
+
+		public bool IsNot(ActionNodeFlags flags)
+		{
+			return !Is(flags);
+		}
+
+		public void AddFlags(ActionNodeFlags flags)
+		{
+			Flags |= flags;
+		}
+
+		public void RemoveFlags(ActionNodeFlags flags)
+		{
+			Flags &= ~flags;
+		}
 	}
 }

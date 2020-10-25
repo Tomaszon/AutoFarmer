@@ -60,13 +60,13 @@ namespace AutoFarmer.Services
 						}
 					}
 
-					if (!currentNode.IsEndNode && currentEdge is null) throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}!");
+					if (currentNode.IsNot(ActionNodeFlags.EndNode) && currentEdge is null) throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}!");
 				}
-				while (!currentNode.IsEndNode);
+				while (currentNode.IsNot(ActionNodeFlags.EndNode));
 
 				ProcessNode(currentNode);
 
-				Graph.Reset();
+				Graph.ResetState();
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
-			node.IsVisited = true;
+			node.CurrentCrossing++;
 
 			if (node.Actions is null)
 			{
@@ -83,7 +83,7 @@ namespace AutoFarmer.Services
 				return;
 			}
 
-			if(actionPositions.Length > 0)
+			if (actionPositions.Length > 0)
 			{
 				foreach (var actionPosition in actionPositions)
 				{

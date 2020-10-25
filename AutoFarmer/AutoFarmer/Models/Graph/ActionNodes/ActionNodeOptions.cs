@@ -53,8 +53,7 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 				Actions = Actions,
 				AdditionalDelayAfterLastAction = AdditionalDelayAfterLastAction,
 				AdditionalDelayBetweenActions = AdditionalDelayBetweenActions,
-				IsStartNode = IsStartNode,
-				IsEndNode = IsEndNode
+				Flags = Flags
 			};
 		}
 	}

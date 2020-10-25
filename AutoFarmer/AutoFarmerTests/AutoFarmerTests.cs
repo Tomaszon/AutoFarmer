@@ -272,5 +272,22 @@ namespace AutoFarmerTests
 			//InputSimulator.Simulate(new[] { "SPACE" }, new SerializablePoint() { X = 960, Y = 540 });
 			//InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
 		}
+
+		private class TestMethod13Class
+		{
+			public ActionNodeFlags B { get; set; }
+		}
+		[TestMethod]
+		public void TestMethod13()
+		{
+			var a = new TestMethod13Class { B = ActionNodeFlags.EndNode | ActionNodeFlags.StartNode };
+
+			var s = Newtonsoft.Json.JsonConvert.SerializeObject(a);
+
+			var b = Newtonsoft.Json.JsonConvert.DeserializeObject<TestMethod13Class>(s);
+
+			Assert.AreEqual(a.B, b.B);
+		}
+
 	}
 }

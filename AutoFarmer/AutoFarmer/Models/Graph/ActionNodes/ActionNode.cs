@@ -1,4 +1,5 @@
 ﻿using AutoFarmer.Services.Logging;
+using AutoFarmer.Models.Common;
 
 namespace AutoFarmer.Models.Graph.ActionNodes
 {
@@ -6,11 +7,15 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 	{
 		public string Name { get; set; }
 
+		public int CurrentCrossing { get; set; }
+
+		public bool Crossable => CurrentCrossing < MaxCrossing;
+
 		public void ResetState(bool complete)
 		{
-			if (complete || !IsStartNode)
+			if (complete || IsNot(ActionNodeFlags.StartNode))
 			{
-				IsVisited = false;
+				CurrentCrossing = 0;
 			}
 		}
 

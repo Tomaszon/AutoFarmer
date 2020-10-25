@@ -1,4 +1,8 @@
-﻿namespace AutoFarmer.Models.Common
+﻿using AutoFarmer.Services;
+using Newtonsoft.Json;
+using System;
+
+namespace AutoFarmer.Models.Common
 {
 	public enum NotificationType
 	{
@@ -73,5 +77,20 @@
 	{
 		Success,
 		Fail
+	}
+
+	[Flags, JsonConverter(typeof(FlagConverter<ActionNodeFlags>))]
+	public enum ActionNodeFlags
+	{
+		StartNode = 1,
+		EndNode = 2,
+		Enabled = 4
+	}
+
+	[Flags, JsonConverter(typeof(FlagConverter<ConditionEdgeFlags>))]
+	public enum ConditionEdgeFlags
+	{
+		Switch = 1,
+		Enabled = 2
 	}
 }

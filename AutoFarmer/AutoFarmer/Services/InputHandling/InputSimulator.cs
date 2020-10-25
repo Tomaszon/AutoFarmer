@@ -28,7 +28,7 @@ namespace AutoFarmer.Services.InputHandling
 			};
 		}
 
-		public static void Simulate(string[] inputActionNames, SerializablePoint actionPosition, int additionalDelay = 0)
+		public static void Simulate(string[] inputActionNames, SerializablePoint? actionPosition, int additionalDelay = 0)
 		{
 			using var log = Logger.LogBlock();
 

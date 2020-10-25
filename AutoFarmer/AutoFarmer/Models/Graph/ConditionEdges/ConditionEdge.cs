@@ -7,7 +7,11 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdge : ConditionEdgeBase
 	{
-		public string Name { get; set; }
+		public string Name => $"{StartNodeName}-{EndNodeName}";
+
+		public int CurrentCrossing { get; set; }
+
+		public bool Crossable => CurrentCrossing < MaxCrossing;
 
 		public string StartNodeName { get; set; }
 
@@ -15,20 +19,15 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public Condition? Condition { get; set; }
 
-		public bool IsEnabled
-		{
-			get { return CurrentCrossing < MaxCrossing; }
-		}
-
-		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability)
+		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability, ConditionEdgeFlags flags)
 		{
 			StartNodeName = startNodeName;
 			EndNodeName = endNodeName;
-			Name = $"{startNodeName}-{endNodeName}";
 			Order = order;
 			MaxCrossing = maxCrossing;
 			ConsiderationProbability = considerationProbability;
 			Condition = condition;
+			Flags = flags;
 		}
 
 		public void Disable()
@@ -38,9 +37,12 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			CurrentCrossing = int.MaxValue;
 		}
 
-		public void ResetState()
+		public void ResetState(bool complete)
 		{
-			CurrentCrossing = 0;
+			if (complete || IsNot(ConditionEdgeFlags.Switch))
+			{
+				CurrentCrossing = 0;
+			}
 		}
 
 		public bool ProcessCondition(List<SerializablePoint> actionPoints)

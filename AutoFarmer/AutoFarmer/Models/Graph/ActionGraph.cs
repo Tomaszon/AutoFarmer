@@ -3,6 +3,7 @@ using AutoFarmer.Models.Graph.ActionNodes;
 using AutoFarmer.Models.Graph.ConditionEdges;
 using AutoFarmer.Services;
 using AutoFarmer.Services.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,26 +13,6 @@ namespace AutoFarmer.Models.Graph
 {
 	public class ActionGraph
 	{
-		public List<ActionNode> ActiveStartNodes
-		{
-			get
-			{
-				var activeStartNodes = ActionNodes.Where(a => a.IsStartNode && Config.Instance.ActiveStartNodes.Contains(a.Name));
-
-				if (activeStartNodes.Count() == 0)
-				{
-					throw new AutoFarmerException("Start node not found!");
-				}
-
-				return activeStartNodes.OrderBy(n => Config.Instance.ActiveStartNodes.ToList().IndexOf(n.Name)).ToList();
-			}
-		}
-
-		public List<ActionNode> EndNodes
-		{
-			get { return ActionNodes.Where(a => a.IsEndNode).ToList(); }
-		}
-
 		public List<ActionNode> ActionNodes { get; set; } = new List<ActionNode>();
 
 		public List<ConditionEdge> ConditionEdges { get; set; } = new List<ConditionEdge>();
@@ -47,6 +28,25 @@ namespace AutoFarmer.Models.Graph
 			foreach (var file in Directory.GetFiles(Config.Instance.ConditionEdgesDirectory))
 			{
 				graph.ConditionEdges.AddRange(ConditionEdgeOptions.FromJsonFile(file));
+			}
+
+			var flagsConfig = ActionGraphFlagsConfig.FromJsonFile(Config.Instance.ActionGraphFlagsConfigPath);
+
+			foreach (var item in flagsConfig.AddFlags.Nodes)
+			{
+				graph.ActionNodes.Single(n => n.Name == item.Key).AddFlags(item.Value);
+			}
+			foreach (var item in flagsConfig.AddFlags.Edges)
+			{
+				graph.ConditionEdges.Single(e => e.Name == item.Key).AddFlags(item.Value);
+			}
+			foreach (var item in flagsConfig.RemoveFlags.Nodes)
+			{
+				graph.ActionNodes.Single(n => n.Name == item.Key).RemoveFlags(item.Value);
+			}
+			foreach (var item in flagsConfig.RemoveFlags.Edges)
+			{
+				graph.ConditionEdges.Single(e => e.Name == item.Key).RemoveFlags(item.Value);
 			}
 
 			return graph;
@@ -69,9 +69,10 @@ namespace AutoFarmer.Models.Graph
 
 			double minimumProbability = r.Next(1, 100) / 100d;
 
-			var potentialEdges = ConditionEdges.Where(e => e.StartNodeName == actionNode.Name && e.IsEnabled);
+			var potentialEdges = ConditionEdges.Where(e =>
+				e.StartNodeName == actionNode.Name && e.Crossable && (e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || true));
 
-			nextEdge = potentialEdges.Where(e => 
+			nextEdge = potentialEdges.Where(e =>
 				e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
 					e.Order).FirstOrDefault();
 
@@ -80,18 +81,18 @@ namespace AutoFarmer.Models.Graph
 
 		public bool TryGetNextStartNode(out ActionNode nextStartNode)
 		{
-			nextStartNode = ActiveStartNodes.FirstOrDefault(n => !n.IsVisited);
+			nextStartNode = ActionNodes.FirstOrDefault(n => n.Crossable && n.Is(ActionNodeFlags.Enabled | ActionNodeFlags.StartNode));
 
 			return nextStartNode is { };
 		}
 
-		public void Reset(bool complete = false)
+		public void ResetState(bool complete = false)
 		{
 			using var log = Logger.LogBlock();
 
 			foreach (var edge in ConditionEdges)
 			{
-				edge.ResetState();
+				edge.ResetState(complete);
 			}
 
 			foreach (var node in ActionNodes)

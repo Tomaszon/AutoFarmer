@@ -1,4 +1,5 @@
-﻿using AutoFarmer.Models.Graph.Conditions;
+﻿using AutoFarmer.Models.Common;
+using AutoFarmer.Models.Graph.Conditions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -46,12 +47,12 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}
 
-							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, condition));
+							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, condition, edgeOptions.Flags));
 						}
 					}
 					else
 					{
-						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Condition));
+						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Condition, edgeOptions.Flags));
 					}
 				}
 
@@ -59,9 +60,9 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			});
 		}
 
-		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions)
+		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions, ConditionEdgeFlags flags)
 		{
-			return new ConditionEdge(startNodeName, endNodeName, Order, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability);
+			return new ConditionEdge(startNodeName, endNodeName, Order, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability, flags);
 		}
 	}
 }

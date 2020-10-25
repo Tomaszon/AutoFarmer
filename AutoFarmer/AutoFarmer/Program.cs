@@ -151,7 +151,7 @@ namespace AutoFarmer
 
 				Logger.RefreshSessionId();
 
-				graph.Reset(true);
+				graph.ResetState(true);
 
 				GlobalStateStorage.Reset();
 			}

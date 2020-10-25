@@ -73,6 +73,14 @@ namespace AutoFarmer.Services
 			}
 		}
 
+		public string ActionGraphFlagsConfigPath
+		{
+			get
+			{
+				return Path.Combine(ActivePackageDirectory, "actionGraphFlagsConfig.json");
+			}
+		}
+
 		public string ImageMatchTemplateResourcesDirectory
 		{
 			get
@@ -92,8 +100,6 @@ namespace AutoFarmer.Services
 		public int ProcessCountdown { get; set; }
 
 		public string ActivePackage { get; set; } = null!;
-
-		public string[] ActiveStartNodes { get; set; } = null!;
 
 		public static Config Instance { get; set; } = null!;
 

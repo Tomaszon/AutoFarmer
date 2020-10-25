@@ -15,11 +15,11 @@ namespace AutoFarmer.Services
 
 		public bool IsEnabled { get; set; } = true;
 
-		public SerializablePoint LastActionPosition { get; set; }
+		public SerializablePoint LastActionPosition { get; set; } = null!;
 
 		public double SafeAreaRadius { get; set; }
 
-		public static MouseSafetyMeasures Instance { get; private set; }
+		public static MouseSafetyMeasures Instance { get; private set; } = null!;
 
 		public static void FromConfig()
 		{

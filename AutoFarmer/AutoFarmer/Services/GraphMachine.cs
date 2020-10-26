@@ -46,7 +46,7 @@ namespace AutoFarmer.Services
 						{
 							ReportBuilder.ReportBuilder.Commit(ReportMessageType.Success);
 
-							Graph.TryGetNextNode(currentEdge, out currentNode);
+							Graph.TryGetNextNode(currentEdge, ref currentNode);
 
 							Logger.Log($"Next node selected: {currentNode.Name}");
 
@@ -55,8 +55,6 @@ namespace AutoFarmer.Services
 						else
 						{
 							ReportBuilder.ReportBuilder.Commit(ReportMessageType.Fail);
-
-							currentEdge.Disable();
 						}
 					}
 

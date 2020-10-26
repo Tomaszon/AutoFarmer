@@ -91,6 +91,7 @@ namespace AutoFarmer.Models.Common
 	public enum ConditionEdgeFlags
 	{
 		Switch = 1,
-		Enabled = 2
+		Enabled = 2,
+		Tried = 4
 	}
 }

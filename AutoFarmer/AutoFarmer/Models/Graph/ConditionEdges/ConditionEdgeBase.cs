@@ -11,11 +11,11 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public double ConsiderationProbability { get; set; } = 1;
 
-		public ConditionEdgeFlags Flags { get; set; }
+		public ConditionEdgeFlags? Flags { get; set; }
 
 		public bool Is(ConditionEdgeFlags flags)
 		{
-			return ((int)Flags & (int)flags) == (int)flags;
+			return Flags is { } && ((int)Flags & (int)flags) == (int)flags;
 		}
 
 		public bool IsNot(ConditionEdgeFlags flags)
@@ -25,12 +25,27 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public void AddFlags(ConditionEdgeFlags flags)
 		{
-			Flags |= flags;
+			if (Flags is { })
+			{
+				Flags |= flags;
+			}
+			else
+			{
+				Flags = flags;
+			}
 		}
 
 		public void RemoveFlags(ConditionEdgeFlags flags)
 		{
-			Flags &= ~flags;
+			if (Flags is { })
+			{
+				Flags &= ~flags;
+			}
+
+			if(Flags == 0)
+			{
+				Flags = null;
+			}
 		}
 	}
 }

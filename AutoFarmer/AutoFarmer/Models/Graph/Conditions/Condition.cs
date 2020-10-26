@@ -4,6 +4,7 @@ using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace AutoFarmer.Models.Graph.Conditions

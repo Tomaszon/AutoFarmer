@@ -52,9 +52,16 @@ namespace AutoFarmer.Models.Graph
 			return graph;
 		}
 
-		public bool TryGetNextNode(ConditionEdge conditionEdge, out ActionNode nextNode)
+		public bool TryGetNextNode(ConditionEdge conditionEdge, ref ActionNode nextNode)
 		{
 			using var log = Logger.LogBlock();
+
+			var asd = nextNode.Name;
+
+			foreach (var edge in ConditionEdges.Where(e => e.StartNodeName == asd))
+			{
+				edge.RemoveFlags(ConditionEdgeFlags.Tried);
+			}
 
 			nextNode = ActionNodes.FirstOrDefault(n => conditionEdge.EndNodeName == n.Name);
 
@@ -70,13 +77,23 @@ namespace AutoFarmer.Models.Graph
 			double minimumProbability = r.Next(1, 100) / 100d;
 
 			var potentialEdges = ConditionEdges.Where(e =>
-				e.StartNodeName == actionNode.Name && e.Crossable && (e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || true));
+				e.StartNodeName == actionNode.Name && e.Crossable && e.IsNot(ConditionEdgeFlags.Tried) && (e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || e.IsNot(ConditionEdgeFlags.Switch)));
 
 			nextEdge = potentialEdges.Where(e =>
-				e.ConsiderationProbability >= minimumProbability).OrderBy(e =>
-					e.Order).FirstOrDefault();
+				e.ConsiderationProbability >= minimumProbability).OrderBy(e => r.Next(0, 100)).OrderBy(e => e.Order).FirstOrDefault();
 
-			return nextEdge is { };
+			if (nextEdge is { })
+			{
+				nextEdge.AddFlags(ConditionEdgeFlags.Tried);
+
+				Logger.Log($"{nextEdge.Name} is marked for current iteration!");
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public bool TryGetNextStartNode(out ActionNode nextStartNode)

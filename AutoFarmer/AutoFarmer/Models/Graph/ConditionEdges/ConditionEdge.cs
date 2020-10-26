@@ -19,7 +19,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public Condition? Condition { get; set; }
 
-		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability, ConditionEdgeFlags flags)
+		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability, ConditionEdgeFlags? flags)
 		{
 			StartNodeName = startNodeName;
 			EndNodeName = endNodeName;
@@ -28,13 +28,6 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			ConsiderationProbability = considerationProbability;
 			Condition = condition;
 			Flags = flags;
-		}
-
-		public void Disable()
-		{
-			Logger.Log($"Edge {Name} disabled!");
-
-			CurrentCrossing = int.MaxValue;
 		}
 
 		public void ResetState(bool complete)

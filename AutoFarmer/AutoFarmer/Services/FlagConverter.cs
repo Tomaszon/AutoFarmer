@@ -30,7 +30,6 @@ namespace AutoFarmer.Services
 				}
 
 				return result;
-
 			}
 
 			return null;

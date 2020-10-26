@@ -13,11 +13,11 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 		public int MaxCrossing { get; set; } = 1;
 
-		public ActionNodeFlags Flags { get; set; }
+		public ActionNodeFlags? Flags { get; set; }
 
 		public bool Is(ActionNodeFlags flags)
 		{
-			return ((int)Flags & (int)flags) == (int)flags;
+			return Flags is { } && ((int)Flags & (int)flags) == (int)flags;
 		}
 
 		public bool IsNot(ActionNodeFlags flags)
@@ -27,12 +27,27 @@ namespace AutoFarmer.Models.Graph.ActionNodes
 
 		public void AddFlags(ActionNodeFlags flags)
 		{
-			Flags |= flags;
+			if (Flags is { })
+			{
+				Flags |= flags;
+			}
+			else
+			{
+				Flags = flags;
+			}
 		}
 
 		public void RemoveFlags(ActionNodeFlags flags)
 		{
-			Flags &= ~flags;
+			if (Flags is { })
+			{
+				Flags &= ~flags;
+			}
+
+			if (Flags == 0)
+			{
+				Flags = null;
+			}
 		}
 	}
 }

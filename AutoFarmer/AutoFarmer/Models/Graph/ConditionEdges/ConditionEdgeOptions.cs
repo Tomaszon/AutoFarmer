@@ -60,7 +60,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			});
 		}
 
-		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions, ConditionEdgeFlags flags)
+		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions, ConditionEdgeFlags? flags)
 		{
 			return new ConditionEdge(startNodeName, endNodeName, Order, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability, flags);
 		}

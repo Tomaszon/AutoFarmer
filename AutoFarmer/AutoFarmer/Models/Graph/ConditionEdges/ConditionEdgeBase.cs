@@ -3,49 +3,12 @@ using System;
 
 namespace AutoFarmer.Models.Graph.ConditionEdges
 {
-	public abstract class ConditionEdgeBase
+	public abstract class ConditionEdgeBase : FlagBase<ConditionEdgeFlags>
 	{
 		public int MaxCrossing { get; set; } = 1;
 
 		public int Order { get; set; } = 1;
 
 		public double ConsiderationProbability { get; set; } = 1;
-
-		public ConditionEdgeFlags? Flags { get; set; }
-
-		public bool Is(ConditionEdgeFlags flags)
-		{
-			return Flags is { } && ((int)Flags & (int)flags) == (int)flags;
-		}
-
-		public bool IsNot(ConditionEdgeFlags flags)
-		{
-			return !Is(flags);
-		}
-
-		public void AddFlags(ConditionEdgeFlags flags)
-		{
-			if (Flags is { })
-			{
-				Flags |= flags;
-			}
-			else
-			{
-				Flags = flags;
-			}
-		}
-
-		public void RemoveFlags(ConditionEdgeFlags flags)
-		{
-			if (Flags is { })
-			{
-				Flags &= ~flags;
-			}
-
-			if(Flags == 0)
-			{
-				Flags = null;
-			}
-		}
 	}
 }

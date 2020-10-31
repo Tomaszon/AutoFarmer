@@ -9,6 +9,8 @@ using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -289,5 +291,26 @@ namespace AutoFarmerTests
 			Assert.AreEqual(a.B, b.B);
 		}
 
+		[JsonConverter(typeof(StringEnumConverter))]
+		public enum StringEnum
+		{
+			Value1 = 1,
+			Value2 = 2,
+			Value3 = 4
+		}
+		public class TestMethod14Class
+		{
+			public StringEnum A { get; set; }
+		}
+		[TestMethod]
+		public void TestMethod14()
+		{
+			var a = new TestMethod14Class() { A = StringEnum.Value3 };
+
+			var s = JsonConvert.SerializeObject(a);
+
+			Console.WriteLine("alma");
+			Console.WriteLine(s);
+		}
 	}
 }

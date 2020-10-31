@@ -31,6 +31,8 @@ namespace AutoFarmer
 			catch (Exception ex)
 			{
 				Console.WriteLine($"Unexpected error in {nameof(WorkMethod)}: {ex.Message}\n{ex}");
+
+				Console.ReadKey();
 			}
 #endif
 		}

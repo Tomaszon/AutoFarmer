@@ -72,11 +72,11 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
-			node.CurrentCrossing++;
-
 			if (node.Actions is null)
 			{
 				Thread.Sleep(node.AdditionalDelayAfterLastAction);
+
+				node.CurrentCrossing++;
 
 				return;
 			}
@@ -96,6 +96,8 @@ namespace AutoFarmer.Services
 			{
 				InputSimulator.Simulate(node.Actions, null, node.AdditionalDelayBetweenActions);
 			}
+
+			node.CurrentCrossing++;
 		}
 
 		private bool ProcessEdge(ConditionEdge edge, List<SerializablePoint> actionPoints)

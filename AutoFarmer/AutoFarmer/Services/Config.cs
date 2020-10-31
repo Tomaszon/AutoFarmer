@@ -73,7 +73,7 @@ namespace AutoFarmer.Services
 			}
 		}
 
-		public string ActionGraphFlagsConfigPath
+		public string ActionGraphConfigPath
 		{
 			get
 			{

@@ -30,23 +30,28 @@ namespace AutoFarmer.Models.Graph
 				graph.ConditionEdges.AddRange(ConditionEdgeOptions.FromJsonFile(file));
 			}
 
-			var flagsConfig = ActionGraphFlagsConfig.FromJsonFile(Config.Instance.ActionGraphFlagsConfigPath);
+			var config = ActionGraphConfig.FromJsonFile(Config.Instance.ActionGraphConfigPath);
 
-			foreach (var item in flagsConfig.AddFlags.Nodes)
+			foreach (var item in config.AddFlags.Nodes)
 			{
 				graph.ActionNodes.Single(n => n.Name == item.Key).AddFlags(item.Value);
 			}
-			foreach (var item in flagsConfig.AddFlags.Edges)
+			foreach (var item in config.AddFlags.Edges)
 			{
 				graph.ConditionEdges.Single(e => e.Name == item.Key).AddFlags(item.Value);
 			}
-			foreach (var item in flagsConfig.RemoveFlags.Nodes)
+			foreach (var item in config.RemoveFlags.Nodes)
 			{
 				graph.ActionNodes.Single(n => n.Name == item.Key).RemoveFlags(item.Value);
 			}
-			foreach (var item in flagsConfig.RemoveFlags.Edges)
+			foreach (var item in config.RemoveFlags.Edges)
 			{
 				graph.ConditionEdges.Single(e => e.Name == item.Key).RemoveFlags(item.Value);
+			}
+
+			foreach (var item in config.StartNodeVisitCounts)
+			{
+				graph.ActionNodes.Single(n => n.Name == item.Key && n.Is(ActionNodeFlags.StartNode)).MaxCrossing = item.Value;
 			}
 
 			return graph;

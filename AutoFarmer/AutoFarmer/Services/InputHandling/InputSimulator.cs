@@ -1,11 +1,8 @@
-﻿using AForge.Math.Geometry;
-using AutoFarmer.Models.Common;
+﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using WindowsInput.Native;
@@ -321,7 +318,7 @@ namespace AutoFarmer.Services.InputHandling
 			var kcs = ConvertValueToVirtualKeyCode(value.Value);
 
 			kcs.ForEach(c => KeyboardEvent(c, 0));
-			
+
 			value.Increase();
 		}
 

@@ -55,7 +55,7 @@ namespace AutoFarmer.Services.Imaging
 				throw new ImageMatchAmbiguousException(matchResult.Matches.Count(), _PERFORMANCE_MONITOR.Elapsed);
 			}
 
-			return OrderResults(matchResult.Matches.Select(m => m.ClickPoint), condition.OrderBy);
+			return OrderResults(matchResult.Matches.Select(m => m.ClickPoint += (SerializableSize)Config.Instance.ScreenLocation), condition.OrderBy);
 		}
 
 		private static ImageMatchResult CalculateMatches(Bitmap source, Condition condition, float similiarityThreshold)

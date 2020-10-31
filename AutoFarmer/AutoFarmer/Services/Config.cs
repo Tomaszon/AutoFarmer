@@ -21,6 +21,8 @@ namespace AutoFarmer.Services
 			set;
 		} = null!;
 
+		public SerializablePoint ScreenLocation { get; set; } = new SerializablePoint();
+
 		public bool ActionSounds { get; set; }
 
 		public string ConfigDirectory { get; set; } = null!;

@@ -15,7 +15,7 @@ namespace AutoFarmer.Services.Imaging
 
 			using (var g = Graphics.FromImage(bmp))
 			{
-				g.CopyFromScreen(0, 0, 0, 0, (Size)Config.Instance.ScreenSize, CopyPixelOperation.SourceCopy);
+				g.CopyFromScreen((Point)Config.Instance.ScreenLocation, new Point(), (Size)Config.Instance.ScreenSize, CopyPixelOperation.SourceCopy);
 			}
 
 			return bmp;

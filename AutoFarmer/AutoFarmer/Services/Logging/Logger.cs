@@ -11,7 +11,7 @@ using AutoFarmer.Services.Extensions;
 
 namespace AutoFarmer.Services.Logging
 {
-	public class Logger : LoggerBase
+	public partial class Logger : LoggerBase
 	{
 		public static Logger Instance { get; set; } = null!;
 
@@ -46,22 +46,27 @@ namespace AutoFarmer.Services.Logging
 			return new LogBlock(name, file, method, line);
 		}
 
-		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, [CallerFilePath] string file = null!, [CallerLineNumber] int line = default, bool fileLog = true)
+		public static void Log(string message, NotificationType notificationType = NotificationType.None, int count = 1, string? trace = null, [CallerFilePath] string file = null!, [CallerLineNumber] int line = default, bool fileLog = true)
 		{
 			try
 			{
-				message = Instance.Formatter.FormatMessage(message, file, line);
+				var formattedMessage = Instance.Formatter.FormatMessage(message, file, line);
 
-				Console.Write(message);
+				if (trace is { })
+				{
+					formattedMessage += trace;
+				}
+
+				Console.Write(formattedMessage);
 
 				if (Instance.FileLogging && fileLog)
 				{
 					Directory.CreateDirectory(Instance.LogDirectory);
 
-					File.AppendAllText(Path.Combine(Instance.LogDirectory, $"{Instance.SessionId}.log"), message);
+					File.AppendAllText(Path.Combine(Instance.LogDirectory, $"{Instance.SessionId}.log"), formattedMessage);
 				}
 
-				NotificationPlayer.Play(notificationType, count);
+				NotificationPlayer.Play(message, notificationType, count);
 			}
 			catch (Exception ex)
 			{

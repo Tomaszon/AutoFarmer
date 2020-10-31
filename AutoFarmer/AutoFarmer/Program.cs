@@ -92,11 +92,11 @@ namespace AutoFarmer
 
 					Thread.Sleep(1000);
 
-					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info, 3);
+					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Voice);
 				}
 				catch (AutoFarmerException ex)
 				{
-					Logger.Log(ex.Message + ex.ToString(), NotificationType.Error, 3);
+					Logger.Log(ex.Message, NotificationType.Voice, trace: ex.ToString());
 				}
 				finally
 				{
@@ -214,6 +214,7 @@ namespace AutoFarmer
 			for (int i = seconds; i > 0; i--)
 			{
 				Console.Write(i.ToString());
+				NotificationPlayer.Play(i.ToString(), NotificationType.Voice);
 
 				for (int j = 0; j < periodCount; j++)
 				{

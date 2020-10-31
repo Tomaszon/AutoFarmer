@@ -45,7 +45,7 @@ namespace AutoFarmer.Services.ReportBuilder
 		{
 			if (Instance.GenerateReport)
 			{
-				Logger.Log("Generating report");
+				Logger.Log("Generating report", NotificationType.Voice);
 
 				if (Instance.Container.Messages.Count > 0)
 				{

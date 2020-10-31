@@ -10,7 +10,8 @@ namespace AutoFarmer.Models.Common
 		Click,
 		ClickSingle,
 		Error,
-		Info
+		Info,
+		Voice
 	}
 
 	public enum MouseAction

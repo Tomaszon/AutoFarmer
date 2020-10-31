@@ -35,6 +35,7 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			if (complete || IsNot(ConditionEdgeFlags.Switch))
 			{
 				CurrentCrossing = 0;
+				RemoveFlags(ConditionEdgeFlags.Tried);
 			}
 		}
 

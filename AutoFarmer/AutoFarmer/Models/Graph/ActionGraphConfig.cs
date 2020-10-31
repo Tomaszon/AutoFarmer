@@ -1,5 +1,4 @@
-﻿using AutoFarmer.Models.Common;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,12 +16,5 @@ namespace AutoFarmer.Models.Graph
 		{
 			return JsonConvert.DeserializeObject<ActionGraphConfig>(File.ReadAllText(file));
 		}
-	}
-
-	public class ActionGraphFlagsConfig
-	{
-		public Dictionary<string, ActionNodeFlags> Nodes { get; set; } = new Dictionary<string, ActionNodeFlags>();
-
-		public Dictionary<string, ConditionEdgeFlags> Edges { get; set; } = new Dictionary<string, ConditionEdgeFlags>();
 	}
 }

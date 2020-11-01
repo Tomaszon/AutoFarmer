@@ -81,7 +81,7 @@ namespace AutoFarmer.Services.Imaging
 
 			if (!condition.DisableSearchAreaFallback && result.Matches.Count < condition.MinimumOccurrence && !result.SearchAreas.Contains(SearchAreaFactory.FromEnum(NamedSearchArea.Full)))
 			{
-				Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches. Searching in full image!");
+				Logger.Log($"Search in given search areas not resulted minimum {condition.MinimumOccurrence} matches, searching in full image");
 
 				result.Matches = CollectMatches(source, searchImage, searchRectangle.RelativeClickPoint, similiarityThreshold, condition.SearchRectangleName!, condition.TemplateName!);
 			}

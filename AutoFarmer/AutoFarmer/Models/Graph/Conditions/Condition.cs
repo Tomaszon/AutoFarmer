@@ -133,13 +133,13 @@ namespace AutoFarmer.Models.Graph.Conditions
 					{
 						retry++;
 
-						Logger.Log($"Match not found for the {retry}. time with {current} similiarity threshold!", NotificationType.Error);
+						Logger.Log($"Match not found for the {retry}. time with {current} similiarity threshold", NotificationType.Error);
 
 						Thread.Sleep(RetryDelay);
 					}
 					catch (ImageMatchAmbiguousException ex)
 					{
-						throw new AutoFarmerException("Automatic emergency stop!", ex);
+						throw new AutoFarmerException("Automatic emergency stop", ex);
 					}
 				}
 

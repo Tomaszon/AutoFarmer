@@ -91,7 +91,7 @@ namespace AutoFarmer.Models.Graph
 			{
 				nextEdge.AddFlags(ConditionEdgeFlags.Tried);
 
-				Logger.Log($"{nextEdge.Name} is marked for current iteration!");
+				Logger.Log($"{nextEdge.Name} is marked for current iteration");
 
 				return true;
 			}

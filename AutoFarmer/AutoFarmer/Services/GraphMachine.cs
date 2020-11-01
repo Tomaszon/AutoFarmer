@@ -58,7 +58,10 @@ namespace AutoFarmer.Services
 						}
 					}
 
-					if (currentNode.IsNot(ActionNodeFlags.EndNode) && currentEdge is null) throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}!");
+					if (currentNode.IsNot(ActionNodeFlags.EndNode) && currentEdge is null)
+					{
+						throw new AutoFarmerException($"Can not move to the next node from {currentNode.Name}");
+					}
 				}
 				while (currentNode.IsNot(ActionNodeFlags.EndNode));
 

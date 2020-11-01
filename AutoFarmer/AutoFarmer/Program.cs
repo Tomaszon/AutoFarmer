@@ -177,7 +177,7 @@ namespace AutoFarmer
 
 				if (!Enum.TryParse(input, true, out T command))
 				{
-					Console.WriteLine("Typed value was not in correct form!\n");
+					Console.WriteLine("Typed value was not in correct form\n");
 				}
 				else
 				{

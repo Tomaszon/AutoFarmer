@@ -52,7 +52,7 @@ namespace AutoFarmer.Services
 			{
 				using var log = Logger.LogBlock();
 
-				throw new AutoFarmerException("Intentional emergency stop!");
+				throw new AutoFarmerException("Intentional emergency stop");
 			}
 		}
 	}

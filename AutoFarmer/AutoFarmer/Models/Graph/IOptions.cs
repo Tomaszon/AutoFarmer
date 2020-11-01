@@ -30,7 +30,7 @@ namespace AutoFarmer.Models.Graph
 			}
 			catch (Exception ex)
 			{
-				throw new AutoFarmerException("Configuration error!", ex);
+				throw new AutoFarmerException("Configuration error", ex);
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace AutoFarmer.Models.Graph
 			}
 			catch (Exception ex)
 			{
-				throw new AutoFarmerException("Configuration error!", ex);
+				throw new AutoFarmerException("Configuration error", ex);
 			}
 		}
 	}

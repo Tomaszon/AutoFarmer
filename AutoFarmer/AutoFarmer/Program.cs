@@ -80,19 +80,15 @@ namespace AutoFarmer
 
 			do
 			{
+				DateTime startTime = DateTime.Now;
+
 				try
 				{
 					Logger.Log($"Processing starts in {Config.Instance.ProcessCountdown / 1000.0} seconds", fileLog: false);
 
 					Countdown(Config.Instance.ProcessCountdown);
 
-					DateTime startTime = DateTime.Now;
-
 					machine.Process();
-
-					Thread.Sleep(1000);
-
-					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Voice);
 				}
 				catch (AutoFarmerException ex)
 				{
@@ -109,6 +105,10 @@ namespace AutoFarmer
 						Console.WriteLine($"{ex}\n");
 					}
 				}
+
+				Thread.Sleep(2500);
+
+				Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Voice);
 
 				HandleCommand<AfterCommand>(c =>
 				{

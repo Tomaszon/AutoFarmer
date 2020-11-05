@@ -7,6 +7,7 @@ using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -47,15 +48,21 @@ namespace AutoFarmer
 				{
 					case BeforeCommand.Logs:
 					{
-						OpenFolder(Logger.Instance.LogDirectory);
+						Open(Logger.Instance.LogDirectory);
 
 						return true;
 					}
 
 					case BeforeCommand.Nodes:
+					{
+						Open(generatedConfigsDirectory, "nodes.json");
+
+						return true;
+					}
+
 					case BeforeCommand.Edges:
 					{
-						OpenFolder(generatedConfigsDirectory);
+						Open(generatedConfigsDirectory, "edges.json");
 
 						return true;
 					}
@@ -116,14 +123,14 @@ namespace AutoFarmer
 					{
 						case AfterCommand.Logs:
 						{
-							OpenFolder(Logger.Instance.LogDirectory);
+							Open(Logger.Instance.LogDirectory);
 
 							return true;
 						}
 
 						case AfterCommand.Reports:
 						{
-							OpenFolder(ReportBuilder.Instance.ReportDirectory);
+							Open(ReportBuilder.Instance.ReportDirectory);
 
 							return true;
 						}
@@ -186,13 +193,13 @@ namespace AutoFarmer
 			}
 		}
 
-		private static void OpenFolder(string folder)
+		private static void Open(string folder, string? file = null)
 		{
 			try
 			{
-				System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+				Process.Start(new ProcessStartInfo()
 				{
-					FileName = folder,
+					FileName = file is null ? folder : Path.Combine(folder, file),
 					UseShellExecute = true,
 					Verb = "open"
 				});

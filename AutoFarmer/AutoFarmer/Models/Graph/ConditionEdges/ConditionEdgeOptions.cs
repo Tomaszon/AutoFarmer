@@ -16,6 +16,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public ConditionOptions? Condition { get; set; }
 
+		public dynamic PreferredOrder { get; set; } = 1;
+
 		public static List<ConditionEdge> FromJsonFile(string path)
 		{
 			return FromJsonFileWrapper(() =>
@@ -31,14 +33,14 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 				List<ConditionEdge> result = new List<ConditionEdge>();
 
-				foreach (var tuple in edgeOptions.Nodes)
+				foreach (var nodes in edgeOptions.Nodes)
 				{
-					if (edgeOptions.TemplateVariables is { } && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), tuple.Key, tuple.Value))
+					if (edgeOptions.TemplateVariables is { } && IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), nodes.Key, nodes.Value))
 					{
 						for (int i = 0; i < edgeOptions.TemplateVariables.First().Value.Count; i++)
 						{
-							var startNodeName = ReplaceVariables(tuple.Key, edgeOptions.TemplateVariables, i);
-							var endNodeName = ReplaceVariables(tuple.Value, edgeOptions.TemplateVariables, i);
+							var startNodeName = ReplaceVariables(nodes.Key, edgeOptions.TemplateVariables, i);
+							var endNodeName = ReplaceVariables(nodes.Value, edgeOptions.TemplateVariables, i);
 
 							var condition = edgeOptions.Condition?.Clone();
 
@@ -47,12 +49,32 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 								condition.ReplaceVariablesInCondition(edgeOptions.TemplateVariables, i);
 							}
 
-							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, condition, edgeOptions.Flags));
+							int prefferedOrder;
+
+							if (edgeOptions.PreferredOrder is string s)
+							{
+								if (IsContainVariable(edgeOptions.TemplateVariables.Keys.ToList(), s))
+								{
+									var preferredOrderName = ReplaceVariables(s, edgeOptions.TemplateVariables, i);
+
+									prefferedOrder = int.Parse(preferredOrderName);
+								}
+								else
+								{
+									prefferedOrder = int.Parse(s);
+								}
+							}
+							else
+							{
+								prefferedOrder = edgeOptions.PreferredOrder;
+							}
+
+							result.Add(edgeOptions.ToConditionEdge(startNodeName, endNodeName, prefferedOrder, condition, edgeOptions.Flags));
 						}
 					}
 					else
 					{
-						result.Add(edgeOptions.ToConditionEdge(tuple.Key, tuple.Value, edgeOptions.Condition, edgeOptions.Flags));
+						result.Add(edgeOptions.ToConditionEdge(nodes.Key, nodes.Value, edgeOptions.PreferredOrder, edgeOptions.Condition, edgeOptions.Flags));
 					}
 				}
 
@@ -60,9 +82,9 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 			});
 		}
 
-		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, ConditionOptions? conditionOptions, ConditionEdgeFlags? flags)
+		private ConditionEdge ToConditionEdge(string startNodeName, string endNodeName, int preferredOrder, ConditionOptions? conditionOptions, ConditionEdgeFlags? flags)
 		{
-			return new ConditionEdge(startNodeName, endNodeName, Order, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability, flags);
+			return new ConditionEdge(startNodeName, endNodeName, Order, preferredOrder, conditionOptions?.ToCondition(), MaxCrossing, ConsiderationProbability, flags);
 		}
 	}
 }

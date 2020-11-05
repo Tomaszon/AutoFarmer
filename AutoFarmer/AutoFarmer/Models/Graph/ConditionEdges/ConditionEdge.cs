@@ -7,6 +7,8 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 {
 	public class ConditionEdge : ConditionEdgeBase
 	{
+		public int PreferredOrder { get; set; }
+
 		public string Name => $"{StartNodeName}-{EndNodeName}";
 
 		public int CurrentCrossing { get; set; }
@@ -19,11 +21,12 @@ namespace AutoFarmer.Models.Graph.ConditionEdges
 
 		public Condition? Condition { get; set; }
 
-		public ConditionEdge(string startNodeName, string endNodeName, int order, Condition? condition, int maxCrossing, double considerationProbability, ConditionEdgeFlags? flags)
+		public ConditionEdge(string startNodeName, string endNodeName, int order, int preferredOrder, Condition? condition, int maxCrossing, double considerationProbability, ConditionEdgeFlags? flags)
 		{
 			StartNodeName = startNodeName;
 			EndNodeName = endNodeName;
 			Order = order;
+			PreferredOrder = preferredOrder;
 			MaxCrossing = maxCrossing;
 			ConsiderationProbability = considerationProbability;
 			Condition = condition;

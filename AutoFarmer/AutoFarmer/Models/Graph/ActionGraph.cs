@@ -82,10 +82,14 @@ namespace AutoFarmer.Models.Graph
 			double minimumProbability = r.Next(1, 100) / 100d;
 
 			var potentialEdges = ConditionEdges.Where(e =>
-				e.StartNodeName == actionNode.Name && e.Crossable && e.IsNot(ConditionEdgeFlags.Tried) && (e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || e.IsNot(ConditionEdgeFlags.Switch)));
+				e.StartNodeName == actionNode.Name && e.Crossable && e.IsNot(ConditionEdgeFlags.Tried) &&
+				(e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || e.IsNot(ConditionEdgeFlags.Switch)) &&
+				e.ConsiderationProbability >= minimumProbability);
 
-			nextEdge = potentialEdges.Where(e =>
-				e.ConsiderationProbability >= minimumProbability).OrderBy(e => r.Next(0, 100)).OrderBy(e => e.Order).FirstOrDefault();
+			var minPreferredOrder = potentialEdges.Min(x => x.PreferredOrder);
+
+			nextEdge = potentialEdges.OrderBy(e => e.Order).ThenBy(e =>
+				e.PreferredOrder == minPreferredOrder ? 0 : r.Next(1, 100)).FirstOrDefault();
 
 			if (nextEdge is { })
 			{

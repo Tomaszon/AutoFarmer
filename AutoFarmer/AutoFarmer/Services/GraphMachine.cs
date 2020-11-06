@@ -75,6 +75,11 @@ namespace AutoFarmer.Services
 		{
 			using var log = Logger.LogBlock();
 
+			if(node.Is(ActionNodeFlags.ResetTrigger))
+			{
+				Graph.ResetState();
+			}
+
 			if (node.Actions is null)
 			{
 				Thread.Sleep(node.AdditionalDelayAfterLastAction);

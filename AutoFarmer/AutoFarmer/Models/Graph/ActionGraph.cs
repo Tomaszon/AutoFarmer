@@ -86,10 +86,12 @@ namespace AutoFarmer.Models.Graph
 				(e.Is(ConditionEdgeFlags.Enabled | ConditionEdgeFlags.Switch) || e.IsNot(ConditionEdgeFlags.Switch)) &&
 				e.ConsiderationProbability >= minimumProbability);
 
-			var minPreferredOrder = potentialEdges.Min(x => x.PreferredOrder);
+			var minPreferredOrder = potentialEdges.Count() > 0 ? potentialEdges.Min(x => x.PreferredOrder) : 0;
 
-			nextEdge = potentialEdges.OrderBy(e => e.Order).ThenBy(e =>
-				e.PreferredOrder == minPreferredOrder ? 0 : r.Next(1, 100)).FirstOrDefault();
+			potentialEdges = potentialEdges.OrderBy(e => e.Order).ThenBy(e =>
+				e.PreferredOrder == minPreferredOrder ? 0 : r.Next(1, 100));
+
+			nextEdge = potentialEdges.FirstOrDefault();
 
 			if (nextEdge is { })
 			{

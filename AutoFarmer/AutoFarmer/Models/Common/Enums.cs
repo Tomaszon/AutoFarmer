@@ -85,7 +85,8 @@ namespace AutoFarmer.Models.Common
 	{
 		StartNode = 1,
 		EndNode = 2,
-		Enabled = 4
+		Enabled = 4,
+		ResetTrigger = 8
 	}
 
 	[Flags, JsonConverter(typeof(FlagConverter<ConditionEdgeFlags>))]

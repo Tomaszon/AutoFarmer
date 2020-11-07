@@ -1,5 +1,6 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Models.ImageMatching;
+using AutoFarmer.Services.Extensions;
 using AutoFarmer.Services.InputHandling;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using AutoFarmer.Services.Extensions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AutoFarmer.Services.Logging
 {
@@ -66,7 +68,7 @@ namespace AutoFarmer.Services.Logging
 					File.AppendAllText(Path.Combine(Instance.LogDirectory, $"{Instance.SessionId}.log"), formattedMessage);
 				}
 
-				NotificationPlayer.Play(message, notificationType, count);
+				NotificationPlayer.Play(notificationType, count);
 			}
 			catch (Exception ex)
 			{
@@ -90,10 +92,13 @@ namespace AutoFarmer.Services.Logging
 
 					HighlightSearchAreas(g, matchCollection.SearchAreas, matchCollection.Matches.Select(m => m.MatchRectangle));
 
-					var fileName = Path.Combine(folderName, $"{templateName}-{searchRectangleName}");
+					var dateValue = DateTime.Now.ToString("HHmmssf");
 
-					matchCollection.Source.Save($"{fileName}.png");
-					matchCollection.SearchImage.Save($"{fileName}-SearchImage.png");
+					var fileName = Path.Combine(folderName, $"{dateValue}-{templateName}-{searchRectangleName}");
+
+					matchCollection.SearchImage.Save($"{fileName}-A.png");
+
+					matchCollection.Source.Save($"{fileName}-B.png");
 				}
 			}
 			catch (Exception ex)

@@ -25,7 +25,7 @@ namespace AutoFarmer
 			try
 			{
 #endif
-			WorkMethod();
+				WorkMethod();
 
 #if !DEBUG
 			}
@@ -55,14 +55,14 @@ namespace AutoFarmer
 
 					case BeforeCommand.Nodes:
 					{
-						Open(generatedConfigsDirectory, "nodes.json");
+						Open(generatedConfigsDirectory);
 
 						return true;
 					}
 
 					case BeforeCommand.Edges:
 					{
-						Open(generatedConfigsDirectory, "edges.json");
+						Open(generatedConfigsDirectory);
 
 						return true;
 					}
@@ -96,10 +96,12 @@ namespace AutoFarmer
 					Countdown(Config.Instance.ProcessCountdown);
 
 					machine.Process();
+
+					Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Info, 5);
 				}
 				catch (AutoFarmerException ex)
 				{
-					Logger.Log(ex.Message, NotificationType.Voice, trace: ex.ToString());
+					Logger.Log(ex.Message, NotificationType.Error, 5, ex.ToString());
 				}
 				finally
 				{
@@ -112,10 +114,6 @@ namespace AutoFarmer
 						Console.WriteLine($"{ex}\n");
 					}
 				}
-
-				Thread.Sleep(2500);
-
-				Logger.Log($"Processing finished in { Math.Round((DateTime.Now - startTime).TotalMinutes, 2)} minutes", NotificationType.Voice);
 
 				HandleCommand<AfterCommand>(c =>
 				{
@@ -221,7 +219,7 @@ namespace AutoFarmer
 			for (int i = seconds; i > 0; i--)
 			{
 				Console.Write(i.ToString());
-				NotificationPlayer.Play(i.ToString(), NotificationType.Voice);
+				NotificationPlayer.Play(NotificationType.ClickSingle, i > 3 ? 1 : 2);
 
 				for (int j = 0; j < periodCount; j++)
 				{

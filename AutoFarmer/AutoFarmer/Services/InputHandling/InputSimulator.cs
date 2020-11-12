@@ -85,6 +85,13 @@ namespace AutoFarmer.Services.InputHandling
 							}
 						}
 						break;
+						case SpecialAction.Wait:
+						{
+							if (!TryParseSpecial(commandValue, 1, out var values)) goto default;
+
+							Thread.Sleep(values[0]);
+						}
+						break;
 						default:
 						{
 							throw new AutoFarmerException($"Unknown special input action: {action}");

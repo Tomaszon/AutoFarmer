@@ -25,7 +25,8 @@ namespace AutoFarmer.Models.Common
 		ScanScreenForFadedUI,
 		Move,
 		Multiply,
-		Value
+		Value,
+		Wait
 	}
 
 	public enum MatchOrderBy

@@ -25,7 +25,7 @@ namespace AutoFarmer
 			try
 			{
 #endif
-				WorkMethod();
+			WorkMethod();
 
 #if !DEBUG
 			}
@@ -79,6 +79,13 @@ namespace AutoFarmer
 						Environment.Exit(0);
 
 						goto default;
+					}
+
+					case BeforeCommand.Delete:
+					{
+						DeleteDirectories();
+
+						return true;
 					}
 
 					default: return false;
@@ -145,6 +152,13 @@ namespace AutoFarmer
 							Environment.Exit(0);
 
 							goto default;
+						}
+
+						case AfterCommand.Delete:
+						{
+							DeleteDirectories();
+
+							return true;
 						}
 
 						default:
@@ -315,12 +329,25 @@ namespace AutoFarmer
 			Logger.Log($"Configs loaded, templates generated!");
 		}
 
+		private static void DeleteDirectories()
+		{
+			if (Directory.Exists(ReportBuilder.Instance.ReportDirectory))
+			{
+				Directory.Delete(ReportBuilder.Instance.ReportDirectory, true);
+			}
+			if (Directory.Exists(Logger.Instance.LogDirectory))
+			{
+				Directory.Delete(Logger.Instance.LogDirectory, true);
+			}
+		}
+
 		private enum AfterCommand
 		{
 			Restart,
 			Reconfig,
 			Logs,
 			Reports,
+			Delete,
 			Exit
 		}
 
@@ -331,6 +358,7 @@ namespace AutoFarmer
 			Nodes,
 			Edges,
 			Logs,
+			Delete,
 			Exit
 		}
 	}

@@ -1,10 +1,13 @@
 ﻿using AutoFarmer.Models.Common;
 using AutoFarmer.Services.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
+
 using WindowsInput.Native;
 
 namespace AutoFarmer.Services.InputHandling
@@ -67,11 +70,11 @@ namespace AutoFarmer.Services.InputHandling
 						break;
 						case SpecialAction.Multiply:
 						{
-							if (!TryParseMultiply(commandValue, out var value1, out var value2)) goto default;
+							if (!TryParseMultiply(commandValue, out var value1, out var value2, out var round)) goto default;
 
 							if (actionPosition is { })
 							{
-								MultiplyKeyboardEvent(value1, value2);
+								MultiplyKeyboardEvent(value1, value2, round);
 							}
 						}
 						break;
@@ -119,13 +122,21 @@ namespace AutoFarmer.Services.InputHandling
 			}
 		}
 
-		private static List<VirtualKeyCode> ConvertValueToVirtualKeyCode(long value)
+		private static List<VirtualKeyCode> ConvertValueToVirtualKeyCode(decimal value)
 		{
 			var result = new List<VirtualKeyCode>();
 
-			foreach (var c in value.ToString())
+			var sv = value.ToString(CultureInfo.InvariantCulture);
+
+			if(sv.Contains('.'))
 			{
-				result.Add((VirtualKeyCode)(int.Parse(c.ToString()) + 96));
+				sv = sv.TrimEnd('0');
+				sv = sv.TrimEnd('.');
+			}
+
+			foreach (var c in sv)
+			{
+				result.Add((c == '.') ? VirtualKeyCode.DECIMAL : (VirtualKeyCode)(int.Parse(c.ToString()) + 96));
 			}
 
 			return result;
@@ -172,14 +183,15 @@ namespace AutoFarmer.Services.InputHandling
 			return false;
 		}
 
-		private static bool TryParseMultiply(string commandValue, [NotNullWhen(true)] out GlobalStateStorageValue? value1, [NotNullWhen(true)] out GlobalStateStorageValue? value2)
+		private static bool TryParseMultiply(string commandValue, [NotNullWhen(true)] out GlobalStateStorageValue? value1, [NotNullWhen(true)] out GlobalStateStorageValue? value2, out GlobalStateStorageValue? round)
 		{
 			value1 = default;
 			value2 = default;
+			round = default;
 
 			string formattedGlobalStateValues = FormatArrayForRegexSearch(GlobalStateStorage.GetValueNames(), "|", "|");
 
-			Regex regex = new Regex($"(?<value1>(\\d)+{formattedGlobalStateValues}),(?<value2>(\\d)+{formattedGlobalStateValues})", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+			Regex regex = new Regex($"(?<value1>(\\d)+{formattedGlobalStateValues}),(?<value2>(\\d)+{formattedGlobalStateValues})(,(?<round>(\\d){formattedGlobalStateValues}))?", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
 			var match = regex.Match(commandValue);
 
@@ -187,9 +199,14 @@ namespace AutoFarmer.Services.InputHandling
 			{
 				var v1 = match.Groups["value1"].Value;
 				var v2 = match.Groups["value2"].Value;
+				var r = match.Groups["round"].Value;
 
 				value1 = int.TryParse(v1, out var x) ? x : GlobalStateStorage.Get(v1);
 				value2 = int.TryParse(v2, out x) ? x : GlobalStateStorage.Get(v2);
+				if (!string.IsNullOrEmpty(r))
+				{
+					round = int.TryParse(r, out x) ? x : GlobalStateStorage.Get(r);
+				}
 
 				return true;
 			}
@@ -329,9 +346,14 @@ namespace AutoFarmer.Services.InputHandling
 			value.Increase();
 		}
 
-		private static void MultiplyKeyboardEvent(GlobalStateStorageValue value1, GlobalStateStorageValue value2)
+		private static void MultiplyKeyboardEvent(GlobalStateStorageValue value1, GlobalStateStorageValue value2, GlobalStateStorageValue? round)
 		{
-			long multipliedValue = value1.Value * value2.Value;
+			decimal multipliedValue = value1.Value * value2.Value;
+
+			if (round is { })
+			{
+				multipliedValue = Math.Round(multipliedValue, (int)round.Value);
+			}
 
 			var kcs = ConvertValueToVirtualKeyCode(multipliedValue);
 

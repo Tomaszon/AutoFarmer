@@ -8,9 +8,12 @@ using AutoFarmer.Services.Imaging;
 using AutoFarmer.Services.InputHandling;
 using AutoFarmer.Services.Logging;
 using AutoFarmer.Services.ReportBuilder;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -154,7 +157,7 @@ namespace AutoFarmerTests
 
 			GlobalStateStorage.FromConfig();
 
-			InputSimulator.Simulate(new[] { "Move:960,540" }, null);
+			//InputSimulator.Simulate(new[] { "Move:960,540" }, null);
 			//InputSimulator.Simulate(new[] { "Value:2110" }, new SerializablePoint() { X = 0, Y = 0 });
 			//InputSimulator.Simulate(new[] { "Value:singleDilithiumValue" }, new SerializablePoint() { X = 0, Y = 0 });
 			//InputSimulator.Simulate(new[] { "Multiply:singleDilithiumValue,2" }, new SerializablePoint() { X = 0, Y = 0 });
@@ -251,7 +254,7 @@ namespace AutoFarmerTests
 
 			InputSimulator.FromConfig();
 
-			InputSimulator.Simulate(new[] { "Move:100,100" }, null);
+			//InputSimulator.Simulate(new[] { "Move:100,100" }, null);
 		}
 
 		[TestMethod]
@@ -270,7 +273,16 @@ namespace AutoFarmerTests
 
 			GlobalStateStorage.FromConfig();
 
-			//InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
+			//InputSimulator.Simulate(new[] { $"Multiply:cumulativeDilithiumValue,transactionMultiplier,multipliedCumulativeDilithiumValueDecimalDigits" },
+			//	new SerializablePoint() { X = 960, Y = 540 });
+
+			//for (int i = 0; i < 5; i++)
+			//{
+			//	InputSimulator.Simulate(new[] { $"Multiply:cumulativeDilithiumValue,transactionMultiplier,multipliedCumulativeDilithiumValueDecimalDigits" },
+			//		new SerializablePoint() { X = 960, Y = 540 });
+
+			//	InputSimulator.Simulate(new[] { "RETURN" }, new SerializablePoint() { X = 960, Y = 540 });
+			//}
 			//InputSimulator.Simulate(new[] { "SPACE" }, new SerializablePoint() { X = 960, Y = 540 });
 			//InputSimulator.Simulate(new[] { "Multiply:24,transactionMultiplier" }, new SerializablePoint() { X = 960, Y = 540 });
 		}

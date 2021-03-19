@@ -36,7 +36,7 @@ namespace AutoFarmer.Services
 			return Instance.Values.Select(v => v.Key);
 		}
 
-		public static IEnumerable<long> GetValues()
+		public static IEnumerable<decimal> GetValues()
 		{
 			return Instance.Values.Select(v => v.Value.Value);
 		}

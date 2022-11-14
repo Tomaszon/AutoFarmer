@@ -18,8 +18,8 @@
 	<ItemGroup>
 		<PackageReference Include="AForge.Imaging.Core" Version="1.0.0" />
 		<PackageReference Include="InputSimulatorCore" Version="1.0.5" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="System.Security.Principal.Windows" Version="4.7.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
 		<PackageReference Include="System.Windows.Extensions" Version="4.7.0" />
 	</ItemGroup>
 	<ItemGroup>
